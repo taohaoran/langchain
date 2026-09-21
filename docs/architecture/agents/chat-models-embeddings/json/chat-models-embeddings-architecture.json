@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "模型初始化工厂架构",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 520]
+  },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户/工厂", "sublabel": "init_chat_model", "pos": [40, 220], "size": [150, 64] },
+    { "id": "parse", "type": "backend", "label": "解析与推断", "sublabel": "_parse_model", "pos": [280, 220], "size": [160, 64] },
+    { "id": "lazy", "type": "security", "label": "惰性导入", "sublabel": "_get_creator", "pos": [520, 220], "size": [160, 64] },
+    { "id": "openai", "type": "cloud", "label": "OpenAI", "sublabel": "partner", "pos": [780, 120], "size": [150, 60] },
+    { "id": "anthropic", "type": "cloud", "label": "Anthropic", "sublabel": "partner", "pos": [780, 220], "size": [150, 60] },
+    { "id": "others", "type": "cloud", "label": "其他 provider", "sublabel": "grok/gemini...", "pos": [780, 320], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库源码内（工厂层）", "wraps": ["parse", "lazy"] }
+  ],
+  "connections": [
+    { "id": "u-p", "from": "user", "to": "parse", "variant": "emphasis" },
+    { "id": "p-l", "from": "parse", "to": "lazy", "variant": "default" },
+    { "id": "l-o", "from": "lazy", "to": "openai", "variant": "default" },
+    { "id": "l-a", "from": "lazy", "to": "anthropic", "variant": "default" },
+    { "id": "l-t", "from": "lazy", "to": "others", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "路由规则", "items": ["provider:model 前缀优先", "否则按模型名前缀推断 provider", "推断失败抛 ValueError"] },
+    { "dot": "amber", "title": "懒加载", "items": ["顶层不导入全部 partner", "调用期才 import 目标模型类"] }
+  ]
+}

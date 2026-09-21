@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "LangChain 代理单次运行生命周期",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1030, 720]
+  },
+  "lanes": [
+    { "id": "main", "label": "主循环" },
+    { "id": "terminal", "label": "终态" }
+  ],
+  "states": [
+    { "id": "created", "type": "start", "label": "已创建", "sublabel": "invoke 入队", "lane": "main", "col": 0, "step": "01" },
+    { "id": "running", "type": "active", "label": "模型推理中", "sublabel": "中间件+ChatModel", "lane": "main", "col": 1, "step": "02", "tag": "主循环" },
+    { "id": "toolrun", "type": "active", "label": "工具执行中", "sublabel": "tool.invoke", "lane": "main", "col": 2, "step": "03", "tag": "主循环" },
+    { "id": "success", "type": "success", "label": "完成", "sublabel": "最终 AIMessage", "lane": "terminal", "col": 1, "step": "04", "tag": "终态" },
+    { "id": "failed", "type": "failure", "label": "失败", "sublabel": "异常抛出", "lane": "terminal", "col": 0, "step": "05" },
+    { "id": "cancelled", "type": "failure", "label": "已取消", "sublabel": "用户中断", "lane": "terminal", "col": 2, "step": "06", "tag": "终态" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "created", "to": "running", "variant": "emphasis" },
+    { "id": "t2", "from": "running", "to": "toolrun", "variant": "default" },
+    { "id": "t3", "from": "toolrun", "to": "running", "variant": "emphasis", "fromSide": "bottom", "toSide": "bottom", "via": [[530, 300], [330, 300]], "label": "ToolMessage 回传", "labelDy": 20 },
+    { "id": "t4", "from": "running", "to": "success", "variant": "emphasis", "fromSide": "bottom", "toSide": "top", "via": [[248, 340], [402, 340]], "label": "无工具调用", "labelDy": -12 },
+    { "id": "t5", "from": "running", "to": "failed", "variant": "default", "fromSide": "bottom", "toSide": "top", "via": [[248, 250], [94, 250]], "label": "模型/工具异常", "labelDy": -12 },
+    { "id": "t6", "from": "toolrun", "to": "cancelled", "variant": "default", "fromSide": "bottom", "toSide": "top", "via": [[402, 390], [650, 390]], "label": "用户中断", "labelDy": -12 },
+    { "id": "t7", "from": "failed", "to": "running", "variant": "dashed", "fromSide": "top", "toSide": "bottom", "via": [[94, 420], [189, 420]], "label": "中间件重试", "labelDy": 14 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主循环", "items": [
+      "模型返回 tool_calls 才进入工具执行",
+      "ToolMessage 回传后再次调用模型，直到无工具调用",
+      "中间件洋葱链包裹每一轮"
+    ]},
+    { "dot": "rose", "title": "终态", "items": [
+      "失败后可由重试中间件重新进入主循环",
+      "取消为终态，不自动重试"
+    ]}
+  ]
+}

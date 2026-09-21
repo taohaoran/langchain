@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "LangChain 核心数据流图",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1300, 820]
+  },
+  "stages": [
+    { "label": "数据输入" },
+    { "label": "处理与存储" },
+    { "label": "检索与组装" },
+    { "label": "推理与输出" },
+    { "label": "可观测性" }
+  ],
+  "nodes": [
+    { "id": "docs", "type": "frontend", "label": "原始文档", "sublabel": "PDF/HTML/文本", "stage": 0, "row": 0 },
+    { "id": "chat", "type": "frontend", "label": "对话消息", "sublabel": "BaseMessage", "stage": 0, "row": 4 },
+    { "id": "loader", "type": "backend", "label": "文档加载器", "sublabel": "document_loaders", "stage": 1, "row": 0 },
+    { "id": "splitter", "type": "backend", "label": "文本分块", "sublabel": "text-splitters", "stage": 1, "row": 1 },
+    { "id": "embed", "type": "cloud", "label": "嵌入模型", "sublabel": "Embeddings", "stage": 1, "row": 2 },
+    { "id": "vectorstore", "type": "database", "label": "向量存储", "sublabel": "VectorStore", "stage": 1, "row": 3 },
+    { "id": "retriever", "type": "backend", "label": "检索器", "sublabel": "BaseRetriever", "stage": 2, "row": 2 },
+    { "id": "prompt", "type": "backend", "label": "提示模板", "sublabel": "PromptTemplate", "stage": 2, "row": 4 },
+    { "id": "chatmodel", "type": "cloud", "label": "聊天模型", "sublabel": "BaseChatModel", "stage": 3, "row": 3 },
+    { "id": "parser", "type": "backend", "label": "输出解析", "sublabel": "OutputParser", "stage": 3, "row": 4 },
+    { "id": "callbacks", "type": "messagebus", "label": "回调管理器", "sublabel": "CallbackManager", "stage": 4, "row": 3 },
+    { "id": "tracer", "type": "backend", "label": "追踪器", "sublabel": "LangSmith", "stage": 4, "row": 4 }
+  ],
+  "flows": [
+    { "from": "docs", "to": "loader", "label": "原始文件", "variant": "emphasis", "labelDy": -14 },
+    { "from": "loader", "to": "splitter", "label": "Document 列表", "labelDy": 38 },
+    { "from": "splitter", "to": "embed", "label": "文本块", "labelDy": 38 },
+    { "from": "embed", "to": "vectorstore", "label": "向量+元数据", "labelDy": 38 },
+    { "from": "vectorstore", "to": "retriever", "label": "相似度检索", "labelDy": -14 },
+    { "from": "chat", "to": "prompt", "label": "用户消息", "variant": "emphasis", "route": "bottom-channel", "labelDy": 18 },
+    { "from": "retriever", "to": "prompt", "label": "上下文文档", "route": "bottom-channel", "labelAt": [530, 660] },
+    { "from": "prompt", "to": "chatmodel", "label": "PromptValue", "variant": "emphasis", "labelDy": -14 },
+    { "from": "chatmodel", "to": "parser", "label": "AIMessage", "labelDy": 38 },
+    { "from": "chatmodel", "to": "callbacks", "label": "on_llm_start/end", "variant": "dashed", "labelDy": -14 },
+    { "from": "callbacks", "to": "tracer", "label": "Run 树", "variant": "dashed", "labelDy": 38 }
+  ]
+}

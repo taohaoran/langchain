@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "检索器、向量存储与索引体系（retrievers-stores）",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1150, 620]
+  },
+  "components": [
+    { "id": "caller", "type": "external", "label": "RetrievalQA / 用户", "sublabel": "检索问答", "pos": [40, 100], "size": [150, 56] },
+    { "id": "retrievers", "type": "backend", "label": "组合检索器", "sublabel": "ensemble/multi-query", "pos": [320, 100], "size": [180, 60], "tag": "装饰器组合" },
+    { "id": "vsshim", "type": "backend", "label": "向量库 shim", "sublabel": "create_importer", "pos": [640, 100], "size": [160, 56] },
+    { "id": "community", "type": "external", "label": "langchain-community", "sublabel": "向量库实现", "pos": [920, 100], "size": [170, 56] },
+    { "id": "vdb", "type": "database", "label": "外部向量数据库", "sublabel": "chroma/faiss/pg…", "pos": [920, 250], "size": [180, 60], "tag": "不在仓库内" },
+    { "id": "store", "type": "backend", "label": "ByteStore 实现", "sublabel": "in-memory/file/redis", "pos": [320, 300], "size": [180, 56] },
+    { "id": "extstore", "type": "database", "label": "Redis / 文件系统", "sublabel": "键值后端", "pos": [640, 300], "size": [160, 56] },
+    { "id": "index", "type": "backend", "label": "索引封装/记录管理", "sublabel": "VectorStoreIndexWrapper", "pos": [320, 440], "size": [190, 56] }
+  ],
+  "connections": [
+    { "id": "c-ret", "from": "caller", "to": "retrievers", "label": "get_relevant", "variant": "emphasis" },
+    { "id": "ret-vs", "from": "retrievers", "to": "vsshim", "label": "检索" },
+    { "id": "vs-comm", "from": "vsshim", "to": "community", "label": "转发", "variant": "dashed" },
+    { "id": "comm-db", "from": "community", "to": "vdb", "label": "相似度搜索", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
+    { "id": "sto-ext", "from": "store", "to": "extstore", "label": "mset/mget", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "组合检索器", "items": [
+      "Ensemble 多路融合 / MultiQuery 查询扩展",
+      "MultiVector 子块召回父文档回溯",
+      "ContextualCompression 结果压缩"
+    ]},
+    { "dot": "amber", "title": "转发与存储", "items": [
+      "向量库实现已迁 community（66 桩）",
+      "ByteStore 多后端 + SQL 记录管理器",
+      "基类在 langchain-core"
+    ]}
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "init_chat_model 调用链时序",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 720]
+  },
+  "participants": [
+    { "id": "caller", "type": "external", "label": "调用方" },
+    { "id": "factory", "type": "backend", "label": "模型工厂" },
+    { "id": "parse", "type": "backend", "label": "解析模型串" },
+    { "id": "creator", "type": "backend", "label": "取构造器" },
+    { "id": "partner", "type": "external", "label": "partner 包" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "caller", "to": "factory", "y": 160, "label": "init_chat_model(\"openai:gpt-4o\")", "variant": "emphasis" },
+    { "id": "m2", "from": "factory", "to": "parse", "y": 210, "label": "解析 model 串", "variant": "default" },
+    { "id": "m3", "from": "parse", "to": "factory", "y": 260, "label": "provider=openai", "variant": "return" },
+    { "id": "m4", "from": "factory", "to": "creator", "y": 310, "label": "按 provider 取构造器", "variant": "default" },
+    { "id": "m5", "from": "creator", "to": "partner", "y": 360, "label": "惰性 import 模型类", "variant": "default" },
+    { "id": "m6", "from": "partner", "to": "creator", "y": 410, "label": "返回 ChatOpenAI 构造器", "variant": "return" },
+    { "id": "m7", "from": "creator", "to": "factory", "y": 460, "label": "返回构造函数", "variant": "return" },
+    { "id": "m8", "from": "factory", "to": "partner", "y": 515, "label": "ChatOpenAI(model=..., **kw)", "variant": "emphasis" },
+    { "id": "m9", "from": "partner", "to": "factory", "y": 565, "label": "模型实例", "variant": "return" },
+    { "id": "m10", "from": "factory", "to": "caller", "y": 615, "label": "BaseChatModel 实例", "variant": "return" }
+  ]
+}

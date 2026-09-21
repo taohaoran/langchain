@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "向量存储集成架构（Qdrant + Chroma）",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1280, 760]
+  },
+  "components": [
+    { "id": "user", "type": "frontend", "label": "检索链 / RAG", "sublabel": "Retriever", "pos": [40, 320], "size": [170, 70] },
+    { "id": "vs-abc", "type": "backend", "label": "VectorStore 抽象基类", "sublabel": "langchain_core", "pos": [310, 320], "size": [220, 70] },
+    { "id": "qdrant", "type": "backend", "label": "QdrantVectorStore", "sublabel": "qdrant.py:36", "pos": [630, 160], "size": [230, 80], "tag": "dense/sparse/hybrid" },
+    { "id": "chroma", "type": "backend", "label": "Chroma", "sublabel": "vectorstores.py:155", "pos": [630, 420], "size": [230, 70], "tag": "图像/混合检索" },
+    { "id": "emb", "type": "backend", "label": "Embeddings", "sublabel": "用户注入", "pos": [310, 480], "size": [220, 60] },
+    { "id": "qdrant-sdk", "type": "cloud", "label": "qdrant-client", "sublabel": "依赖项", "pos": [960, 160], "size": [200, 65] },
+    { "id": "qdrant-db", "type": "database", "label": "Qdrant 服务端", "sublabel": "向量数据库", "pos": [960, 250], "size": [200, 65], "tag": "外部服务" },
+    { "id": "chroma-sdk", "type": "cloud", "label": "chromadb", "sublabel": "依赖项", "pos": [960, 400], "size": [200, 65] },
+    { "id": "chroma-db", "type": "database", "label": "Chroma 存储", "sublabel": "嵌入式/客户端", "pos": [960, 490], "size": [200, 65], "tag": "外部服务" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core 契约", "wraps": ["vs-abc", "emb"] },
+    { "kind": "region", "label": "partners 适配层（本仓库）", "wraps": ["qdrant", "chroma"] },
+    { "kind": "security-group", "label": "外部 SDK 与服务", "wraps": ["qdrant-sdk", "qdrant-db", "chroma-sdk", "chroma-db"] }
+  ],
+  "connections": [
+    { "id": "u-vs", "from": "user", "to": "vs-abc", "label": "依赖标准接口", "variant": "emphasis" },
+    { "id": "vs-qd", "from": "vs-abc", "to": "qdrant", "label": "继承 VectorStore", "labelDy": 10 },
+    { "id": "vs-chr", "from": "vs-abc", "to": "chroma", "label": "继承 VectorStore", "labelDy": 41 },
+    { "id": "emb-qd", "from": "emb", "to": "qdrant", "label": "embed_documents", "variant": "dashed" },
+    { "id": "emb-chr", "from": "emb", "to": "chroma", "label": "embed_documents", "variant": "dashed" },
+    { "id": "qd-sdk", "from": "qdrant", "to": "qdrant-sdk", "label": "upsert / query" },
+    { "id": "chr-sdk", "from": "chroma", "to": "chroma-sdk", "label": "add / query" },
+    { "id": "qd-db", "from": "qdrant-sdk", "to": "qdrant-db", "label": "HTTPS/gRPC", "variant": "emphasis", "labelDy": 24 },
+    { "id": "chr-db", "from": "chroma-sdk", "to": "chroma-db", "label": "本地/HTTP", "variant": "emphasis", "labelDy": 24 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "标准接口", "items": [
+      "add_texts / similarity_search",
+      "similarity_search_with_score",
+      "from_texts / from_documents"
+    ]},
+    { "dot": "cyan", "title": "Qdrant 特色", "items": [
+      "RetrievalMode: Dense/Sparse/Hybrid",
+      "命名向量与集合配置校验",
+      "batch_size=64 分批 upsert"
+    ]},
+    { "dot": "amber", "title": "Chroma 特色", "items": [
+      "图像检索与 hybrid_search",
+      "自动 UUID 生成",
+      "fork / reset 集合管理"
+    ]}
+  ]
+}

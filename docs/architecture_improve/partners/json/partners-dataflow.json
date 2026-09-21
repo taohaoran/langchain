@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "partners 域请求消息变换数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [
+      1080,
+      420
+    ]
+  },
+  "stages": [
+    {
+      "label": "输入"
+    },
+    {
+      "label": "适配层转换"
+    },
+    {
+      "label": "SDK 出栈"
+    },
+    {
+      "label": "第三方服务端"
+    },
+    {
+      "label": "回传输出"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "n1",
+      "type": "frontend",
+      "label": "BaseMessage 列表",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "n2",
+      "type": "backend",
+      "label": "消息格式双向转换",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "n3",
+      "type": "backend",
+      "label": "构造请求并发送",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "n4",
+      "type": "database",
+      "label": "第三方 API 服务端",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "n5",
+      "type": "backend",
+      "label": "ChatResult",
+      "stage": 4,
+      "row": 0
+    }
+  ],
+  "flows": [
+    {
+      "from": "n1",
+      "to": "n2",
+      "label": "消息对象",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "n2",
+      "to": "n3",
+      "label": "API 请求体",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "n3",
+      "to": "n4",
+      "label": "HTTPS 载荷",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "n4",
+      "to": "n5",
+      "label": "原生响应",
+      "variant": "emphasis",
+      "route": "straight"
+    }
+  ]
+}

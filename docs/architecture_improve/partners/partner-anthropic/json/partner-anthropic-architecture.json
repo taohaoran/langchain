@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Anthropic 集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1240, 460] },
+  "components": [
+    { "id": "app", "type": "external", "label": "用户应用 / Agent", "pos": [40, 210], "size": [160, 60] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "BaseChatModel / AgentMiddleware", "pos": [300, 195], "size": [170, 90] },
+    { "id": "adapter", "type": "backend", "label": "ChatAnthropic 适配层", "sublabel": "_format_messages · 工具转换", "pos": [550, 115], "size": [190, 95] },
+    { "id": "mw", "type": "backend", "label": "中间件族", "sublabel": "Bash / 文件编辑 / 缓存", "pos": [550, 285], "size": [190, 75] },
+    { "id": "sdk", "type": "external", "label": "anthropic SDK", "pos": [820, 200], "size": [140, 70] },
+    { "id": "api", "type": "external", "label": "Anthropic API", "sublabel": "messages / beta", "pos": [1030, 165], "size": [160, 80] },
+    { "id": "fs", "type": "external", "label": "进程文件系统 / Shell", "pos": [1030, 300], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain-anthropic 本仓库适配层", "wraps": ["adapter", "mw"] },
+    { "kind": "region", "label": "外部依赖与服务（不在本仓库源码内）", "wraps": ["sdk", "api", "fs"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "app", "to": "core", "label": "invoke", "variant": "emphasis" },
+    { "id": "c2", "from": "core", "to": "adapter", "label": "_generate", "variant": "emphasis" },
+    { "id": "c3", "from": "mw", "to": "adapter", "label": "钩子装配", "variant": "default" },
+    { "id": "c4", "from": "adapter", "to": "sdk", "label": "create", "variant": "emphasis" },
+    { "id": "c5", "from": "sdk", "to": "api", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "c6", "from": "mw", "to": "fs", "label": "执行", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["system 为顶层参数，不在 messages 内", "content block 数组模型", "连续同角色消息需合并"] }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "标准测试套件架构",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 520]
+  },
+  "components": [
+    { "id": "guard", "type": "security", "label": "BaseStandardTests", "sublabel": "防覆盖守卫", "pos": [40, 220], "size": [180, 70] },
+    { "id": "chat", "type": "backend", "label": "ChatModel 标准测试", "sublabel": "chat_models.py", "pos": [320, 100], "size": [190, 60] },
+    { "id": "emb", "type": "backend", "label": "嵌入标准测试", "sublabel": "embeddings", "pos": [320, 200], "size": [190, 60] },
+    { "id": "vs", "type": "backend", "label": "向量库/检索", "sublabel": "vectorstores", "pos": [320, 300], "size": [190, 60] },
+    { "id": "tool", "type": "backend", "label": "工具/缓存/存储", "sublabel": "tools/cache", "pos": [320, 400], "size": [190, 60] },
+    { "id": "partner", "type": "external", "label": "partner 包", "sublabel": "实现两属性", "pos": [640, 220], "size": [170, 70] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库标准测试套件", "wraps": ["chat", "emb", "vs", "tool"] }
+  ],
+  "connections": [
+    { "id": "g-chat", "from": "guard", "to": "chat", "variant": "default" },
+    { "id": "g-emb", "from": "guard", "to": "emb", "variant": "default" },
+    { "id": "g-vs", "from": "guard", "to": "vs", "variant": "default" },
+    { "id": "g-tool", "from": "guard", "to": "tool", "variant": "default" },
+    { "id": "chat-partner", "from": "chat", "to": "partner", "variant": "emphasis", "label": "继承" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "接入契约", "items": ["实现 chat_model_class 与 chat_model_params", "has_tool_calling 等特性开关"] },
+    { "dot": "amber", "title": "守卫", "items": ["禁止删除标准用例", "覆盖须 xfail 且必填 reason"] }
+  ]
+}

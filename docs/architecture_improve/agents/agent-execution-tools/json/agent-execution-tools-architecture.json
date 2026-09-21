@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "工具执行与子代理提升架构",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 560]
+  },
+  "components": [
+    { "id": "factory", "type": "backend", "label": "create_agent 工厂", "sublabel": "装配", "pos": [40, 240], "size": [160, 64] },
+    { "id": "shim", "type": "security", "label": "工具符号垫片", "sublabel": "tools/ 再导出", "pos": [290, 120], "size": [180, 60] },
+    { "id": "sub", "type": "security", "label": "SubagentTransformer", "sublabel": "子代理流提升", "pos": [290, 360], "size": [180, 60] },
+    { "id": "lg", "type": "cloud", "label": "langgraph 运行时", "sublabel": "ToolNode/子图调度", "pos": [580, 240], "size": [190, 70], "tag": "外部" },
+    { "id": "core", "type": "database", "label": "langchain-core", "sublabel": "BaseTool", "pos": [580, 60], "size": [170, 60], "tag": "外部" },
+    { "id": "stream", "type": "messagebus", "label": "run.subagents", "sublabel": "子代理流句柄", "pos": [580, 440], "size": [180, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库源码内（垫片与变换器）", "wraps": ["shim", "sub"] }
+  ],
+  "connections": [
+    { "id": "f-shim", "from": "factory", "to": "shim", "variant": "default" },
+    { "id": "f-sub", "from": "factory", "to": "sub", "variant": "default" },
+    { "id": "shim-core", "from": "shim", "to": "core", "variant": "default" },
+    { "id": "shim-lg", "from": "shim", "to": "lg", "variant": "dashed" },
+    { "id": "sub-lg", "from": "sub", "to": "lg", "variant": "default" },
+    { "id": "sub-stream", "from": "sub", "to": "stream", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "垫片职责", "items": ["聚合 langchain-core 与 langgraph 工具符号", "InjectedState/InjectedStore 注入标记"] },
+    { "dot": "cyan", "title": "子代理提升", "items": ["识别带 lc_agent_name 的嵌套子图", "转发子作用域事件到 run.subagents"] }
+  ]
+}

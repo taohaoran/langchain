@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "对象序列化往返数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 460]
+  },
+  "stages": [
+    { "label": "对象图" },
+    { "label": "导出" },
+    { "label": "安全校验" },
+    { "label": "实例化" }
+  ],
+  "nodes": [
+    { "id": "obj", "type": "backend", "label": "Serializable", "sublabel": "serializable.py:106", "stage": 0, "row": 1 },
+    { "id": "tojson", "type": "backend", "label": "to_json", "sublabel": "dump/dumpd", "stage": 1, "row": 1 },
+    { "id": "sc", "type": "external", "label": "Serialized", "sublabel": "JSON dict", "stage": 1, "row": 0 },
+    { "id": "load", "type": "backend", "label": "load", "sublabel": "类路径白名单", "stage": 2, "row": 1 },
+    { "id": "newobj", "type": "backend", "label": "新实例", "sublabel": "default_init", "stage": 3, "row": 1 }
+  ],
+  "flows": [
+    { "from": "obj", "to": "tojson", "label": "lc_id/lc_secrets", "variant": "emphasis", "route": "straight" },
+    { "from": "tojson", "to": "sc", "label": "序列化", "variant": "emphasis", "route": "straight" },
+    { "from": "sc", "to": "load", "label": "id/kwargs", "variant": "emphasis", "route": "straight" },
+    { "from": "load", "to": "newobj", "label": "实例化", "variant": "emphasis", "route": "straight" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "to_json 导出类路径与 kwargs",
+      "load 校验类路径白名单防 RCE",
+      "secrets 替换为 SerializedSecret"
+    ] }
+  ]
+}

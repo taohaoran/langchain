@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Anthropic Claude 集成架构（langchain-anthropic）",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1280, 720]
+  },
+  "components": [
+    { "id": "user", "type": "frontend", "label": "用户应用 / Agent", "sublabel": "LangGraph 链", "pos": [40, 300], "size": [180, 70] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象", "sublabel": "BaseChatModel / AgentMiddleware", "pos": [320, 300], "size": [240, 70] },
+    { "id": "chat", "type": "backend", "label": "ChatAnthropic", "sublabel": "chat_models.py:1058", "pos": [640, 160], "size": [230, 80], "tag": "消息格式化核心" },
+    { "id": "msg", "type": "backend", "label": "消息/块格式化", "sublabel": "_format_messages · _merge_messages", "pos": [640, 280], "size": [230, 60] },
+    { "id": "mw", "type": "backend", "label": "中间件族", "sublabel": "文件工具 · Bash · 缓存", "pos": [640, 380], "size": [230, 60] },
+    { "id": "llm", "type": "backend", "label": "AnthropicLLM (遗留)", "sublabel": "llms.py", "pos": [640, 470], "size": [230, 55] },
+    { "id": "sdk", "type": "cloud", "label": "anthropic Python SDK", "sublabel": "依赖项", "pos": [980, 280], "size": [200, 70], "tag": "不在本仓库源码内" },
+    { "id": "api", "type": "external", "label": "Anthropic Claude API", "sublabel": "messages · beta · overloaded", "pos": [980, 420], "size": [200, 90], "tag": "外部服务" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core 契约", "wraps": ["core"] },
+    { "kind": "region", "label": "langchain-anthropic 适配层（本仓库）", "wraps": ["chat", "msg", "mw", "llm"] },
+    { "kind": "security-group", "label": "外部依赖与服务", "wraps": ["sdk", "api"] }
+  ],
+  "connections": [
+    { "id": "u-core", "from": "user", "to": "core", "label": "依赖抽象", "variant": "emphasis" },
+    { "id": "core-chat", "from": "core", "to": "chat", "label": "继承 BaseChatModel", "labelDy": 10 },
+    { "id": "chat-msg", "from": "chat", "to": "msg", "label": "调用格式化", "labelDy": 24 },
+    { "id": "core-mw", "from": "core", "to": "mw", "label": "AgentMiddleware" },
+    { "id": "core-llm", "from": "core", "to": "llm", "label": "继承 LLM" },
+    { "id": "chat-sdk", "from": "chat", "to": "sdk", "label": "messages.create" },
+    { "id": "mw-sdk", "from": "mw", "to": "sdk", "label": "cache_control", "variant": "dashed" },
+    { "id": "llm-sdk", "from": "llm", "to": "sdk", "label": "completion", "variant": "dashed" },
+    { "id": "sdk-api", "from": "sdk", "to": "api", "label": "HTTPS", "variant": "emphasis", "labelDy": 24 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "Anthropic 特有适配", "items": [
+      "system 为独立顶层参数",
+      "user/assistant 严格交替（_merge_messages）",
+      "content block 数组模型"
+    ]},
+    { "dot": "cyan", "title": "Beta 与推理", "items": [
+      "betas 路由 beta.messages.create",
+      "thinking 推理模式",
+      "AnthropicOverloadedError"
+    ]},
+    { "dot": "amber", "title": "中间件族", "items": [
+      "文件编辑/记忆工具（State/Filesystem）",
+      "Bash 工具",
+      "Prompt 缓存自动断点"
+    ]}
+  ]
+}

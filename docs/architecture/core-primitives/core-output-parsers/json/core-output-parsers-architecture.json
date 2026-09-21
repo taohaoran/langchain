@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "输出解析器层级与解析管道",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 640]
+  },
+  "components": [
+    { "id": "out", "type": "external", "label": "模型输出", "sublabel": "AIMessage/Generation", "pos": [40, 280], "size": [160, 60] },
+    { "id": "base", "type": "backend", "label": "BaseOutputParser", "sublabel": "base.py:140", "pos": [300, 275], "size": [170, 70], "tag": "抽象基类" },
+    { "id": "pydantic", "type": "backend", "label": "PydanticOutputParser", "sublabel": "pydantic.py:19", "pos": [280, 100], "size": [180, 56] },
+    { "id": "json", "type": "backend", "label": "JsonOutputParser", "sublabel": "json.py:31", "pos": [560, 100], "size": [160, 56] },
+    { "id": "list", "type": "backend", "label": "ListOutputParser", "sublabel": "list.py:43", "pos": [560, 275], "size": [160, 56] },
+    { "id": "xml", "type": "backend", "label": "XMLOutputParser", "sublabel": "xml.py", "pos": [560, 450], "size": [160, 56] },
+    { "id": "result", "type": "cloud", "label": "结构化对象", "sublabel": "dict/list/BaseModel", "pos": [860, 275], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core.output_parsers", "wraps": ["base", "pydantic", "json", "list", "xml"] }
+  ],
+  "connections": [
+    { "id": "o-b", "from": "out", "to": "base", "label": "invoke", "variant": "emphasis" },
+    { "id": "b-p", "from": "base", "to": "pydantic", "label": "继承", "fromSide": "top", "toSide": "bottom" },
+    { "id": "b-j", "from": "base", "to": "json", "label": "继承", "fromSide": "top", "toSide": "bottom" },
+    { "id": "b-l", "from": "base", "to": "list", "label": "继承" },
+    { "id": "b-x", "from": "base", "to": "xml", "label": "继承", "fromSide": "bottom", "toSide": "top" },
+    { "id": "l-r", "from": "list", "to": "result", "label": "parse", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "BaseOutputParser 是 Runnable，可 | 进链",
+      "get_format_instructions 自描述喂给 prompt",
+      "流式增量解析：_diff 计算差量",
+      "Pydantic 解析含 schema 校验"
+    ] }
+  ]
+}

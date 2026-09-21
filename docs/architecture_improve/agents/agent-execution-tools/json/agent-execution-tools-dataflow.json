@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "子代理流提升数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1200, 500]
+  },
+  "stages": [
+    { "label": "运行事件源" },
+    { "label": "拦截" },
+    { "label": "识别" },
+    { "label": "建 mux" },
+    { "label": "句柄输出" }
+  ],
+  "nodes": [
+    { "id": "events", "type": "external", "label": "langgraph 流事件", "stage": 0, "row": 0 },
+    { "id": "on_started", "type": "backend", "label": "_on_started 拦截", "stage": 1, "row": 0 },
+    { "id": "detect", "type": "backend", "label": "识别 lc_agent_name", "stage": 2, "row": 0 },
+    { "id": "mux", "type": "backend", "label": "首次建子 mux", "stage": 3, "row": 0 },
+    { "id": "handle", "type": "database", "label": "run.subagents 句柄", "stage": 4, "row": 0 }
+  ],
+  "flows": [
+    { "from": "events", "to": "on_started", "label": "任务启动", "variant": "emphasis", "route": "straight" },
+    { "from": "on_started", "to": "detect", "label": "检查命名空间", "variant": "default", "route": "straight" },
+    { "from": "detect", "to": "mux", "label": "首次命中", "variant": "default", "route": "straight" },
+    { "from": "mux", "to": "handle", "label": "发类型化句柄", "variant": "emphasis", "route": "straight" }
+  ]
+}

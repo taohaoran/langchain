@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "模型提供商集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1240, 460] },
+  "components": [
+    { "id": "app", "type": "external", "label": "用户应用", "pos": [40, 200], "size": [150, 60] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "BaseChatModel / Embeddings", "pos": [280, 185], "size": [170, 90] },
+    { "id": "direct", "type": "backend", "label": "自实现转换", "sublabel": "groq/mistralai/ollama/openrouter", "pos": [530, 90], "size": [190, 75] },
+    { "id": "openaic", "type": "backend", "label": "复用 OpenAI 适配层", "sublabel": "deepseek / xai", "pos": [530, 190], "size": [190, 75] },
+    { "id": "local", "type": "backend", "label": "本地推理", "sublabel": "ollama / huggingface pipeline", "pos": [530, 290], "size": [190, 75] },
+    { "id": "sdk", "type": "external", "label": "各提供商 SDK", "sublabel": "groq/mistralai/ollama 等", "pos": [800, 190], "size": [150, 80] },
+    { "id": "api", "type": "external", "label": "云端 API / 本地服务", "pos": [1020, 190], "size": [160, 70] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库三种继承模式", "wraps": ["direct", "openaic", "local"] },
+    { "kind": "region", "label": "外部依赖与服务（不在本仓库源码内）", "wraps": ["sdk", "api"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "app", "to": "core", "label": "invoke", "variant": "emphasis" },
+    { "id": "c2", "from": "core", "to": "direct", "label": "_generate", "variant": "emphasis" },
+    { "id": "c3", "from": "core", "to": "openaic", "label": "继承复用", "variant": "default" },
+    { "id": "c4", "from": "core", "to": "local", "label": "本地运行", "variant": "default" },
+    { "id": "c5", "from": "direct", "to": "sdk", "label": "调用", "variant": "default" },
+    { "id": "c6", "from": "openaic", "to": "sdk", "label": "复用", "variant": "default" },
+    { "id": "c7", "from": "local", "to": "api", "label": "进程内/HTTP", "variant": "default" },
+    { "id": "c8", "from": "sdk", "to": "api", "label": "HTTPS", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "三种继承模式", "items": ["自实现 BaseChatModel 转换", "继承 BaseChatOpenAI 复用", "本地推理不调云端"] }
+  ]
+}

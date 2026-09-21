@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "Qdrant 写入数据流",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1200, 620]
+  },
+  "stages": [
+    { "label": "输入" },
+    { "label": "嵌入" },
+    { "label": "分批与构建" },
+    { "label": "SDK 调用" },
+    { "label": "数据库" }
+  ],
+  "nodes": [
+    { "id": "texts", "type": "frontend", "label": "texts", "sublabel": "list[str]", "stage": 0, "row": 0 },
+    { "id": "metadata", "type": "frontend", "label": "metadatas", "sublabel": "list[dict]", "stage": 0, "row": 1 },
+    { "id": "emb", "type": "backend", "label": "Embeddings", "sublabel": "embed_documents", "stage": 1, "row": 0 },
+    { "id": "batch", "type": "backend", "label": "_generate_batches", "sublabel": "batch_size=64", "stage": 2, "row": 1 },
+    { "id": "payload", "type": "backend", "label": "_build_payloads", "sublabel": "文本+元数据", "stage": 2, "row": 0 },
+    { "id": "upsert", "type": "cloud", "label": "qdrant-client", "sublabel": "client.upsert", "stage": 3, "row": 0 },
+    { "id": "qdrant", "type": "database", "label": "Qdrant 服务端", "sublabel": "外部服务", "stage": 4, "row": 0 }
+  ],
+  "flows": [
+    { "from": "texts", "to": "emb", "label": "texts", "classification": "写入路径", "variant": "emphasis" },
+    { "from": "metadata", "to": "batch", "label": "metadatas" },
+    { "from": "emb", "to": "upsert", "label": "vectors", "route": "bottom-channel" },
+    { "from": "payload", "to": "upsert", "label": "payload" },
+    { "from": "batch", "to": "payload", "label": "batched" },
+    { "from": "upsert", "to": "qdrant", "label": "upsert", "classification": "HTTPS/gRPC", "variant": "emphasis" }
+  ]
+}

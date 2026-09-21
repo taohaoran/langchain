@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "文档加载与转换管道",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 480]
+  },
+  "components": [
+    { "id": "src", "type": "external", "label": "数据源", "sublabel": "PDF/网页/DB", "pos": [40, 270], "size": [150, 60] },
+    { "id": "blob", "type": "database", "label": "Blob", "sublabel": "base.py:59", "pos": [300, 270], "size": [140, 60] },
+    { "id": "loader", "type": "backend", "label": "BaseLoader", "sublabel": "lazy_load", "pos": [560, 270], "size": [150, 60] },
+    { "id": "doc", "type": "backend", "label": "Document", "sublabel": "page_content+metadata", "pos": [820, 270], "size": [160, 60] },
+    { "id": "trans", "type": "backend", "label": "Transformer", "sublabel": "文本切分", "pos": [560, 100], "size": [160, 60] },
+    { "id": "vstore", "type": "cloud", "label": "VectorStore", "sublabel": "core-vectorstores", "pos": [820, 100], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core.documents", "wraps": ["blob", "loader", "doc", "trans"] }
+  ],
+  "connections": [
+    { "id": "s-b", "from": "src", "to": "blob", "label": "yield_blobs", "variant": "emphasis" },
+    { "id": "b-l", "from": "blob", "to": "loader", "label": "parse" },
+    { "id": "l-d", "from": "loader", "to": "doc", "label": "lazy_load" },
+    { "id": "d-t", "from": "doc", "to": "trans", "label": "transform", "fromSide": "left", "toSide": "right" },
+    { "id": "t-v", "from": "trans", "to": "vstore", "label": "切分后入库", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "Document = page_content + metadata",
+      "lazy_load/lazy_parse 流式大文件",
+      "BaseLoader 契约在消费方",
+      "ChatMessageHistory 供多轮对话"
+    ] }
+  ]
+}

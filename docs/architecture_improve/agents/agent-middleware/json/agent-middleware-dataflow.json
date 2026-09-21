@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "wrap_model_call 洋葱链数据流",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 560]
+  },
+  "stages": [
+    { "label": "外层中间件" },
+    { "label": "重试/回退层" },
+    { "label": "内层执行" },
+    { "label": "模型 API" }
+  ],
+  "nodes": [
+    { "id": "outer", "type": "security", "label": "外层中间件", "sublabel": "前置逻辑", "stage": 0, "row": 0 },
+    { "id": "retry", "type": "backend", "label": "ModelRetry", "sublabel": "退避循环", "stage": 1, "row": 0 },
+    { "id": "exec", "type": "backend", "label": "执行模型", "sublabel": "_execute_model", "stage": 2, "row": 0 },
+    { "id": "llm", "type": "external", "label": "聊天模型", "sublabel": "invoke", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "outer", "to": "retry", "label": "ModelRequest", "classification": "调 handler", "variant": "emphasis", "route": "straight" },
+    { "from": "retry", "to": "exec", "label": "重试 N 次", "classification": "指数退避", "variant": "emphasis", "route": "straight" },
+    { "from": "exec", "to": "llm", "label": "请求", "classification": "模型输入", "variant": "default", "route": "straight" },
+    { "from": "llm", "to": "exec", "label": "响应", "classification": "返回", "variant": "dashed", "route": "straight", "labelDy": 26 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "请求向外→内", "items": ["外层先处理，逐层调 handler", "重试层失败时退避后再次调内层"] },
+    { "dot": "rose", "title": "响应向内→外", "items": ["ModelResponse 原路返回", "失败经 on_failure 兜底为 AIMessage"] }
+  ]
+}

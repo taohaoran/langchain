@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "中间件洋葱链一轮交互时序",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 720]
+  },
+  "participants": [
+    { "id": "node", "type": "backend", "label": "model 节点" },
+    { "id": "outer", "type": "backend", "label": "外层中间件" },
+    { "id": "inner", "type": "backend", "label": "内层中间件" },
+    { "id": "model", "type": "external", "label": "聊天模型" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "node", "to": "outer", "y": 160, "label": "ModelRequest 进入洋葱链", "variant": "emphasis" },
+    { "id": "m2", "from": "outer", "to": "inner", "y": 230, "label": "handler(request) 入内层", "variant": "default" },
+    { "id": "m3", "from": "inner", "to": "model", "y": 300, "label": "请求模型", "variant": "default" },
+    { "id": "m4", "from": "model", "to": "inner", "y": 380, "label": "ModelResponse", "variant": "return" },
+    { "id": "m5", "from": "inner", "to": "outer", "y": 450, "label": "handler 返回出内层", "variant": "return" },
+    { "id": "m6", "from": "outer", "to": "node", "y": 520, "label": "逐层返回 ModelResponse", "variant": "return" }
+  ]
+}

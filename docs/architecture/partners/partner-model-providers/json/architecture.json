@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "模型提供商集成架构（10 家归并）",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1280, 760]
+  },
+  "components": [
+    { "id": "user", "type": "frontend", "label": "用户应用", "sublabel": "Runnable / Agent", "pos": [40, 330], "size": [160, 65] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象", "sublabel": "BaseChatModel / Embeddings", "pos": [300, 330], "size": [220, 65] },
+    { "id": "mode1", "type": "backend", "label": "模式一：直接继承 BaseChatModel", "sublabel": "ollama · groq · mistralai", "pos": [620, 140], "size": [260, 80], "tag": "自实现消息转换" },
+    { "id": "mode2", "type": "backend", "label": "模式二：继承 BaseChatOpenAI", "sublabel": "deepseek · openrouter · xai", "pos": [620, 280], "size": [260, 70], "tag": "复用 OpenAI 适配层" },
+    { "id": "mode3", "type": "backend", "label": "模式三：本地/特殊", "sublabel": "huggingface · perplexity · fireworks · nomic", "pos": [620, 400], "size": [260, 80] },
+    { "id": "cloud", "type": "cloud", "label": "各提供商 SDK", "sublabel": "groq · mistralai · openai 等", "pos": [970, 200], "size": [200, 70], "tag": "依赖项" },
+    { "id": "local", "type": "cloud", "label": "ollama SDK / transformers", "sublabel": "本地库", "pos": [970, 380], "size": [200, 70], "tag": "依赖项" },
+    { "id": "cloud-api", "type": "external", "label": "云端 API 服务端", "sublabel": "Groq · DeepSeek · Mistral 等", "pos": [970, 300], "size": [200, 60], "tag": "外部服务" },
+    { "id": "local-svc", "type": "external", "label": "本地 Ollama / 本地模型", "sublabel": "外部进程", "pos": [970, 490], "size": [200, 60], "tag": "外部服务" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core 契约", "wraps": ["core"] },
+    { "kind": "region", "label": "10 家 provider 适配层（本仓库）", "wraps": ["mode1", "mode2", "mode3"] },
+    { "kind": "security-group", "label": "外部 SDK 与服务", "wraps": ["cloud", "local", "cloud-api", "local-svc"] }
+  ],
+  "connections": [
+    { "id": "u-core", "from": "user", "to": "core", "label": "依赖抽象", "variant": "emphasis" },
+    { "id": "core-m1", "from": "core", "to": "mode1", "label": "直接继承", "labelDy": 10 },
+    { "id": "core-m2", "from": "core", "to": "mode2", "label": "继承 BaseChatOpenAI" },
+    { "id": "core-m3", "from": "core", "to": "mode3", "label": "本地/特殊", "labelDy": 10 },
+    { "id": "m1-cloud", "from": "mode1", "to": "cloud", "label": "SDK 调用", "labelDy": 30 },
+    { "id": "m2-cloud", "from": "mode2", "to": "cloud", "label": "SDK 调用", "variant": "dashed", "labelDy": 30 },
+    { "id": "m3-local", "from": "mode3", "to": "local", "label": "本地/远端" },
+    { "id": "cloud-api", "from": "cloud", "to": "cloud-api", "label": "HTTPS", "variant": "emphasis", "labelDy": 24 },
+    { "id": "local-svc", "from": "local", "to": "local-svc", "label": "本地/HTTP", "variant": "emphasis", "labelDy": 24 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "三种继承模式", "items": [
+      "直接继承 BaseChatModel（自实现转换）",
+      "继承 BaseChatOpenAI（复用 OpenAI 适配）",
+      "本地推理（ollama/hf pipeline）"
+    ]},
+    { "dot": "cyan", "title": "代表深读", "items": [
+      "ollama：本地无 key，reasoning 模式",
+      "groq：自实现消息转换",
+      "deepseek：复用 BaseChatOpenAI"
+    ]},
+    { "dot": "amber", "title": "披露", "items": [
+      "10 家中深读 4 家代表",
+      "其余 6 家共性列表说明",
+      "未穷举每家逐行细节"
+    ]}
+  ]
+}

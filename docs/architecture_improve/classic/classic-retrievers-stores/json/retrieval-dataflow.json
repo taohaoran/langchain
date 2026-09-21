@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "检索数据流（retrievers-stores）",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1100, 560]
+  },
+  "stages": [
+    { "label": "查询" },
+    { "label": "检索组合" },
+    { "label": "向量库" },
+    { "label": "结果处理" }
+  ],
+  "nodes": [
+    { "id": "query", "type": "frontend", "label": "用户查询", "sublabel": "字符串", "stage": 0, "row": 0 },
+    { "id": "retriever", "type": "backend", "label": "组合检索器", "sublabel": "ensemble/multi", "stage": 1, "row": 0 },
+    { "id": "vsshim", "type": "backend", "label": "向量库 shim", "sublabel": "create_importer", "stage": 1, "row": 1 },
+    { "id": "community", "type": "external", "label": "community 实现", "sublabel": "转发", "stage": 2, "row": 0 },
+    { "id": "vdb", "type": "database", "label": "外部向量库", "sublabel": "chroma/faiss/pg", "stage": 2, "row": 1, "tag": "不在仓库内" },
+    { "id": "docs", "type": "messagebus", "label": "召回文档", "sublabel": "list[Document]", "stage": 3, "row": 0 },
+    { "id": "compress", "type": "backend", "label": "上下文压缩", "sublabel": "rerank/子块回溯", "stage": 3, "row": 1 }
+  ],
+  "flows": [
+    { "from": "query", "to": "retriever", "label": "检索请求", "variant": "emphasis" },
+    { "from": "retriever", "to": "vsshim", "label": "委托", "labelDy": 24 },
+    { "from": "vsshim", "to": "community", "label": "延迟转发" },
+    { "from": "community", "to": "vdb", "label": "相似度搜索", "variant": "emphasis", "route": "vertical-channel" },
+    { "from": "vdb", "to": "docs", "label": "命中文档", "route": "straight" },
+    { "from": "docs", "to": "compress", "label": "过滤重排", "labelDy": 24 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "数据流", "items": [
+      "查询经组合检索器下推向量库",
+      "相似度召回后进入压缩层",
+      "最终文档交回答链"
+    ]},
+    { "dot": "amber", "title": "转发", "items": [
+      "向量库实现已迁 community",
+      "实际相似度计算在外部库"
+    ]}
+  ]
+}

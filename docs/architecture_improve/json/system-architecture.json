@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "LangChain Monorepo 系统架构图",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1200, 860]
+  },
+  "components": [
+    { "id": "user-app", "type": "frontend", "label": "用户应用", "sublabel": "业务代码", "pos": [50, 300], "size": [120, 70] },
+    { "id": "v1-agents", "type": "backend", "label": "langchain v1", "sublabel": "代理编排层", "pos": [250, 160], "size": [150, 80], "tag": "活跃维护" },
+    { "id": "classic", "type": "backend", "label": "langchain-classic", "sublabel": "遗留兼容层", "pos": [250, 300], "size": [150, 80], "tag": "legacy" },
+    { "id": "core", "type": "backend", "label": "langchain-core", "sublabel": "核心抽象层", "pos": [490, 230], "size": [160, 90], "tag": "基础契约" },
+    { "id": "partners", "type": "cloud", "label": "partners 集成", "sublabel": "17 个第三方包", "pos": [740, 160], "size": [160, 80], "tag": "实现方" },
+    { "id": "text-splitters", "type": "backend", "label": "text-splitters", "sublabel": "文档分块", "pos": [740, 300], "size": [160, 60] },
+    { "id": "standard-tests", "type": "security", "label": "standard-tests", "sublabel": "共享测试套件", "pos": [740, 420], "size": [160, 60] },
+    { "id": "model-profiles", "type": "backend", "label": "model-profiles", "sublabel": "模型能力配置", "pos": [740, 540], "size": [160, 60] },
+    { "id": "ext-llm", "type": "external", "label": "外部 LLM API", "sublabel": "OpenAI/Anthropic", "pos": [990, 130], "size": [130, 60] },
+    { "id": "ext-vector", "type": "external", "label": "向量数据库", "sublabel": "Qdrant/Chroma", "pos": [990, 250], "size": [130, 60] },
+    { "id": "ext-mcp", "type": "external", "label": "MCP 服务器", "sublabel": "外部工具", "pos": [990, 370], "size": [130, 60] },
+    { "id": "ext-smith", "type": "external", "label": "LangSmith", "sublabel": "追踪/评估平台", "pos": [490, 540], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Monorepo 仓库内", "wraps": ["v1-agents", "classic", "core", "partners", "text-splitters", "standard-tests", "model-profiles"] }
+  ],
+  "connections": [
+    { "id": "user-v1", "from": "user-app", "to": "v1-agents", "label": "create_agent", "variant": "emphasis" },
+    { "id": "user-classic", "from": "user-app", "to": "classic", "label": "Chain/Agent", "variant": "dashed" },
+    { "id": "v1-core", "from": "v1-agents", "to": "core", "label": "继承抽象", "variant": "emphasis" },
+    { "id": "classic-core", "from": "classic", "to": "core", "label": "继承抽象", "variant": "dashed" },
+    { "id": "core-partners", "from": "core", "to": "partners", "label": "实现契约", "variant": "emphasis" },
+    { "id": "partners-llm", "from": "partners", "to": "ext-llm", "label": "HTTP API" },
+    { "id": "partners-vector", "from": "partners", "to": "ext-vector", "label": "客户端调用" },
+    { "id": "v1-mcp", "from": "v1-agents", "to": "ext-mcp", "label": "MCP 协议", "variant": "dashed" },
+    { "id": "core-splitters", "from": "core", "to": "text-splitters", "label": "文档分块", "variant": "dashed" },
+    { "id": "core-smith", "from": "core", "to": "ext-smith", "label": "回调追踪", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 30 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "架构范式", "items": ["能力缝 + 注册表 + 插件体系", "抽象基类定义在 core，实现在 partners", "依赖倒置：消费方定义接口"] },
+    { "dot": "cyan", "title": "包分层规模", "items": ["core：181 py / 7.0 万行", "v1：40 py / 1.6 万行", "classic：1321 py / 7.1 万行", "partners：160 py / 5.7 万行"] },
+    { "dot": "amber", "title": "外部边界", "items": ["LLM API、向量库服务端不在仓库内", "MCP 服务器、LangSmith 均为外部组件"] }
+  ]
+}

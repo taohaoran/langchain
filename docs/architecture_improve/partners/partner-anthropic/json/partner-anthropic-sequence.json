@@ -1,0 +1,106 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "ChatAnthropic 请求调用时序",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [
+      1080,
+      690
+    ]
+  },
+  "participants": [
+    {
+      "id": "app",
+      "type": "external",
+      "label": "用户应用"
+    },
+    {
+      "id": "framework",
+      "type": "backend",
+      "label": "框架层"
+    },
+    {
+      "id": "adapter",
+      "type": "backend",
+      "label": "适配层"
+    },
+    {
+      "id": "sdk",
+      "type": "external",
+      "label": "anthropic SDK"
+    },
+    {
+      "id": "api",
+      "type": "external",
+      "label": "Anthropic API"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "app",
+      "to": "framework",
+      "y": 160,
+      "label": "invoke([HumanMessage])",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "framework",
+      "to": "adapter",
+      "y": 222,
+      "label": "_generate",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "adapter",
+      "to": "sdk",
+      "y": 284,
+      "label": "messages.create(payload)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m4",
+      "from": "sdk",
+      "to": "api",
+      "y": 346,
+      "label": "HTTPS POST",
+      "variant": "default"
+    },
+    {
+      "id": "m5",
+      "from": "api",
+      "to": "sdk",
+      "y": 408,
+      "label": "content blocks",
+      "variant": "return"
+    },
+    {
+      "id": "m6",
+      "from": "sdk",
+      "to": "adapter",
+      "y": 470,
+      "label": "响应对象",
+      "variant": "return"
+    },
+    {
+      "id": "m7",
+      "from": "adapter",
+      "to": "framework",
+      "y": 532,
+      "label": "ChatResult",
+      "variant": "return"
+    },
+    {
+      "id": "m8",
+      "from": "framework",
+      "to": "app",
+      "y": 594,
+      "label": "AIMessage",
+      "variant": "return"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "请求期消息裁剪与限流数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1200, 500]
+  },
+  "stages": [
+    { "label": "消息源" },
+    { "label": "裁剪" },
+    { "label": "窗口上下文" },
+    { "label": "限流" },
+    { "label": "放行" }
+  ],
+  "nodes": [
+    { "id": "history", "type": "external", "label": "原始历史消息", "stage": 0, "row": 0 },
+    { "id": "trim", "type": "backend", "label": "trim_messages 裁剪", "stage": 1, "row": 0 },
+    { "id": "window", "type": "backend", "label": "窗口化上下文", "stage": 2, "row": 0 },
+    { "id": "ratelimit", "type": "backend", "label": "限流 acquire", "stage": 3, "row": 0 },
+    { "id": "model", "type": "database", "label": "放行模型调用", "stage": 4, "row": 0 }
+  ],
+  "flows": [
+    { "from": "history", "to": "trim", "label": "完整消息列表", "variant": "emphasis", "route": "straight" },
+    { "from": "trim", "to": "window", "label": "按 token/策略", "variant": "default", "route": "straight" },
+    { "from": "window", "to": "ratelimit", "label": "裁剪后消息", "variant": "default", "route": "straight" },
+    { "from": "ratelimit", "to": "model", "label": "取令牌后放行", "variant": "emphasis", "route": "straight" }
+  ]
+}

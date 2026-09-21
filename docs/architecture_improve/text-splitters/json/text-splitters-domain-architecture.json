@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "text-splitters 域在生态中的位置",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1280, 640]
+  },
+  "components": [
+    { "id": "docloader", "type": "external", "label": "文档加载器", "pos": [60, 290], "size": [150, 64] },
+    { "id": "base", "type": "backend", "label": "TextSplitter 基类", "pos": [300, 290], "size": [160, 64], "tag": "契约" },
+    { "id": "recursive", "type": "backend", "label": "递归/字符分块", "pos": [560, 160], "size": [160, 64] },
+    { "id": "token", "type": "backend", "label": "token 分块", "pos": [560, 320], "size": [160, 64] },
+    { "id": "marked", "type": "backend", "label": "标记语言分块", "pos": [560, 480], "size": [160, 64] },
+    { "id": "optdep", "type": "external", "label": "tiktoken/spaCy", "pos": [820, 320], "size": [150, 60] },
+    { "id": "vectorstore", "type": "external", "label": "向量库/嵌入", "pos": [1070, 290], "size": [150, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain-text-splitters", "wraps": ["base", "recursive", "token", "marked"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "docloader", "to": "base", "label": "文档流", "variant": "emphasis" },
+    { "id": "c2", "from": "base", "to": "recursive", "label": "派生", "variant": "default" },
+    { "id": "c3", "from": "base", "to": "token", "label": "派生", "variant": "default" },
+    { "id": "c4", "from": "base", "to": "marked", "label": "派生", "variant": "default" },
+    { "id": "c5", "from": "optdep", "to": "token", "label": "计长", "variant": "dashed" },
+    { "id": "c6", "from": "recursive", "to": "vectorstore", "label": "分块 Document", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["文档加载 → TextSplitter → 分块 → 向量库"] },
+    { "dot": "amber", "title": "外部依赖", "items": ["tiktoken/spaCy 等可选依赖不在本仓库源码内"] }
+  ]
+}

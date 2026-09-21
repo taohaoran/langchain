@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "classic 域总体架构（langchain_classic）",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1180, 560]
+  },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户代码", "sublabel": "旧路径调用", "pos": [40, 110], "size": [140, 56] },
+    { "id": "control", "type": "backend", "label": "控制流", "sublabel": "Chain / Agent", "pos": [330, 90], "size": [160, 56], "tag": "仍有实现" },
+    { "id": "shim", "type": "backend", "label": "兼容转发层", "sublabel": "llms/loaders/utils", "pos": [330, 250], "size": [180, 56] },
+    { "id": "infra", "type": "backend", "label": "记忆/回调/Hub", "sublabel": "memory/callbacks/hub", "pos": [330, 400], "size": [180, 56] },
+    { "id": "core", "type": "backend", "label": "langchain-core", "sublabel": "基类已下沉", "pos": [660, 90], "size": [170, 56], "tag": "同仓库另包" },
+    { "id": "community", "type": "external", "label": "langchain-community", "sublabel": "实现已迁出", "pos": [660, 250], "size": [180, 56] },
+    { "id": "partner", "type": "cloud", "label": "partner / 远端 API", "sublabel": "openai/anthropic…", "pos": [960, 90], "size": [170, 56], "tag": "外部" },
+    { "id": "service", "type": "cloud", "label": "Hub / 观测平台", "sublabel": "LangSmith/wandb", "pos": [960, 250], "size": [170, 56], "tag": "外部" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "classic 经典包内（本仓库源码）", "wraps": ["control", "shim", "infra"] }
+  ],
+  "connections": [
+    { "id": "u-c", "from": "user", "to": "control", "label": "invoke", "variant": "emphasis" },
+    { "id": "u-s", "from": "user", "to": "shim", "label": "import 厂商类", "variant": "dashed" },
+    { "id": "c-core", "from": "control", "to": "core", "label": "继承 Runnable" },
+    { "id": "c-infra", "from": "control", "to": "infra", "label": "记忆/回调", "variant": "dashed", "fromSide": "right", "toSide": "right", "via": [[560, 118], [560, 428]], "labelDy": 18 },
+    { "id": "s-comm", "from": "shim", "to": "community", "label": "create_importer 转发", "variant": "emphasis" },
+    { "id": "core-p", "from": "core", "to": "partner", "label": "基类→实现" },
+    { "id": "comm-p", "from": "community", "to": "partner", "label": "调用" },
+    { "id": "infra-svc", "from": "infra", "to": "service", "label": "上报/拉取", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "三层角色", "items": [
+      "控制流：Chain/Agent/Memory 仍有实现",
+      "转发层：大量 create_importer 桩",
+      "基类下沉 core、实现迁出 community"
+    ]},
+    { "dot": "amber", "title": "遗留定位", "items": [
+      "无新功能，引导迁 LCEL/langgraph",
+      "Hub 拉取为经典包特有机制"
+    ]}
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "LangChain 代理执行时序图",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1200, 880],
+    "column_fit": "spread"
+  },
+  "participants": [
+    { "id": "user", "type": "external", "label": "用户应用", "sublabel": "业务代码" },
+    { "id": "agent", "type": "backend", "label": "Agent", "sublabel": "create_agent" },
+    { "id": "middleware", "type": "backend", "label": "中间件链", "sublabel": "middleware" },
+    { "id": "model", "type": "cloud", "label": "ChatModel", "sublabel": "partner 实现" },
+    { "id": "tool", "type": "backend", "label": "工具执行", "sublabel": "BaseTool" },
+    { "id": "extapi", "type": "external", "label": "外部 API", "sublabel": "LLM/服务" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "agent", "y": 165, "label": "agent.ainvoke(input)", "variant": "emphasis" },
+    { "id": "m2", "from": "agent", "to": "middleware", "y": 205, "label": "before_model / before_tool" },
+    { "id": "m3", "from": "middleware", "to": "model", "y": 245, "label": "messages + tools", "variant": "emphasis" },
+    { "id": "m4", "from": "model", "to": "extapi", "y": 310, "label": "HTTP 请求（含 tool_choice）" },
+    { "id": "m5", "from": "extapi", "to": "model", "y": 360, "label": "响应（tool_calls 或文本）", "variant": "return" },
+    { "id": "m6", "from": "model", "to": "agent", "y": 410, "label": "AIMessage（含 tool_calls）", "variant": "return" },
+    { "id": "m7", "from": "agent", "to": "middleware", "y": 460, "label": "after_model（判断是否需工具）" },
+    { "id": "m8", "from": "middleware", "to": "tool", "y": 510, "label": "tool.invoke(args)", "variant": "emphasis" },
+    { "id": "m9", "from": "tool", "to": "extapi", "y": 555, "label": "执行工具逻辑" },
+    { "id": "m10", "from": "extapi", "to": "tool", "y": 595, "label": "工具结果", "variant": "return" },
+    { "id": "m11", "from": "tool", "to": "agent", "y": 625, "label": "ToolMessage", "variant": "return" },
+    { "id": "m12", "from": "agent", "to": "model", "y": 670, "label": "追加 ToolMessage 再次调用", "variant": "dashed" },
+    { "id": "m13", "from": "model", "to": "agent", "y": 715, "label": "最终 AIMessage", "variant": "return" },
+    { "id": "m14", "from": "agent", "to": "user", "y": 755, "label": "返回结果", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "agent", "from": 170, "to": 755, "type": "backend" },
+    { "participant": "middleware", "from": 210, "to": 510, "type": "backend" },
+    { "participant": "model", "from": 250, "to": 410, "type": "backend" }
+  ]
+}

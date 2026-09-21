@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "分块器体系架构",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 560]
+  },
+  "components": [
+    { "id": "base", "type": "security", "label": "TextSplitter 抽象基类", "sublabel": "base.py", "pos": [40, 240], "size": [180, 70] },
+    { "id": "rec", "type": "backend", "label": "RecursiveCharacter", "sublabel": "递归多级分隔", "pos": [330, 120], "size": [170, 60] },
+    { "id": "char", "type": "backend", "label": "Character", "sublabel": "单分隔符", "pos": [330, 220], "size": [170, 60] },
+    { "id": "token", "type": "backend", "label": "TokenText", "sublabel": "tiktoken", "pos": [330, 320], "size": [170, 60] },
+    { "id": "lang", "type": "backend", "label": "语言专用", "sublabel": "md/html/py/latex", "pos": [330, 420], "size": [170, 60] },
+    { "id": "opt", "type": "external", "label": "可选分词器", "sublabel": "spacy/nltk", "pos": [620, 240], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "分块器实现", "wraps": ["rec", "char", "token", "lang"] }
+  ],
+  "connections": [
+    { "id": "b-rec", "from": "base", "to": "rec", "variant": "default" },
+    { "id": "b-char", "from": "base", "to": "char", "variant": "default" },
+    { "id": "b-token", "from": "base", "to": "token", "variant": "default" },
+    { "id": "b-lang", "from": "base", "to": "lang", "variant": "default" },
+    { "id": "token-opt", "from": "token", "to": "opt", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "核心参数", "items": ["chunk_size=4000", "chunk_overlap=200", "length_function 可替换"] },
+    { "dot": "amber", "title": "合并算法", "items": ["_merge_splits 维护重叠", "超长块递归用更细分隔符"] }
+  ]
+}

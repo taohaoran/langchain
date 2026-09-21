@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "agents 域架构图",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1300, 720]
+  },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户代码", "pos": [60, 300], "size": [140, 64], "tag": "调用方" },
+    { "id": "factory", "type": "backend", "label": "create_agent 工厂", "pos": [280, 290], "size": [170, 80], "tag": "agent-factory" },
+    { "id": "mw", "type": "backend", "label": "中间件洋葱链", "pos": [540, 130], "size": [170, 72], "tag": "agent-middleware" },
+    { "id": "tools", "type": "backend", "label": "ToolNode 工具节点", "pos": [540, 450], "size": [170, 72], "tag": "execution-tools" },
+    { "id": "initmodel", "type": "backend", "label": "init_chat_model", "pos": [280, 470], "size": [160, 60], "tag": "chat-models" },
+    { "id": "langgraph", "type": "external", "label": "langgraph 运行时", "pos": [810, 290], "size": [160, 64], "tag": "状态图引擎" },
+    { "id": "partner", "type": "external", "label": "partner 模型包", "pos": [1070, 130], "size": [150, 60], "tag": "OpenAI/Anthropic" },
+    { "id": "mcpsrv", "type": "external", "label": "远端 MCP 服务器", "pos": [1070, 450], "size": [150, 60], "tag": "外部服务" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_v1 代理域", "wraps": ["factory", "mw", "tools", "initmodel"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "factory", "label": "create_agent", "variant": "emphasis" },
+    { "id": "c2", "from": "factory", "to": "mw", "label": "复合洋葱链", "variant": "default" },
+    { "id": "c3", "from": "factory", "to": "tools", "label": "建工具节点", "variant": "default" },
+    { "id": "c5", "from": "mw", "to": "langgraph", "label": "链入图", "variant": "default" },
+    { "id": "c6", "from": "tools", "to": "langgraph", "label": "链入图", "variant": "default" },
+    { "id": "c7", "from": "langgraph", "to": "partner", "label": "请求模型", "variant": "emphasis" },
+    { "id": "c8", "from": "langgraph", "to": "mcpsrv", "label": "call_tool", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["用户 → 工厂 → 中间件/工具 → langgraph → 模型/MCP"] },
+    { "dot": "cyan", "title": "外部依赖", "items": ["langgraph 运行时、partner 模型、远端 MCP 均不在本仓库源码内"] }
+  ]
+}

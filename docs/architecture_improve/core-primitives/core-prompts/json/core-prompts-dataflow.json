@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "提示词渲染数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 520]
+  },
+  "stages": [
+    { "label": "输入变量" },
+    { "label": "模板渲染" },
+    { "label": "PromptValue" },
+    { "label": "消息列表" },
+    { "label": "喂给模型" }
+  ],
+  "nodes": [
+    { "id": "vars", "type": "external", "label": "用户变量 dict", "stage": 0, "row": 0 },
+    { "id": "partial", "type": "external", "label": "partial 预绑定", "stage": 0, "row": 1 },
+    { "id": "fewshot", "type": "external", "label": "少样本示例", "stage": 0, "row": 2 },
+    { "id": "render", "type": "backend", "label": "模板渲染填充", "sublabel": "format_prompt", "stage": 1, "row": 1 },
+    { "id": "pval", "type": "backend", "label": "ChatPromptValue", "sublabel": "prompt_values.py:80", "stage": 2, "row": 1 },
+    { "id": "msgs", "type": "backend", "label": "list[BaseMessage]", "sublabel": "to_messages()", "stage": 3, "row": 1 },
+    { "id": "model", "type": "cloud", "label": "Chat Model", "stage": 4, "row": 1 }
+  ],
+  "flows": [
+    { "from": "vars", "to": "render", "label": "变量", "route": "straight" },
+    { "from": "partial", "to": "render", "label": "预绑定", "route": "straight" },
+    { "from": "fewshot", "to": "render", "label": "示例", "route": "straight" },
+    { "from": "render", "to": "pval", "label": "渲染", "variant": "emphasis", "route": "straight" },
+    { "from": "pval", "to": "msgs", "label": "to_messages", "variant": "emphasis", "route": "straight" },
+    { "from": "msgs", "to": "model", "label": "消息列表", "variant": "emphasis", "route": "straight" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "变量与 partial 合并后按模板填充",
+      "PromptValue 统一字符串/聊天/图像表示",
+      "to_messages 产出 list[BaseMessage] 喂模型"
+    ] }
+  ]
+}

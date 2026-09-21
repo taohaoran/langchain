@@ -1,0 +1,32 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "partner 接入标准测试流程",
+    "quality_profile": "showcase",
+    "locale": "zh-CN"
+  },
+  "lanes": [
+    { "id": "partner", "label": "partner 作者" },
+    { "id": "pytest", "label": "pytest 运行器" },
+    { "id": "guard", "label": "契约守卫", "variant": "exception" }
+  ],
+  "mainPath": ["inherit", "attrs", "flags", "collect", "guard", "run"],
+  "nodes": [
+    { "id": "inherit", "lane": "partner", "col": 0, "type": "backend", "label": "定义测试类继承", "sublabel": "继承标准基类", "width": 132 },
+    { "id": "attrs", "lane": "partner", "col": 1, "type": "backend", "label": "实现 class/params", "sublabel": "被测模型与参数", "width": 132 },
+    { "id": "flags", "lane": "partner", "col": 2, "type": "backend", "label": "覆写特性开关", "sublabel": "声明支持能力", "width": 132 },
+    { "id": "collect", "lane": "pytest", "col": 3, "type": "messagebus", "label": "收集标准用例", "sublabel": "invoke/stream 等", "width": 132 },
+    { "id": "guard", "lane": "guard", "col": 4, "type": "security", "label": "契约守卫检查", "sublabel": "禁止删用例/无理由覆盖", "width": 132 },
+    { "id": "run", "lane": "pytest", "col": 5, "type": "backend", "label": "运行标准用例", "sublabel": "真实调外部服务", "width": 132 },
+    { "id": "fail", "lane": "guard", "col": 5, "type": "security", "label": "守卫断言失败", "sublabel": "契约被破坏", "width": 132 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "inherit", "to": "attrs", "variant": "default" },
+    { "id": "e2", "from": "attrs", "to": "flags", "variant": "default" },
+    { "id": "e3", "from": "flags", "to": "collect", "variant": "default" },
+    { "id": "e4", "from": "collect", "to": "guard", "variant": "default" },
+    { "id": "e5", "from": "guard", "to": "run", "label": "通过", "variant": "emphasis" },
+    { "id": "e6", "from": "guard", "to": "fail", "label": "违反契约", "variant": "security", "role": "error" }
+  ]
+}

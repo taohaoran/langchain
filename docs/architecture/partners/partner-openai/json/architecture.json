@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "OpenAI 集成架构（langchain-openai）",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1280, 720]
+  },
+  "components": [
+    { "id": "user", "type": "frontend", "label": "用户应用 / 链", "sublabel": "Runnable / Agent", "pos": [40, 300], "size": [180, 70] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象基类", "sublabel": "BaseChatModel / Embeddings", "pos": [320, 300], "size": [240, 70], "tag": "消费方接口" },
+    { "id": "chat", "type": "backend", "label": "ChatOpenAI 适配层", "sublabel": "chat_models/", "pos": [640, 180], "size": [230, 80], "tag": "消息/工具转换" },
+    { "id": "emb", "type": "backend", "label": "OpenAIEmbeddings", "sublabel": "embeddings/", "pos": [640, 300], "size": [230, 70], "tag": "Embeddings 适配" },
+    { "id": "mw", "type": "backend", "label": "审核中间件 / 工具", "sublabel": "middleware · tools", "pos": [640, 410], "size": [230, 70] },
+    { "id": "sdk", "type": "cloud", "label": "openai Python SDK", "sublabel": "依赖项", "pos": [980, 280], "size": [200, 70], "tag": "不在本仓库源码内" },
+    { "id": "api", "type": "external", "label": "OpenAI / Azure API", "sublabel": "chat · embeddings · moderation", "pos": [980, 420], "size": [200, 90], "tag": "外部服务" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core 契约", "wraps": ["core"] },
+    { "kind": "region", "label": "langchain-openai 适配层（本仓库）", "wraps": ["chat", "emb", "mw"] },
+    { "kind": "security-group", "label": "外部依赖与服务", "wraps": ["sdk", "api"] }
+  ],
+  "connections": [
+    { "id": "u-core", "from": "user", "to": "core", "label": "依赖抽象", "variant": "emphasis" },
+    { "id": "core-chat", "from": "core", "to": "chat", "label": "继承 BaseChatModel", "labelDy": 10 },
+    { "id": "core-emb", "from": "core", "to": "emb", "label": "继承 Embeddings" },
+    { "id": "chat-sdk", "from": "chat", "to": "sdk", "label": "客户端调用" },
+    { "id": "emb-sdk", "from": "emb", "to": "sdk", "label": "embeddings.create" },
+    { "id": "mw-sdk", "from": "mw", "to": "sdk", "label": "moderations", "variant": "dashed" },
+    { "id": "sdk-api", "from": "sdk", "to": "api", "label": "HTTPS", "variant": "emphasis", "labelDy": 24 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "核心适配层", "items": [
+      "_convert_message_to_dict 双向转换",
+      "ToolCall ↔ OpenAI tool_calls",
+      "Chat Completions / Responses 双轨"
+    ]},
+    { "dot": "cyan", "title": "配置驱动", "items": [
+      "use_responses_api 自动推断",
+      "Azure 子类处理 deployment",
+      "reasoning_effort 推理模型参数"
+    ]},
+    { "dot": "amber", "title": "错误映射", "items": [
+      "openai SDK 异常 → Model*Error",
+      "max_retries 透传 SDK",
+      "上下文溢出 → ContextOverflowError"
+    ]}
+  ]
+}

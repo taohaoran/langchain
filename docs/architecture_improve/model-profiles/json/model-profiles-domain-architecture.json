@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "model-profiles 生成器位置",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1280, 600]
+  },
+  "components": [
+    { "id": "maint", "type": "external", "label": "维护者", "pos": [60, 290], "size": [140, 60] },
+    { "id": "cli", "type": "backend", "label": "langchain-profiles CLI", "pos": [300, 290], "size": [170, 64], "tag": "refresh/summarize" },
+    { "id": "modelsdev", "type": "external", "label": "models.dev API", "pos": [300, 120], "size": [160, 60] },
+    { "id": "toml", "type": "database", "label": "本地 TOML 增强", "pos": [300, 460], "size": [160, 60] },
+    { "id": "out", "type": "database", "label": "partner _profiles.py", "pos": [580, 290], "size": [170, 64] },
+    { "id": "partnerpkg", "type": "external", "label": "partner 包", "pos": [840, 290], "size": [150, 64] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain-model-profiles", "wraps": ["cli"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "maint", "to": "cli", "label": "运行 refresh", "variant": "emphasis" },
+    { "id": "c4", "from": "cli", "to": "out", "label": "生成 Python", "variant": "emphasis" },
+    { "id": "c5", "from": "out", "to": "partnerpkg", "label": "import 能力配置", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["维护者 → CLI 拉取+合并 → 生成 _profiles.py → partner 包"] },
+    { "dot": "amber", "title": "外部依赖", "items": ["models.dev 数据源不在本仓库源码内"] }
+  ]
+}

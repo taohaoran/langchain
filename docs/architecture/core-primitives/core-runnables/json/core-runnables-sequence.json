@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "RunnableSequence.invoke 调用链（含回调包裹）",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 760],
+    "column_fit": "spread"
+  },
+  "participants": [
+    { "id": "user", "type": "external", "label": "用户", "sublabel": "调用方" },
+    { "id": "seq", "type": "backend", "label": "Sequence", "sublabel": "base.py:3430" },
+    { "id": "cb", "type": "messagebus", "label": "回调管理器", "sublabel": "get_callback_manager" },
+    { "id": "step", "type": "backend", "label": "子步骤", "sublabel": "step_i" }
+  ],
+  "segments": [
+    { "from": 150, "to": 250, "label": "建立根 run" },
+    { "from": 250, "to": 470, "label": "逐 step 执行" },
+    { "from": 470, "to": 560, "label": "收尾" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "seq", "y": 160, "label": "invoke(x, config)", "variant": "emphasis" },
+    { "id": "m2", "from": "seq", "to": "cb", "y": 200, "label": "get_callback_manager_for_config", "variant": "default" },
+    { "id": "m3", "from": "seq", "to": "cb", "y": 230, "label": "on_chain_start", "variant": "default" },
+    { "id": "m4", "from": "seq", "to": "step", "y": 290, "label": "patch_config + get_child(seq:step:1)", "variant": "default" },
+    { "id": "m5", "from": "seq", "to": "step", "y": 330, "label": "step1.invoke(x, cfg)", "variant": "emphasis" },
+    { "id": "m6", "from": "step", "to": "seq", "y": 370, "label": "out1", "variant": "return" },
+    { "id": "m7", "from": "seq", "to": "step", "y": 410, "label": "step2.invoke(out1, cfg)", "variant": "emphasis" },
+    { "id": "m8", "from": "step", "to": "seq", "y": 450, "label": "out2", "variant": "return" },
+    { "id": "m9", "from": "seq", "to": "cb", "y": 500, "label": "on_chain_end(outN)", "variant": "default" },
+    { "id": "m10", "from": "seq", "to": "user", "y": 540, "label": "outN", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "seq", "from": 160, "to": 540, "type": "backend" },
+    { "participant": "step", "from": 330, "to": 370, "type": "backend" },
+    { "participant": "step", "from": 410, "to": 450, "type": "backend" }
+  ]
+}

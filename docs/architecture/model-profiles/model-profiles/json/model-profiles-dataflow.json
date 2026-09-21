@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "refresh 生成数据流",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 480]
+  },
+  "stages": [
+    { "label": "数据源" },
+    { "label": "转换" },
+    { "label": "合并" },
+    { "label": "产物" }
+  ],
+  "nodes": [
+    { "id": "api", "type": "external", "label": "models.dev", "sublabel": "api.json", "stage": 0, "row": 0 },
+    { "id": "toml", "type": "database", "label": "TOML 增强", "sublabel": "本地", "stage": 0, "row": 1 },
+    { "id": "conv", "type": "backend", "label": "data_to_profile", "sublabel": "转换", "stage": 1, "row": 0 },
+    { "id": "merge", "type": "backend", "label": "apply_overrides", "sublabel": "合并覆盖", "stage": 2, "row": 0 },
+    { "id": "out", "type": "database", "label": "_profiles.py", "sublabel": "生成模块", "stage": 3, "row": 0 }
+  ],
+  "flows": [
+    { "from": "api", "to": "conv", "label": "models", "classification": "下载", "variant": "emphasis", "route": "straight" },
+    { "from": "conv", "to": "merge", "label": "base", "classification": "基础 profile", "variant": "default", "route": "straight" },
+    { "from": "toml", "to": "merge", "label": "覆盖", "classification": "augment", "variant": "default", "route": "straight" },
+    { "from": "merge", "to": "out", "label": "profiles", "classification": "写出", "variant": "emphasis", "route": "straight" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "产物", "items": ["自动生成勿手改", "Python 字面量 dict"] }
+  ]
+}

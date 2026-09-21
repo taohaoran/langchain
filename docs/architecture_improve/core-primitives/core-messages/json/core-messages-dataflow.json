@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "消息内容块归一化数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 680]
+  },
+  "stages": [
+    { "label": "各 Provider 原始格式" },
+    { "label": "block_translators" },
+    { "label": "标准内容块" },
+    { "label": "BaseMessage" }
+  ],
+  "nodes": [
+    { "id": "openai", "type": "external", "label": "OpenAI", "stage": 0, "row": 0 },
+    { "id": "anthropic", "type": "external", "label": "Anthropic", "stage": 0, "row": 1 },
+    { "id": "bedrock", "type": "external", "label": "Bedrock", "stage": 0, "row": 2 },
+    { "id": "google", "type": "external", "label": "Google", "stage": 0, "row": 3 },
+    { "id": "trans", "type": "backend", "label": "懒解析归一化", "sublabel": "base.py:200", "stage": 1, "row": 1 },
+    { "id": "blocks", "type": "backend", "label": "标准内容块", "sublabel": "text/tool_call/image", "stage": 2, "row": 1 },
+    { "id": "msg", "type": "backend", "label": "BaseMessage", "sublabel": "base.py:93", "stage": 3, "row": 1 }
+  ],
+  "flows": [
+    { "from": "openai", "to": "trans", "label": "OpenAI", "route": "straight" },
+    { "from": "anthropic", "to": "trans", "label": "Anthropic", "route": "straight" },
+    { "from": "bedrock", "to": "trans", "label": "Bedrock", "route": "straight" },
+    { "from": "google", "to": "trans", "label": "Google", "route": "straight" },
+    { "from": "trans", "to": "blocks", "label": "归一化", "variant": "emphasis", "route": "straight" },
+    { "from": "blocks", "to": "msg", "label": "标准表示", "variant": "emphasis", "route": "straight" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "各 provider 格式经 block_translators 归一化",
+      "content_blocks 访问时懒解析避免循环导入",
+      "统一为 v1 ContentBlock TypedDict 标准表示"
+    ] }
+  ]
+}

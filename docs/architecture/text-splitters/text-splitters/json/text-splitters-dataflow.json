@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "递归分块数据流",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 520]
+  },
+  "stages": [
+    { "label": "输入" },
+    { "label": "选分隔符切分" },
+    { "label": "超长递归" },
+    { "label": "合并输出" }
+  ],
+  "nodes": [
+    { "id": "in", "type": "frontend", "label": "原始文本", "sublabel": "长文档", "stage": 0, "row": 0 },
+    { "id": "split", "type": "backend", "label": "选最佳分隔符", "sublabel": "多行/换行/空格", "stage": 1, "row": 0 },
+    { "id": "rec", "type": "backend", "label": "递归细分", "sublabel": "超长块", "stage": 2, "row": 0 },
+    { "id": "merge", "type": "backend", "label": "_merge_splits", "sublabel": "维护 overlap", "stage": 3, "row": 0 },
+    { "id": "out", "type": "database", "label": "Document 块", "sublabel": "chunk_size 内", "stage": 3, "row": 1 }
+  ],
+  "flows": [
+    { "from": "in", "to": "split", "label": "text", "classification": "输入", "variant": "emphasis", "route": "straight" },
+    { "from": "split", "to": "rec", "label": "超长片", "classification": "递归", "variant": "default", "route": "straight" },
+    { "from": "rec", "to": "merge", "label": "小片", "classification": "合并", "variant": "default", "route": "straight" },
+    { "from": "merge", "to": "out", "label": "输出", "classification": "Document", "variant": "emphasis", "route": "straight", "labelDy": 24 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "策略", "items": ["优先语义大分隔符", "合适片直送合并", "超长才向更细粒度递归"] },
+    { "dot": "cyan", "title": "重叠", "items": ["相邻块保留 chunk_overlap", "保证上下文连续"] }
+  ]
+}

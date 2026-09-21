@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Exa 搜索工具集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1240, 460] },
+  "components": [
+    { "id": "agent", "type": "external", "label": "Agent / RAG 链", "pos": [40, 195], "size": [150, 60] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "BaseTool / BaseRetriever", "pos": [280, 180], "size": [170, 90] },
+    { "id": "tool1", "type": "backend", "label": "ExaSearchResults", "sublabel": "文本搜索", "pos": [520, 90], "size": [170, 70] },
+    { "id": "tool2", "type": "backend", "label": "ExaFindSimilarResults", "sublabel": "相似页面", "pos": [520, 190], "size": [170, 70] },
+    { "id": "retriever", "type": "backend", "label": "ExaSearchRetriever", "sublabel": "结果转 Document", "pos": [520, 290], "size": [170, 70] },
+    { "id": "sdk", "type": "external", "label": "exa_py SDK", "pos": [790, 190], "size": [140, 70] },
+    { "id": "api", "type": "external", "label": "Exa 搜索 API", "pos": [1010, 190], "size": [160, 70] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain-exa 本仓库适配层", "wraps": ["tool1", "tool2", "retriever"] },
+    { "kind": "region", "label": "外部依赖与服务（不在本仓库源码内）", "wraps": ["sdk", "api"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "agent", "to": "core", "label": "调用", "variant": "emphasis" },
+    { "id": "c2", "from": "core", "to": "tool1", "label": "_run", "variant": "emphasis" },
+    { "id": "c3", "from": "core", "to": "tool2", "label": "_run", "variant": "default" },
+    { "id": "c4", "from": "core", "to": "retriever", "label": "_get_relevant", "variant": "default" },
+    { "id": "c5", "from": "tool1", "to": "sdk", "label": "search_and_contents", "variant": "default" },
+    { "id": "c6", "from": "tool2", "to": "sdk", "label": "find_similar", "variant": "default" },
+    { "id": "c7", "from": "retriever", "to": "sdk", "label": "search_and_contents", "variant": "default" },
+    { "id": "c8", "from": "sdk", "to": "api", "label": "HTTPS", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["工具继承 BaseTool", "检索器继承 BaseRetriever", "错误转为 repr 字符串返回"] }
+  ]
+}

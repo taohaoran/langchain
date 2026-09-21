@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Exa 搜索集成架构（langchain-exa）",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1200, 680]
+  },
+  "components": [
+    { "id": "agent", "type": "frontend", "label": "Agent / RAG 链", "sublabel": "create_react_agent", "pos": [40, 280], "size": [180, 70] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象", "sublabel": "BaseTool / BaseRetriever", "pos": [320, 280], "size": [240, 70] },
+    { "id": "search-tool", "type": "backend", "label": "ExaSearchResults", "sublabel": "tools.py:21", "pos": [640, 160], "size": [230, 70], "tag": "文本搜索工具" },
+    { "id": "similar-tool", "type": "backend", "label": "ExaFindSimilarResults", "sublabel": "tools.py:164", "pos": [640, 270], "size": [230, 70], "tag": "相似页面工具" },
+    { "id": "retriever", "type": "backend", "label": "ExaSearchRetriever", "sublabel": "retrievers.py:36", "pos": [640, 380], "size": [230, 70], "tag": "检索器" },
+    { "id": "init", "type": "backend", "label": "initialize_client", "sublabel": "_utilities.py:7", "pos": [640, 490], "size": [230, 60] },
+    { "id": "sdk", "type": "cloud", "label": "exa_py SDK", "sublabel": "依赖项", "pos": [970, 280], "size": [190, 70], "tag": "不在本仓库源码内" },
+    { "id": "api", "type": "external", "label": "Exa 搜索 API", "sublabel": "search · find_similar", "pos": [970, 420], "size": [190, 70], "tag": "外部服务" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core 契约", "wraps": ["core"] },
+    { "kind": "region", "label": "langchain-exa 适配层（本仓库）", "wraps": ["search-tool", "similar-tool", "retriever", "init"] },
+    { "kind": "security-group", "label": "外部 SDK 与服务", "wraps": ["sdk", "api"] }
+  ],
+  "connections": [
+    { "id": "u-core", "from": "agent", "to": "core", "label": "依赖抽象", "variant": "emphasis" },
+    { "id": "core-tool", "from": "core", "to": "search-tool", "label": "继承 BaseTool", "labelDy": 10 },
+    { "id": "core-sim", "from": "core", "to": "similar-tool", "label": "继承 BaseTool" },
+    { "id": "core-ret", "from": "core", "to": "retriever", "label": "继承 BaseRetriever", "labelDy": 10 },
+    { "id": "tool-sdk", "from": "search-tool", "to": "sdk", "label": "search_and_contents" },
+    { "id": "sim-sdk", "from": "similar-tool", "to": "sdk", "label": "find_similar", "variant": "dashed", "labelDy": 49 },
+    { "id": "ret-sdk", "from": "retriever", "to": "sdk", "label": "search_and_contents", "variant": "dashed" },
+    { "id": "sdk-api", "from": "sdk", "to": "api", "label": "HTTPS", "variant": "emphasis", "labelDy": 24 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "两个工具同构", "items": [
+      "validate_environment → initialize_client",
+      "_run 调 SDK 对应方法",
+      "异常 return repr(e) 不中断 agent"
+    ]},
+    { "dot": "cyan", "title": "检索器", "items": [
+      "search_and_contents → Document 列表",
+      "_get_metadata 提取 title/url/score",
+      "page_content = result.text"
+    ]},
+    { "dot": "amber", "title": "披露", "items": [
+      "ExaGetContents 非独立类",
+      "内容获取经工具参数实现",
+      "无 _arun 异步实现"
+    ]}
+  ]
+}

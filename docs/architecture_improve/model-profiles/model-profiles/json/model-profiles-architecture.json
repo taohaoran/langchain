@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "profile 生成 CLI 架构",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 520]
+  },
+  "components": [
+    { "id": "cli", "type": "backend", "label": "langchain-profiles", "sublabel": "cli.py main()", "pos": [40, 220], "size": [180, 70] },
+    { "id": "refresh", "type": "backend", "label": "refresh", "sublabel": "生成 _profiles.py", "pos": [330, 120], "size": [170, 60] },
+    { "id": "summarize", "type": "backend", "label": "summarize", "sublabel": "PR 变更摘要", "pos": [330, 320], "size": [170, 60] },
+    { "id": "modelsdev", "type": "external", "label": "models.dev API", "sublabel": "外部", "pos": [620, 120], "size": [160, 60] },
+    { "id": "toml", "type": "database", "label": "augmentations.toml", "sublabel": "本地增强", "pos": [620, 220], "size": [170, 60] },
+    { "id": "out", "type": "database", "label": "_profiles.py", "sublabel": "产物勿手改", "pos": [620, 320], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库源码内（CLI）", "wraps": ["refresh", "summarize"] }
+  ],
+  "connections": [
+    { "id": "c-r", "from": "cli", "to": "refresh", "variant": "default" },
+    { "id": "c-s", "from": "cli", "to": "summarize", "variant": "default" },
+    { "id": "r-md", "from": "refresh", "to": "modelsdev", "variant": "default" },
+    { "id": "r-t", "from": "refresh", "to": "toml", "variant": "default" },
+    { "id": "r-o", "from": "refresh", "to": "out", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "refresh 流程", "items": ["拉 models.dev 全量数据", "合并 TOML 覆盖", "生成 _profiles.py"] },
+    { "dot": "amber", "title": "summarize 流程", "items": ["对比工作树与 git ref", "输出 Markdown 变更"] }
+  ]
+}

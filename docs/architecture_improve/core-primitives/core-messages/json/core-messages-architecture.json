@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "消息类型体系与归一化管道",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 720]
+  },
+  "components": [
+    { "id": "input", "type": "external", "label": "用户输入", "sublabel": "str/tuple/dict/BaseMessage", "pos": [40, 290], "size": [170, 60] },
+    { "id": "convert", "type": "backend", "label": "convert_to_messages", "sublabel": "utils.py:786", "pos": [300, 290], "size": [180, 60] },
+    { "id": "base", "type": "backend", "label": "BaseMessage", "sublabel": "base.py:93", "pos": [580, 285], "size": [170, 70], "tag": "抽象基类" },
+    { "id": "chunk", "type": "backend", "label": "BaseMessageChunk", "sublabel": "流式分片合并", "pos": [580, 110], "size": [170, 60] },
+    { "id": "human", "type": "backend", "label": "HumanMessage", "sublabel": "human.py", "pos": [200, 520], "size": [150, 56] },
+    { "id": "ai", "type": "backend", "label": "AIMessage", "sublabel": "ai.py:160", "pos": [400, 520], "size": [150, 56] },
+    { "id": "system", "type": "backend", "label": "SystemMessage", "sublabel": "system.py", "pos": [600, 520], "size": [150, 56] },
+    { "id": "tool", "type": "backend", "label": "ToolMessage", "sublabel": "tool.py:26", "pos": [800, 520], "size": [150, 56] },
+    { "id": "consumer", "type": "cloud", "label": "消费方", "sublabel": "模型/历史/提示词", "pos": [880, 290], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core.messages", "wraps": ["convert", "base", "chunk", "human", "ai", "system", "tool"] }
+  ],
+  "connections": [
+    { "id": "i-c", "from": "input", "to": "convert", "label": "归一化", "variant": "emphasis" },
+    { "id": "c-b", "from": "convert", "to": "base", "label": "list[BaseMessage]", "labelDy": -14 },
+    { "id": "b-chunk", "from": "base", "to": "chunk", "label": "流式分片", "fromSide": "top", "toSide": "bottom" },
+    { "id": "b-h", "from": "base", "to": "human", "label": "", "fromSide": "bottom", "toSide": "top" },
+    { "id": "b-ai", "from": "base", "to": "ai", "label": "", "fromSide": "bottom", "toSide": "top" },
+    { "id": "b-sys", "from": "base", "to": "system", "label": "", "fromSide": "bottom", "toSide": "top" },
+    { "id": "b-tool", "from": "base", "to": "tool", "label": "", "fromSide": "bottom", "toSide": "top" },
+    { "id": "b-cons", "from": "base", "to": "consumer", "label": "传入模型", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "BaseMessage 是 LLM 交互通用数据结构",
+      "type 字段驱动反序列化注册表",
+      "Chunk 双轨：流式分片 __add__ 合并",
+      "block_translators 统一多 provider 格式"
+    ] }
+  ]
+}

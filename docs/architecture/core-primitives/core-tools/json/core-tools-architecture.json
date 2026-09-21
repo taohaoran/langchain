@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "工具抽象与调用管道",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 600]
+  },
+  "components": [
+    { "id": "model", "type": "external", "label": "模型", "sublabel": "AIMessage.tool_calls", "pos": [40, 280], "size": [160, 60] },
+    { "id": "base", "type": "backend", "label": "BaseTool", "sublabel": "base.py:433", "pos": [320, 275], "size": [160, 70], "tag": "抽象基类" },
+    { "id": "schema", "type": "backend", "label": "args_schema", "sublabel": "pydantic 校验", "pos": [300, 100], "size": [160, 56] },
+    { "id": "simple", "type": "backend", "label": "Tool", "sublabel": "simple.py:31", "pos": [580, 100], "size": [150, 56] },
+    { "id": "structured", "type": "backend", "label": "StructuredTool", "sublabel": "structured.py:93", "pos": [580, 275], "size": [160, 56] },
+    { "id": "msg", "type": "cloud", "label": "ToolMessage", "sublabel": "回传模型", "pos": [880, 440], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core.tools", "wraps": ["base", "schema", "simple", "structured"] }
+  ],
+  "connections": [
+    { "id": "m-b", "from": "model", "to": "base", "label": "tool_calls", "variant": "emphasis" },
+    { "id": "b-sch", "from": "base", "to": "schema", "label": "校验输入", "fromSide": "top", "toSide": "bottom" },
+    { "id": "b-sim", "from": "base", "to": "simple", "label": "继承", "fromSide": "top", "toSide": "bottom" },
+    { "id": "b-str", "from": "base", "to": "structured", "label": "继承" },
+    { "id": "b-msg", "from": "base", "to": "msg", "label": "_run 结果", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "工具即 Runnable，可 | 进链",
+      "create_schema_from_function 自动推断参数",
+      "schema 校验失败转回字符串让模型自纠",
+      "injected_args 隐藏运行时注入参数"
+    ] }
+  ]
+}

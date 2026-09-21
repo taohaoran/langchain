@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "create_agent 工厂装配架构",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 560]
+  },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户代码", "sublabel": "create_agent", "pos": [40, 240], "size": [140, 64] },
+    { "id": "factory", "type": "backend", "label": "create_agent 工厂", "sublabel": "factory.py", "pos": [250, 240], "size": [170, 64], "tag": "装配" },
+    { "id": "sm", "type": "database", "label": "状态图", "sublabel": "compile", "pos": [840, 240], "size": [150, 64], "tag": "返回图" },
+    { "id": "mw-chain", "type": "security", "label": "中间件洋葱链", "sublabel": "wrap_model_call", "pos": [250, 80], "size": [170, 60] },
+    { "id": "model", "type": "cloud", "label": "模型节点", "sublabel": "model_node", "pos": [560, 80], "size": [150, 60], "tag": "调模型" },
+    { "id": "tools", "type": "backend", "label": "工具节点", "sublabel": "ToolNode", "pos": [560, 400], "size": [150, 60], "tag": "执行工具" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "代理状态图（运行期）", "wraps": ["model", "tools", "mw-chain"] }
+  ],
+  "connections": [
+    { "id": "u-f", "from": "user", "to": "factory", "label": "配置", "variant": "emphasis" },
+    { "id": "f-sm", "from": "factory", "to": "sm", "label": "编译", "variant": "emphasis" },
+    { "id": "f-mw", "from": "factory", "to": "mw-chain", "label": "复合", "variant": "default", "fromSide": "top", "toSide": "bottom" },
+    { "id": "mw-model", "from": "mw-chain", "to": "model", "label": "包裹", "variant": "default" },
+    { "id": "model-tools", "from": "model", "to": "tools", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
+    { "id": "tools-model", "from": "tools", "to": "model", "variant": "dashed", "fromSide": "right", "toSide": "right", "via": [[770, 430], [770, 110]] }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "装配期", "items": ["字符串模型经 init_chat_model 实例化", "六类钩子筛选并复合中间件链", "动态确定入口/循环/退出节点"] },
+    { "dot": "cyan", "title": "运行期", "items": ["model 调模型，有 tool_calls 派 tools", "tools 执行后回 model 直到无新调用", "recursion_limit 设为 9999"] }
+  ]
+}

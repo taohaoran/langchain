@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "向量库/嵌入/检索器与检索管道",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 600]
+  },
+  "components": [
+    { "id": "query", "type": "external", "label": "query", "sublabel": "检索请求", "pos": [40, 275], "size": [140, 60] },
+    { "id": "retriever", "type": "backend", "label": "BaseRetriever", "sublabel": "retrievers.py:55", "pos": [300, 270], "size": [160, 70], "tag": "抽象基类" },
+    { "id": "vstore", "type": "backend", "label": "VectorStore", "sublabel": "base.py:43", "pos": [580, 270], "size": [160, 70] },
+    { "id": "emb", "type": "backend", "label": "Embeddings", "sublabel": "embed_query", "pos": [580, 110], "size": [160, 56] },
+    { "id": "docs", "type": "database", "label": "list[Document]", "sublabel": "检索结果", "pos": [880, 270], "size": [160, 60] },
+    { "id": "backends", "type": "cloud", "label": "向量库后端", "sublabel": "Chroma/Pinecone", "pos": [300, 460], "size": [170, 60], "tag": "依赖倒置" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain_core.vectorstores", "wraps": ["retriever", "vstore", "emb"] }
+  ],
+  "connections": [
+    { "id": "q-r", "from": "query", "to": "retriever", "label": "invoke", "variant": "emphasis" },
+    { "id": "r-v", "from": "retriever", "to": "vstore", "label": "_get_relevant" },
+    { "id": "v-e", "from": "vstore", "to": "emb", "label": "embed_query", "fromSide": "top", "toSide": "bottom" },
+    { "id": "v-d", "from": "vstore", "to": "docs", "label": "ANN 检索", "variant": "emphasis" },
+    { "id": "bk-v", "from": "backends", "to": "vstore", "label": "实现契约", "variant": "security", "fromSide": "top", "toSide": "bottom" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "检索器即 Runnable，接入 LCEL",
+      "query 先 embed 再 ANN 检索",
+      "VectorStore/Embeddings 契约在消费方",
+      "index() 按内容 hash 增量同步"
+    ] }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "代理执行循环状态机",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1030, 620]
+  },
+  "lanes": [
+    { "id": "main", "label": "代理主循环" }
+  ],
+  "states": [
+    { "id": "start", "type": "start", "label": "入口", "lane": "main", "col": 0, "step": "01" },
+    { "id": "before", "type": "active", "label": "前置中间件", "sublabel": "before_model", "lane": "main", "col": 1, "step": "02" },
+    { "id": "model", "type": "active", "label": "调用模型", "sublabel": "model_node", "lane": "main", "col": 2, "step": "03", "tag": "循环" },
+    { "id": "tools", "type": "active", "label": "执行工具", "sublabel": "ToolNode", "lane": "main", "col": 3, "step": "04", "tag": "循环" },
+    { "id": "end", "type": "success", "label": "退出", "lane": "main", "col": 4, "step": "05", "tag": "完成" }
+  ],
+  "transitions": [
+    { "id": "t1", "from": "start", "to": "before", "variant": "default", "route": "straight" },
+    { "id": "t2", "from": "before", "to": "model", "variant": "default", "route": "straight" },
+    { "id": "t3", "from": "model", "to": "tools", "variant": "emphasis", "route": "straight" },
+    { "id": "t4", "from": "tools", "to": "model", "variant": "emphasis", "fromSide": "top", "toSide": "bottom", "via": [[520, 90], [360, 90]] },
+    { "id": "t5", "from": "model", "to": "end", "variant": "default", "fromSide": "bottom", "toSide": "bottom", "via": [[460, 320], [720, 320]] }
+  ]
+}

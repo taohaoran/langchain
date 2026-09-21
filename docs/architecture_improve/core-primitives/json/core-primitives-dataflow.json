@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "原语组成 RAG 链数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1180, 420]
+  },
+  "stages": [
+    { "label": "查询" },
+    { "label": "检索" },
+    { "label": "提示" },
+    { "label": "生成" },
+    { "label": "解析" }
+  ],
+  "nodes": [
+    { "id": "q", "type": "external", "label": "query", "stage": 0, "row": 1 },
+    { "id": "ret", "type": "backend", "label": "Retriever", "sublabel": "core-vectorstores", "stage": 1, "row": 1 },
+    { "id": "prompt", "type": "backend", "label": "Prompt", "sublabel": "core-prompts", "stage": 2, "row": 1 },
+    { "id": "model", "type": "backend", "label": "ChatModel", "sublabel": "core-language-models", "stage": 3, "row": 1 },
+    { "id": "parser", "type": "backend", "label": "OutputParser", "sublabel": "core-output-parsers", "stage": 4, "row": 1 },
+    { "id": "ans", "type": "external", "label": "结构化答案", "stage": 4, "row": 0 }
+  ],
+  "flows": [
+    { "from": "q", "to": "ret", "label": "query", "variant": "emphasis", "route": "straight" },
+    { "from": "ret", "to": "prompt", "label": "Document[]", "variant": "emphasis", "route": "straight" },
+    { "from": "prompt", "to": "model", "label": "PromptValue", "variant": "emphasis", "route": "straight" },
+    { "from": "model", "to": "parser", "label": "AIMessage", "variant": "emphasis", "route": "straight" },
+    { "from": "parser", "to": "ans", "label": "parsed", "variant": "emphasis", "route": "straight" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "各原语输出即下一原语输入",
+      "Runnable | 串成端到端链",
+      "Document→PromptValue→AIMessage→结构化"
+    ] }
+  ]
+}

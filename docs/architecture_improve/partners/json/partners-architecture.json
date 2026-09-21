@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "partners 域集成适配架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1240, 560] },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户应用 / Agent", "pos": [40, 250], "size": [160, 60] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "ChatModel/Embeddings/VectorStore/Tool", "pos": [290, 235], "size": [180, 90] },
+    { "id": "openai", "type": "backend", "label": "OpenAI 集成", "pos": [540, 50], "size": [160, 55] },
+    { "id": "anthropic", "type": "backend", "label": "Anthropic 集成", "pos": [540, 130], "size": [160, 55] },
+    { "id": "vector", "type": "backend", "label": "向量库集成", "sublabel": "Qdrant/Chroma", "pos": [540, 210], "size": [160, 55] },
+    { "id": "providers", "type": "backend", "label": "其他模型商", "sublabel": "groq/ollama/deepseek 等", "pos": [540, 290], "size": [160, 55] },
+    { "id": "exa", "type": "backend", "label": "Exa 搜索", "pos": [540, 370], "size": [160, 55] },
+    { "id": "ext", "type": "external", "label": "第三方 API / SDK / 服务端", "sublabel": "不在本仓库源码内", "pos": [820, 235], "size": [180, 90] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库适配层（libs/partners/ 17 个包）", "wraps": ["openai", "anthropic", "vector", "providers", "exa"] },
+    { "kind": "region", "label": "外部依赖与服务", "wraps": ["ext"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "user", "to": "core", "label": "统一接口", "variant": "emphasis" },
+    { "id": "c2", "from": "core", "to": "openai", "label": "实现", "variant": "default" },
+    { "id": "c3", "from": "core", "to": "anthropic", "label": "实现", "variant": "default" },
+    { "id": "c4", "from": "core", "to": "vector", "label": "实现", "variant": "default" },
+    { "id": "c5", "from": "core", "to": "providers", "label": "实现", "variant": "default" },
+    { "id": "c6", "from": "core", "to": "exa", "label": "实现", "variant": "default" },
+    { "id": "c7", "from": "openai", "to": "ext", "label": "调用", "variant": "emphasis" },
+    { "id": "c8", "from": "anthropic", "to": "ext", "label": "调用", "variant": "emphasis" },
+    { "id": "c9", "from": "vector", "to": "ext", "label": "调用", "variant": "default" },
+    { "id": "c10", "from": "providers", "to": "ext", "label": "调用", "variant": "default" },
+    { "id": "c11", "from": "exa", "to": "ext", "label": "调用", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "域定位", "items": ["统一接口适配层", "消息/数据格式转换", "不承载实际计算"] }
+  ]
+}

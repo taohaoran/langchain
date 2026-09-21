@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "standard-tests 契约测试层位置",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1280, 600]
+  },
+  "components": [
+    { "id": "partner", "type": "external", "label": "partner 包", "pos": [60, 290], "size": [150, 64], "tag": "实现方" },
+    { "id": "base", "type": "backend", "label": "标准测试基类", "pos": [310, 290], "size": [160, 64], "tag": "langchain-tests" },
+    { "id": "guard", "type": "backend", "label": "契约守卫", "pos": [560, 290], "size": [150, 64] },
+    { "id": "pytest", "type": "external", "label": "pytest 运行时", "pos": [810, 290], "size": [150, 64] },
+    { "id": "svc", "type": "external", "label": "外部 API 服务", "pos": [1060, 200], "size": [150, 60] },
+    { "id": "langsmith", "type": "external", "label": "LangSmith 追踪", "pos": [1060, 380], "size": [150, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain-standard-tests", "wraps": ["base", "guard"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "partner", "to": "base", "label": "继承基类", "variant": "emphasis" },
+    { "id": "c2", "from": "base", "to": "guard", "label": "自动运行", "variant": "default" },
+    { "id": "c3", "from": "guard", "to": "pytest", "label": "收集用例", "variant": "default" },
+    { "id": "c4", "from": "pytest", "to": "svc", "label": "真实调用", "variant": "default" },
+    { "id": "c5", "from": "pytest", "to": "langsmith", "label": "trace 上传", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "主路径", "items": ["partner 继承 → 守卫校验 → pytest → 外部服务"] },
+    { "dot": "amber", "title": "外部依赖", "items": ["pytest、外部 API、LangSmith 不在本仓库源码内"] }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "中间件体系分类架构",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 620]
+  },
+  "components": [
+    { "id": "base", "type": "security", "label": "AgentMiddleware 基类", "sublabel": "6 钩子契约", "pos": [40, 250], "size": [170, 70] },
+    { "id": "model", "type": "cloud", "label": "模型调用", "sublabel": "wrap_model_call", "pos": [860, 250], "size": [160, 70], "tag": "被包裹" },
+    { "id": "rel", "type": "backend", "label": "可靠性类", "sublabel": "重试/回退/上限", "pos": [320, 80], "size": [190, 60] },
+    { "id": "tool", "type": "backend", "label": "工具类", "sublabel": "工具重试/选择/模拟", "pos": [320, 180], "size": [190, 60] },
+    { "id": "ctx", "type": "backend", "label": "上下文类", "sublabel": "摘要/编辑/待办", "pos": [320, 380], "size": [190, 60] },
+    { "id": "human", "type": "external", "label": "人机与安全类", "sublabel": "HITL/Shell/PII/文件", "pos": [320, 480], "size": [190, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "16 个内置中间件实现", "wraps": ["rel", "tool", "ctx", "human"] }
+  ],
+  "connections": [
+    { "id": "base-rel", "from": "base", "to": "rel", "variant": "default" },
+    { "id": "base-tool", "from": "base", "to": "tool", "variant": "default" },
+    { "id": "base-ctx", "from": "base", "to": "ctx", "variant": "default" },
+    { "id": "base-human", "from": "base", "to": "human", "variant": "default" },
+    { "id": "rel-model", "from": "rel", "to": "model", "variant": "emphasis" },
+    { "id": "tool-model", "from": "tool", "to": "model", "variant": "dashed" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "钩子契约", "items": ["before_agent / before_model / after_model", "wrap_model_call / wrap_tool_call", "after_agent，每钩同步+异步"] },
+    { "dot": "amber", "title": "扩展方式", "items": ["子类覆写钩子，或用函数式装饰器", "中间件可注册额外 tools 与 state_schema", "can_jump_to 决定条件路由"] }
+  ]
+}

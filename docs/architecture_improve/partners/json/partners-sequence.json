@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "partners 域 Chat 请求通用调用链时序",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [
+      1080,
+      690
+    ]
+  },
+  "participants": [
+    {
+      "id": "user",
+      "type": "external",
+      "label": "用户应用"
+    },
+    {
+      "id": "core",
+      "type": "backend",
+      "label": "框架层"
+    },
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "ChatModel"
+    },
+    {
+      "id": "sdk",
+      "type": "external",
+      "label": "对应 SDK"
+    },
+    {
+      "id": "api",
+      "type": "external",
+      "label": "第三方 API"
+    }
+  ],
+  "messages": [
+    {
+      "id": "m1",
+      "from": "user",
+      "to": "core",
+      "y": 160,
+      "label": "invoke([HumanMessage])",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "core",
+      "to": "model",
+      "y": 230,
+      "label": "_generate(messages)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "model",
+      "to": "sdk",
+      "y": 300,
+      "label": "create 请求",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m4",
+      "from": "sdk",
+      "to": "api",
+      "y": 370,
+      "label": "HTTPS",
+      "variant": "default"
+    },
+    {
+      "id": "m5",
+      "from": "api",
+      "to": "sdk",
+      "y": 440,
+      "label": "响应",
+      "variant": "return"
+    },
+    {
+      "id": "m6",
+      "from": "sdk",
+      "to": "model",
+      "y": 510,
+      "label": "响应对象",
+      "variant": "return"
+    },
+    {
+      "id": "m7",
+      "from": "model",
+      "to": "core",
+      "y": 580,
+      "label": "ChatResult",
+      "variant": "return"
+    }
+  ]
+}

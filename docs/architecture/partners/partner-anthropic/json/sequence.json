@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "ChatAnthropic 消息格式化与请求时序",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1200, 780],
+    "column_fit": "spread"
+  },
+  "participants": [
+    { "id": "user", "type": "external", "label": "用户", "sublabel": "invoke" },
+    { "id": "gen", "type": "backend", "label": "_generate", "sublabel": "chat_models.py" },
+    { "id": "fmt", "type": "backend", "label": "_format_messages", "sublabel": ":539" },
+    { "id": "sdk", "type": "cloud", "label": "anthropic SDK", "sublabel": "messages.create" },
+    { "id": "api", "type": "external", "label": "Claude API", "sublabel": "外部服务" }
+  ],
+  "segments": [
+    { "from": 150, "to": 320, "label": "消息格式化" },
+    { "from": 340, "to": 520, "label": "API 调用" },
+    { "from": 540, "to": 680, "label": "结果转换" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "gen", "y": 160, "label": "invoke(messages)", "variant": "emphasis" },
+    { "id": "m2", "from": "gen", "to": "fmt", "y": 210, "label": "_format_messages" },
+    { "id": "m3", "from": "fmt", "to": "gen", "y": 250, "label": "提取 system · 合并同角色", "variant": "return" },
+    { "id": "m4", "from": "gen", "to": "fmt", "y": 290, "label": "(system, messages)" },
+    { "id": "m5", "from": "gen", "to": "sdk", "y": 360, "label": "client.messages.create(**payload)" },
+    { "id": "m6", "from": "sdk", "to": "api", "y": 410, "label": "HTTPS POST", "variant": "emphasis" },
+    { "id": "m7", "from": "api", "to": "sdk", "y": 460, "label": "200 content blocks", "variant": "return" },
+    { "id": "m8", "from": "sdk", "to": "gen", "y": 500, "label": "parse()", "variant": "return" },
+    { "id": "m9", "from": "gen", "to": "user", "y": 560, "label": "_format_output 转换" },
+    { "id": "m10", "from": "gen", "to": "user", "y": 620, "label": "AIMessage", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "gen", "from": 160, "to": 640, "type": "backend" },
+    { "participant": "fmt", "from": 210, "to": 310, "type": "backend" },
+    { "participant": "sdk", "from": 360, "to": 520, "type": "backend" }
+  ]
+}

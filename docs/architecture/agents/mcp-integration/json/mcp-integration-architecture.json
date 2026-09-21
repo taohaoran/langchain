@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "MCP 适配架构",
+    "quality_profile": "standard",
+    "locale": "zh-CN",
+    "viewBox": [1080, 560]
+  },
+  "components": [
+    { "id": "user", "type": "external", "label": "用户", "sublabel": "MCPAdapter(url)", "pos": [40, 240], "size": [150, 64] },
+    { "id": "adapter", "type": "backend", "label": "MCPAdapter", "sublabel": "adapter.py", "pos": [290, 240], "size": [160, 64] },
+    { "id": "conv", "type": "security", "label": "as_langchain_tool", "sublabel": "工具转换", "pos": [540, 240], "size": [170, 60] },
+    { "id": "agent", "type": "backend", "label": "create_agent", "sublabel": "装配工具", "pos": [820, 240], "size": [160, 64] },
+    { "id": "fastmcp", "type": "cloud", "label": "FastMCP Client", "sublabel": "传输/协议", "pos": [290, 60], "size": [170, 60], "tag": "外部" },
+    { "id": "server", "type": "external", "label": "MCP 服务器", "sublabel": "远端", "pos": [540, 60], "size": [160, 60], "tag": "外部" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库源码内", "wraps": ["adapter", "conv"] }
+  ],
+  "connections": [
+    { "id": "u-a", "from": "user", "to": "adapter", "variant": "emphasis" },
+    { "id": "a-c", "from": "adapter", "to": "conv", "variant": "default" },
+    { "id": "c-agent", "from": "conv", "to": "agent", "variant": "emphasis", "label": "BaseTool 列表" },
+    { "id": "a-fm", "from": "adapter", "to": "fastmcp", "variant": "default", "fromSide": "top", "toSide": "bottom" },
+    { "id": "fm-srv", "from": "fastmcp", "to": "server", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "适配要点", "items": ["字符串 target 必须是 http(s) URL", "异步上下文管理连接", "elicitation 默认 arm，自带处理器则尊重"] },
+    { "dot": "amber", "title": "错误语义", "items": ["业务失败转 error ToolMessage", "传输失败直接上抛"] }
+  ]
+}

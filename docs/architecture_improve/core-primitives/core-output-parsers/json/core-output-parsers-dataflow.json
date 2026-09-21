@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": {
+    "title": "输出解析数据流",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1080, 560]
+  },
+  "stages": [
+    { "label": "模型原始输出" },
+    { "label": "归一化为文本" },
+    { "label": "parse 解析校验" },
+    { "label": "结构化对象" },
+    { "label": "格式指令回喂" }
+  ],
+  "nodes": [
+    { "id": "gen", "type": "external", "label": "模型输出", "sublabel": "AIMessage/Generation", "stage": 0, "row": 1 },
+    { "id": "text", "type": "backend", "label": "文本归一化", "sublabel": "parse_result", "stage": 1, "row": 1 },
+    { "id": "parse", "type": "backend", "label": "parse+校验", "sublabel": "pydantic.py:84", "stage": 2, "row": 1 },
+    { "id": "obj", "type": "database", "label": "结构化对象", "sublabel": "dict/list/BaseModel", "stage": 3, "row": 1 },
+    { "id": "instr", "type": "backend", "label": "格式指令", "sublabel": "get_format_instructions", "stage": 4, "row": 0 },
+    { "id": "prompt", "type": "cloud", "label": "PromptTemplate", "stage": 4, "row": 2 }
+  ],
+  "flows": [
+    { "from": "gen", "to": "text", "label": "模型输出", "variant": "emphasis", "route": "straight" },
+    { "from": "text", "to": "parse", "label": "文本", "variant": "emphasis", "route": "straight" },
+    { "from": "parse", "to": "obj", "label": "结构化", "variant": "emphasis", "route": "straight" },
+    { "from": "parse", "to": "instr", "label": "自描述", "route": "vertical-channel", "labelDy": -16 },
+    { "from": "instr", "to": "prompt", "label": "拼进提示词", "route": "straight", "labelDy": 20 }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": [
+      "模型文本经 parse_result 归一化再 parse",
+      "Pydantic 解析含 schema 校验，失败抛 OutputParserException",
+      "format_instructions 回喂 prompt 引导模型按格式输出"
+    ] }
+  ]
+}

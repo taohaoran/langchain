@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "ChatOpenAI 补全请求调用链",
+    "quality_profile": "showcase",
+    "locale": "zh-CN",
+    "viewBox": [1200, 780],
+    "column_fit": "spread"
+  },
+  "participants": [
+    { "id": "user", "type": "external", "label": "用户应用", "sublabel": "invoke/stream" },
+    { "id": "base", "type": "backend", "label": "BaseChatModel", "sublabel": "langchain_core 框架" },
+    { "id": "gen", "type": "backend", "label": "ChatOpenAI._generate", "sublabel": "chat_models/base.py:1852" },
+    { "id": "conv", "type": "backend", "label": "消息转换", "sublabel": "_convert_message_to_dict" },
+    { "id": "sdk", "type": "cloud", "label": "openai SDK", "sublabel": "client.with_raw_response" },
+    { "id": "api", "type": "external", "label": "OpenAI API", "sublabel": "chat/completions 或 responses" }
+  ],
+  "segments": [
+    { "from": 150, "to": 300, "label": "归一化与 payload 构建" },
+    { "from": 320, "to": 480, "label": "API 调用与响应解析" },
+    { "from": 500, "to": 650, "label": "结果转换为 ChatResult" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "base", "y": 160, "label": "invoke([HumanMessage])", "variant": "emphasis" },
+    { "id": "m2", "from": "base", "to": "gen", "y": 200, "label": "调用子类 _generate(messages)" },
+    { "id": "m3", "from": "gen", "to": "conv", "y": 240, "label": "逐条 _convert_message_to_dict" },
+    { "id": "m4", "from": "conv", "to": "gen", "y": 280, "label": "返回 OpenAI messages dict", "variant": "return" },
+    { "id": "m5", "from": "gen", "to": "sdk", "y": 340, "label": "client.with_raw_response.create(**payload)" },
+    { "id": "m6", "from": "sdk", "to": "api", "y": 380, "label": "HTTPS POST（重试由 SDK 负责）", "variant": "emphasis" },
+    { "id": "m7", "from": "api", "to": "sdk", "y": 420, "label": "HTTP 200 响应", "variant": "return" },
+    { "id": "m8", "from": "sdk", "to": "gen", "y": 460, "label": "raw_response.parse()", "variant": "return" },
+    { "id": "m9", "from": "gen", "to": "conv", "y": 520, "label": "_create_chat_result 反序列化" },
+    { "id": "m10", "from": "conv", "to": "gen", "y": 560, "label": "ChatGeneration(AIMessage)", "variant": "return" },
+    { "id": "m11", "from": "gen", "to": "base", "y": 600, "label": "ChatResult", "variant": "return" },
+    { "id": "m12", "from": "base", "to": "user", "y": 640, "label": "AIMessage 输出", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "gen", "from": 200, "to": 620, "type": "backend" },
+    { "participant": "conv", "from": 240, "to": 300, "type": "backend" },
+    { "participant": "sdk", "from": 340, "to": 480, "type": "backend" }
+  ]
+}

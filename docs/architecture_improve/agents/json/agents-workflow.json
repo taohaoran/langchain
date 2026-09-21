@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "构建 agent 到执行一轮流程",
+    "quality_profile": "showcase",
+    "locale": "zh-CN"
+  },
+  "lanes": [
+    { "id": "user", "label": "用户" },
+    { "id": "factory", "label": "create_agent 工厂" },
+    { "id": "runtime", "label": "代理运行时" }
+  ],
+  "mainPath": ["provide", "init", "build", "mw", "compile", "run"],
+  "nodes": [
+    { "id": "provide", "lane": "user", "col": 0, "type": "external", "label": "提供模型/工具/中间件", "width": 140 },
+    { "id": "init", "lane": "factory", "col": 1, "type": "backend", "label": "实例化模型", "sublabel": "init_chat_model", "width": 140 },
+    { "id": "build", "lane": "factory", "col": 2, "type": "backend", "label": "收集工具建 ToolNode", "width": 140 },
+    { "id": "mw", "lane": "factory", "col": 3, "type": "backend", "label": "复合中间件洋葱链", "width": 140 },
+    { "id": "compile", "lane": "factory", "col": 4, "type": "backend", "label": "编译状态图", "sublabel": "StateGraph.compile", "width": 140 },
+    { "id": "run", "lane": "runtime", "col": 5, "type": "messagebus", "label": "执行一轮循环", "sublabel": "model→tools→model", "width": 140 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "provide", "to": "init", "variant": "emphasis" },
+    { "id": "e2", "from": "init", "to": "build", "variant": "default" },
+    { "id": "e3", "from": "build", "to": "mw", "variant": "default" },
+    { "id": "e4", "from": "mw", "to": "compile", "variant": "default" },
+    { "id": "e5", "from": "compile", "to": "run", "label": "invoke", "variant": "emphasis" }
+  ]
+}
