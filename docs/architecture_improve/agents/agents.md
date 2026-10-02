@@ -1,7 +1,7 @@
 # agents 域总览
 
 > 本域包含以下 6 个叶子子系统；各叶子详情见对应文档。
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，源码目录 `libs/langchain_v1/langchain/`（约 40 个 py 文件 / 1.6 万行）。
+> 源码基准：`langchain_v1` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码目录 `libs/langchain_v1/langchain/`（约 40 个 py 文件 / 1.6 万行）。
 
 ## 1. 域职责
 
@@ -25,7 +25,7 @@ agents 域是 `langchain_v1`（当前活跃维护的 langchain 包）的核心�
 - **create_agent 整体流程**：字符串模型经 `init_chat_model` 实例化 → 处理 `response_format` 三策略 → 收集工具构造 `ToolNode` → 按 6 类钩子筛选并复合 `wrap_model_call`/`wrap_tool_call` 洋葱链 → 合并状态 schema → 建 `StateGraph` 加 model/tools/中间件节点 → 装配条件边（model_to_tools/tools_to_model）→ `compile` 返回。
 - **中间件链模式**：每个中间件覆写基类 `AgentMiddleware` 的 6 个钩子（before_agent/before_model/wrap_model_call/after_model/wrap_tool_call/after_agent，均同步+异步）；工厂用"方法是否仍为基类默认"做鸭子式注册；`wrap_*` 采用洋葱复合（外→内请求、内→外响应）。
 - **代理循环**：model 产出 tool_calls → `Send("tools")` 并发执行工具 → 回 model，直到无新工具调用；`recursion_limit=9999`。
-- **本轮增强**：为基线仅 1 图的三个叶子（agent-execution-tools、chat-models-embeddings、messages-rate-limiters）按核心语义各补第 2 张图——子代理流提升补 dataflow、`init_chat_model` 补 sequence、请求期裁剪限流补 dataflow；新增本域两张域级图。
+- **第三轮刷新**：源码自第二轮以来仅 1 个 docs 部署 commit、无源码改动；本轮按当前 HEAD（`89252a8f`）逐处核验行号，并借上游 archify CLI 升级（meta 强制 `output` 字段 + `desktop-readability` 检查）把全部叶子图与域级图重渲——除 agent-factory 的 lifecycle 图因回边正交性保留 standard 外，其余 11 张叶子图与 3 张域级图均达 showcase。
 
 ## 4. 域级图
 

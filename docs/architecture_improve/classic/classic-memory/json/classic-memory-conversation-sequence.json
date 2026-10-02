@@ -1,0 +1,117 @@
+{
+ "schema_version": 1,
+ "diagram_type": "sequence",
+ "meta": {
+  "title": "一次对话轮次的记忆读写时序",
+  "quality_profile": "showcase",
+  "locale": "zh-CN",
+  "column_fit": "spread",
+  "output": "classic-memory-conversation-sequence.html"
+ },
+ "participants": [
+  {
+   "id": "chain",
+   "type": "backend",
+   "label": "Chain",
+   "sublabel": "编排"
+  },
+  {
+   "id": "memory",
+   "type": "backend",
+   "label": "BaseMemory",
+   "sublabel": "记忆契约"
+  },
+  {
+   "id": "llm",
+   "type": "cloud",
+   "label": "LLM",
+   "sublabel": "生成"
+  },
+  {
+   "id": "history",
+   "type": "database",
+   "label": "消息历史",
+   "sublabel": "持久化后端"
+  }
+ ],
+ "messages": [
+  {
+   "id": "m1",
+   "from": "chain",
+   "to": "memory",
+   "y": 180,
+   "label": "load_memory_variables",
+   "variant": "emphasis"
+  },
+  {
+   "id": "m2",
+   "from": "memory",
+   "to": "chain",
+   "y": 240,
+   "label": "历史对话变量",
+   "variant": "return"
+  },
+  {
+   "id": "m3",
+   "from": "chain",
+   "to": "llm",
+   "y": 330,
+   "label": "带历史的 prompt 生成",
+   "variant": "emphasis"
+  },
+  {
+   "id": "m4",
+   "from": "llm",
+   "to": "chain",
+   "y": 420,
+   "label": "AI 消息",
+   "variant": "return"
+  },
+  {
+   "id": "m5",
+   "from": "chain",
+   "to": "memory",
+   "y": 520,
+   "label": "save_context(输入,输出)",
+   "variant": "emphasis"
+  },
+  {
+   "id": "m6",
+   "from": "memory",
+   "to": "history",
+   "y": 590,
+   "label": "追加 user/ai 消息",
+   "variant": "emphasis"
+  },
+  {
+   "id": "m7",
+   "from": "history",
+   "to": "memory",
+   "y": 650,
+   "label": "持久化完成",
+   "variant": "return"
+  },
+  {
+   "id": "m8",
+   "from": "memory",
+   "to": "chain",
+   "y": 710,
+   "label": "本轮结束",
+   "variant": "return"
+  }
+ ],
+ "activations": [
+  {
+   "participant": "chain",
+   "from": 180,
+   "to": 710,
+   "type": "backend"
+  },
+  {
+   "participant": "memory",
+   "from": 180,
+   "to": 710,
+   "type": "backend"
+  }
+ ]
+}

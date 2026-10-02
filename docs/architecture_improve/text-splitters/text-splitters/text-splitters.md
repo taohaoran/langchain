@@ -2,19 +2,19 @@
 
 > 本文是 `text-splitters` 域下的叶子子系统文档。本独立包把长文本切分为适合 LLM 上下文的块。
 >
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，独立包目录 `libs/text-splitters/langchain_text_splitters/`（13 个 py 文件，约 3686 行）。
+> 源码基准：`langchain_v1` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，独立包目录 `libs/text-splitters/langchain_text_splitters/`（13 个 py 文件，共 3686 行）。
 
 ## 1. 功能清单
 
 | 能力 | 说明 | 源码路径 |
 |------|------|----------|
 | `TextSplitter` 抽象基类 | 定义分块契约：`chunk_size=4000 / chunk_overlap=200 / length_function=len` | `text_splitter/base.py:59` |
-| `split_text` 抽象方法 | 子类实现的文本切分入口 | `text_splitter/base.py:107` |
+| `split_text` 抽象方法 | 子类实现的文本切分入口 | `text_splitter/base.py:108` |
 | `create_documents / split_documents` | 文本/文档列表 → 分块 Document 列表 | `text_splitter/base.py:118,146` |
 | `_merge_splits` | 把小片合并为不超过 chunk_size 的块，维护 chunk_overlap 重叠 | `text_splitter/base.py:167` |
 | `CharacterTextSplitter` | 单分隔符字符分块 | `character.py:13` |
 | `RecursiveCharacterTextSplitter` | 递归多级分隔符（默认 `["\n\n","\n"," ",""]`），优先按语义块切分 | `character.py:91` |
-| `from_language` | 按编程语言/标记语言选取专用分隔符集 | `character.py:164` |
+| `from_language` | 按编程语言/标记语言选取专用分隔符集 | `character.py:165` |
 | `Language` 枚举 | 各语言（python/jsx/markdown/latex/html...）分隔符表 | `base.py:448` |
 | `TokenTextSplitter` | 按 token 计数的分块（tiktoken） | `base.py:325` |
 | `from_tiktoken_encoder / from_huggingface_tokenizer` | 用外部 tokenizer 计长的工厂类方法 | `base.py:212,282` |
@@ -90,7 +90,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|------|
-| 分块器体系架构图 | `text-splitters-architecture.html` | architecture | standard |
-| 递归分块数据流 | `text-splitters-dataflow.html` | dataflow | standard |
+| 分块器体系架构图 | `text-splitters-architecture.html` | architecture | showcase |
+| 递归分块数据流 | `text-splitters-dataflow.html` | dataflow | showcase |
 
-JSON IR 源文件位于 `json/`。降档说明：分块器实现较多，按 standard 档渲染。
+JSON IR 源文件位于 `json/`。本轮两图均由 standard 提升至 showcase：架构图为"抽象基类→四类实现→可选分词器"主路径，连线清晰；数据流图为"原始文本→选分隔符切分→超长递归→合并输出"四阶段管道，合并→输出流已用 `labelDy` 垂直分离标签。

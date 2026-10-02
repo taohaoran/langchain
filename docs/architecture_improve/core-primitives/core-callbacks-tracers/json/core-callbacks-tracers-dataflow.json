@@ -5,27 +5,108 @@
     "title": "回调广播与追踪管道",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 640]
+    "viewBox": [
+      1080,
+      720
+    ],
+    "output": "core-callbacks-tracers-dataflow.html"
   },
   "stages": [
-    { "label": "执行事件源" },
-    { "label": "管理器广播" },
-    { "label": "Handler 处理" },
-    { "label": "Run 持久化" }
+    {
+      "label": "执行事件源"
+    },
+    {
+      "label": "管理器广播"
+    },
+    {
+      "label": "Handler 处理"
+    },
+    {
+      "label": "Run 持久化"
+    }
   ],
   "nodes": [
-    { "id": "runnable", "type": "backend", "label": "Runnable 执行", "sublabel": "on_chain_start/end", "stage": 0, "row": 0 },
-    { "id": "cbmgr", "type": "messagebus", "label": "CallbackManager", "sublabel": "广播事件", "stage": 1, "row": 0 },
-    { "id": "stdout", "type": "frontend", "label": "StdOutHandler", "sublabel": "打印", "stage": 2, "row": 0 },
-    { "id": "file", "type": "database", "label": "FileHandler", "sublabel": "写文件", "stage": 2, "row": 1 },
-    { "id": "tracer", "type": "backend", "label": "BaseTracer", "sublabel": "构造 Run", "stage": 2, "row": 2 },
-    { "id": "runstore", "type": "database", "label": "Run 记录", "sublabel": "持久化/上传", "stage": 3, "row": 1 }
+    {
+      "id": "runnable",
+      "type": "backend",
+      "label": "Runnable 执行",
+      "sublabel": "on_chain_start/end",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "cbmgr",
+      "type": "messagebus",
+      "label": "CallbackManager",
+      "sublabel": "广播事件",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "stdout",
+      "type": "frontend",
+      "label": "StdOutHandler",
+      "sublabel": "打印",
+      "stage": 2,
+      "row": 0
+    },
+    {
+      "id": "file",
+      "type": "database",
+      "label": "FileHandler",
+      "sublabel": "写文件",
+      "stage": 2,
+      "row": 1
+    },
+    {
+      "id": "tracer",
+      "type": "backend",
+      "label": "BaseTracer",
+      "sublabel": "构造 Run",
+      "stage": 2,
+      "row": 2
+    },
+    {
+      "id": "runstore",
+      "type": "database",
+      "label": "Run 记录",
+      "sublabel": "持久化/上传",
+      "stage": 3,
+      "row": 1
+    }
   ],
   "flows": [
-    { "from": "runnable", "to": "cbmgr", "label": "on_* 事件", "classification": "run_id/inputs", "variant": "emphasis", "route": "straight" },
-    { "from": "cbmgr", "to": "stdout", "label": "on_text", "labelDy": -16, "route": "straight" },
-    { "from": "cbmgr", "to": "file", "label": "写入", "route": "straight" },
-    { "from": "cbmgr", "to": "tracer", "label": "构造 Run", "labelDy": 16, "variant": "emphasis", "route": "straight" },
-    { "from": "tracer", "to": "runstore", "label": "_persist_run", "classification": "Run 树", "variant": "emphasis", "route": "straight" }
+    {
+      "from": "runnable",
+      "to": "cbmgr",
+      "label": "on_* 事件",
+      "classification": "run_id/inputs",
+      "variant": "emphasis",
+      "route": "straight"
+    },
+    {
+      "from": "cbmgr",
+      "to": "stdout",
+      "label": "on_text"
+    },
+    {
+      "from": "cbmgr",
+      "to": "file",
+      "label": "写入"
+    },
+    {
+      "from": "cbmgr",
+      "to": "tracer",
+      "label": "构造 Run",
+      "variant": "emphasis"
+    },
+    {
+      "from": "tracer",
+      "to": "runstore",
+      "label": "_persist_run",
+      "classification": "Run 树",
+      "variant": "emphasis",
+      "route": "straight"
+    }
   ]
 }

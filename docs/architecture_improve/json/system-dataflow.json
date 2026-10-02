@@ -3,6 +3,7 @@
   "diagram_type": "dataflow",
   "meta": {
     "title": "LangChain 核心数据流图",
+    "output": "system-dataflow.html",
     "quality_profile": "standard",
     "locale": "zh-CN",
     "viewBox": [1300, 820]

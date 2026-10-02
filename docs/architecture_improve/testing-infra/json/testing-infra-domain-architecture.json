@@ -4,7 +4,7 @@
   "meta": {
     "title": "standard-tests 契约测试层位置",
     "quality_profile": "showcase",
-    "locale": "zh-CN",
+    "locale": "zh-CN", "output": "testing-infra-domain-architecture.html",
     "viewBox": [1280, 600]
   },
   "components": [

@@ -4,7 +4,7 @@
   "meta": {
     "title": "profile 生成 CLI 架构",
     "quality_profile": "standard",
-    "locale": "zh-CN",
+    "locale": "zh-CN", "output": "model-profiles-architecture.html",
     "viewBox": [1080, 520]
   },
   "components": [

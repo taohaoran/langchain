@@ -1,0 +1,175 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "经典 LLM/聊天模型兼容层（llms + chat_models）",
+  "quality_profile": "showcase",
+  "locale": "zh-CN",
+  "viewBox": [
+   1100,
+   560
+  ],
+  "output": "classic-llms-chat-architecture.html"
+ },
+ "components": [
+  {
+   "id": "user",
+   "type": "external",
+   "label": "用户代码",
+   "sublabel": "旧路径导入",
+   "pos": [
+    40,
+    110
+   ],
+   "size": [
+    130,
+    56
+   ]
+  },
+  {
+   "id": "shim",
+   "type": "backend",
+   "label": "厂商导入桩",
+   "sublabel": "create_importer",
+   "pos": [
+    320,
+    110
+   ],
+   "size": [
+    170,
+    56
+   ],
+   "tag": "83+35 文件"
+  },
+  {
+   "id": "community",
+   "type": "external",
+   "label": "langchain-community",
+   "sublabel": "厂商实现",
+   "pos": [
+    620,
+    110
+   ],
+   "size": [
+    170,
+    56
+   ]
+  },
+  {
+   "id": "api",
+   "type": "cloud",
+   "label": "远端模型 API",
+   "sublabel": "推理本身",
+   "pos": [
+    900,
+    110
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "base",
+   "type": "backend",
+   "label": "基类重导出",
+   "sublabel": "BaseLLM/BaseChatModel",
+   "pos": [
+    320,
+    280
+   ],
+   "size": [
+    170,
+    56
+   ]
+  },
+  {
+   "id": "core",
+   "type": "backend",
+   "label": "langchain-core",
+   "sublabel": "真正抽象基类",
+   "pos": [
+    620,
+    280
+   ],
+   "size": [
+    170,
+    56
+   ],
+   "tag": "同仓库另一包"
+  },
+  {
+   "id": "registry",
+   "type": "backend",
+   "label": "类型注册表",
+   "sublabel": "load_llm",
+   "pos": [
+    320,
+    430
+   ],
+   "size": [
+    170,
+    56
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "u-shim",
+   "from": "user",
+   "to": "shim",
+   "label": "import 厂商类"
+  },
+  {
+   "id": "shim-comm",
+   "from": "shim",
+   "to": "community",
+   "label": "__getattr__ 延迟加载",
+   "variant": "emphasis"
+  },
+  {
+   "id": "comm-api",
+   "from": "community",
+   "to": "api",
+   "label": "调用"
+  },
+  {
+   "id": "u-base",
+   "from": "user",
+   "to": "base",
+   "variant": "dashed"
+  },
+  {
+   "id": "base-core",
+   "from": "base",
+   "to": "core",
+   "label": "re-export",
+   "variant": "emphasis"
+  },
+  {
+   "id": "reg-core",
+   "from": "registry",
+   "to": "core",
+   "variant": "dashed"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "兼容层定位",
+   "items": [
+    "基类已下沉 langchain-core，本包仅旧路径重导出",
+    "厂商实现已迁至 community / partner 包",
+    "create_importer 延迟导入 + 弃用告警"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "不承载",
+   "items": [
+    "本叶子无自有推理逻辑与并发模型",
+    "目录即实例库：83+35 同构转发桩"
+   ]
+  }
+ ]
+}

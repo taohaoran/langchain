@@ -5,7 +5,7 @@
 > （见 `../classic-utils-eval/` 与 `langchain_core.tools`）、Hub 拉取（见
 > `../classic-callbacks-infra/`）。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`。
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`。
 >
 > 本轮改进：架构图在当前 archify 版本下由基线 `standard` 提升至 `showcase`；状态机图保留。
 

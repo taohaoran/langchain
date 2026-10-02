@@ -5,36 +5,208 @@
     "title": "提示词模板类层级与渲染管道",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 720]
+    "viewBox": [
+      1080,
+      720
+    ],
+    "output": "core-prompts-architecture.html"
   },
   "components": [
-    { "id": "vars", "type": "external", "label": "用户变量", "sublabel": "dict[str, Any]", "pos": [40, 300], "size": [150, 60] },
-    { "id": "base", "type": "backend", "label": "BasePromptTemplate", "sublabel": "RunnableSerializable", "pos": [260, 295], "size": [180, 70], "tag": "抽象基类" },
-    { "id": "string", "type": "backend", "label": "PromptTemplate", "sublabel": "f-string/jinja2/mustache", "pos": [260, 120], "size": [180, 60] },
-    { "id": "chat", "type": "backend", "label": "ChatPromptTemplate", "sublabel": "chat.py:794", "pos": [520, 295], "size": [170, 70] },
-    { "id": "msg", "type": "backend", "label": "消息模板族", "sublabel": "Human/AI/System", "pos": [520, 120], "size": [170, 60] },
-    { "id": "placeholder", "type": "backend", "label": "MessagesPlaceholder", "sublabel": "插入历史消息", "pos": [520, 490], "size": [170, 60] },
-    { "id": "pval", "type": "backend", "label": "PromptValue", "sublabel": "to_messages()", "pos": [800, 120], "size": [160, 60] },
-    { "id": "model", "type": "cloud", "label": "Chat Model", "sublabel": "core-language-models", "pos": [800, 490], "size": [170, 60] }
+    {
+      "id": "vars",
+      "type": "external",
+      "label": "用户变量",
+      "sublabel": "dict[str, Any]",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "base",
+      "type": "backend",
+      "label": "BasePromptTemplate",
+      "sublabel": "RunnableSerializable",
+      "pos": [
+        260,
+        295
+      ],
+      "size": [
+        180,
+        70
+      ],
+      "tag": "抽象基类"
+    },
+    {
+      "id": "string",
+      "type": "backend",
+      "label": "PromptTemplate",
+      "sublabel": "f-string/jinja2/mustache",
+      "pos": [
+        260,
+        120
+      ],
+      "size": [
+        180,
+        60
+      ]
+    },
+    {
+      "id": "chat",
+      "type": "backend",
+      "label": "ChatPromptTemplate",
+      "sublabel": "chat.py:794",
+      "pos": [
+        520,
+        295
+      ],
+      "size": [
+        170,
+        70
+      ]
+    },
+    {
+      "id": "msg",
+      "type": "backend",
+      "label": "消息模板族",
+      "sublabel": "Human/AI/System",
+      "pos": [
+        520,
+        120
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "placeholder",
+      "type": "backend",
+      "label": "MessagesPlaceholder",
+      "sublabel": "插入历史消息",
+      "pos": [
+        520,
+        490
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "pval",
+      "type": "backend",
+      "label": "PromptValue",
+      "sublabel": "to_messages()",
+      "pos": [
+        800,
+        120
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "model",
+      "type": "cloud",
+      "label": "Chat Model",
+      "sublabel": "core-language-models",
+      "pos": [
+        800,
+        490
+      ],
+      "size": [
+        170,
+        60
+      ]
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "langchain_core.prompts", "wraps": ["base", "string", "chat", "msg", "placeholder", "pval"] }
+    {
+      "kind": "region",
+      "label": "langchain_core.prompts",
+      "wraps": [
+        "base",
+        "string",
+        "chat",
+        "msg",
+        "placeholder",
+        "pval"
+      ]
+    }
   ],
   "connections": [
-    { "id": "v-b", "from": "vars", "to": "base", "label": "invoke", "variant": "emphasis" },
-    { "id": "b-s", "from": "base", "to": "string", "label": "字符串模板", "fromSide": "top", "toSide": "bottom" },
-    { "id": "b-c", "from": "base", "to": "chat", "label": "聊天模板" },
-    { "id": "c-m", "from": "chat", "to": "msg", "label": "组合", "fromSide": "top", "toSide": "bottom" },
-    { "id": "c-p", "from": "chat", "to": "placeholder", "label": "占位符", "fromSide": "bottom", "toSide": "top", "labelDy": 24 },
-    { "id": "c-pv", "from": "chat", "to": "pval", "label": "渲染", "fromSide": "right", "toSide": "left" },
-    { "id": "pv-m", "from": "pval", "to": "model", "label": "list[BaseMessage]", "fromSide": "bottom", "toSide": "top", "variant": "emphasis" }
+    {
+      "id": "v-b",
+      "from": "vars",
+      "to": "base",
+      "label": "invoke",
+      "variant": "emphasis"
+    },
+    {
+      "id": "b-s",
+      "from": "base",
+      "to": "string",
+      "label": "字符串模板",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "b-c",
+      "from": "base",
+      "to": "chat",
+      "label": "聊天模板"
+    },
+    {
+      "id": "c-m",
+      "from": "chat",
+      "to": "msg",
+      "label": "组合",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "c-p",
+      "from": "chat",
+      "to": "placeholder",
+      "label": "占位符",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDy": 24
+    },
+    {
+      "id": "c-pv",
+      "from": "chat",
+      "to": "pval",
+      "label": "渲染",
+      "fromSide": "right",
+      "toSide": "left"
+    },
+    {
+      "id": "pv-m",
+      "from": "pval",
+      "to": "model",
+      "label": "list[BaseMessage]",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "variant": "emphasis"
+    }
   ],
   "cards": [
-    { "dot": "emerald", "title": "要点", "items": [
-      "模板即 Runnable，天然接入 LCEL",
-      "f-string/jinja2/mustache 可插拔语法",
-      "MessagesPlaceholder 注入历史消息",
-      "PromptValue 统一字符串/聊天/图像表示"
-    ] }
+    {
+      "dot": "emerald",
+      "title": "要点",
+      "items": [
+        "模板即 Runnable，天然接入 LCEL",
+        "f-string/jinja2/mustache 可插拔语法",
+        "MessagesPlaceholder 注入历史消息",
+        "PromptValue 统一字符串/聊天/图像表示"
+      ]
+    }
   ]
 }

@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Chroma 向量库集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-chroma-architecture.html", "viewBox": [1240, 460] },
+  "components": [
+    { "id": "app", "type": "external", "label": "用户应用 / RAG 链", "pos": [40, 200], "size": [160, 60] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "VectorStore / Embeddings", "pos": [290, 185], "size": [175, 90] },
+    { "id": "chroma", "type": "backend", "label": "Chroma", "sublabel": "文本/图像/混合检索", "pos": [540, 150], "size": [195, 100], "tag": "vectorstores.py:155" },
+    { "id": "sdk", "type": "external", "label": "chromadb SDK", "pos": [820, 190], "size": [140, 70] },
+    { "id": "server", "type": "database", "label": "Chroma 服务端", "sublabel": "集合/持久化", "pos": [1030, 160], "size": [160, 80] },
+    { "id": "embed", "type": "external", "label": "嵌入函数", "pos": [820, 310], "size": [140, 55] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain-chroma 本仓库适配层", "wraps": ["chroma"] },
+    { "kind": "region", "label": "外部依赖与服务（不在本仓库源码内）", "wraps": ["sdk", "server", "embed"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "app", "to": "core", "label": "add/search", "variant": "emphasis" },
+    { "id": "c2", "from": "core", "to": "chroma", "label": "实现", "variant": "emphasis" },
+    { "id": "c3", "from": "chroma", "to": "sdk", "label": "collection", "variant": "emphasis" },
+    { "id": "c4", "from": "sdk", "to": "server", "label": "gRPC/HTTP", "variant": "emphasis" },
+    { "id": "c5", "from": "chroma", "to": "embed", "label": "embed_documents", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["单文件 vectorstores.py 实现", "支持文本+图像+混合检索", "Chroma 服务端不在本仓库"] }
+  ]
+}

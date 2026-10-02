@@ -4,7 +4,7 @@
 > 本文只展开 OpenAI 集成（`langchain-openai`）的职责边界，不重复展开 Anthropic、向量存储、
 > 其他模型提供商、Exa 搜索等相邻叶子（分别见各自叶子）。
 >
-> 源码基准：`libs/partners/openai/`，`langchain-openai` 包；branch `master`，commit `4492ad7a`。
+> 源码基准：`libs/partners/openai/`，`langchain-openai` 包；branch `master`，commit `89252a8f`。
 
 ## 1. 功能清单
 
@@ -155,7 +155,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |---|---|---|---|
-| OpenAI 集成架构图 | `partner-openai-architecture.html` | architecture | standard |
+| OpenAI 集成架构图 | `partner-openai-architecture.html` | architecture | **showcase** |
 | Chat 请求时序图 | `partner-openai-sequence.html` | sequence | **showcase** |
 
-**相对基线的提升**：时序图由基线的 standard 提升为 showcase（缩短参与者标签、去除跨距为 0 的自调用消息、压缩消息 y 间距后一次通过 showcase 布局校验）。架构图因跨"langchain_core 抽象层 ↔ OpenAI 适配层 ↔ openai SDK ↔ 外部服务"四层、跨层连线较多，showcase 布局校验未一次通过，降为 standard 渲染。JSON IR 源文件位于 `json/` 目录。
+**第三轮刷新**：本轮补全 archify schema 新增的 `meta.output` 字段后，架构图由第二轮的 standard 提升为 showcase（上游 CLI 升级后布局校验重新通过），时序图保持 showcase。两图均一次通过 showcase 校验。关键行号已按 HEAD `89252a8f` 复核（`BaseChatOpenAI` @ base.py:715、`_generate` @ :1852、`ChatOpenAI` @ :2823、错误映射族 @ :570-608、`OpenAIEmbeddings` @ embeddings/base.py:86），与第二轮一致。JSON IR 源文件位于 `json/` 目录。

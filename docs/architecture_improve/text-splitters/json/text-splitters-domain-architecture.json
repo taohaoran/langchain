@@ -5,7 +5,8 @@
     "title": "text-splitters 域在生态中的位置",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1280, 640]
+    "output": "text-splitters-domain-architecture.html",
+    "viewBox": [1240, 640]
   },
   "components": [
     { "id": "docloader", "type": "external", "label": "文档加载器", "pos": [60, 290], "size": [150, 64] },

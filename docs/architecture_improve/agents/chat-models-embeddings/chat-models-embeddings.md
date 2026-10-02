@@ -3,7 +3,7 @@
 > 本文是 `agents` 域下的叶子子系统文档。域级总览见 `../agents.md`，本文只展开 v1 的模型初始化工厂与
 > 可配置模型封装；具体聊天模型实现在各 partner 包（不在本叶子源码内）。
 >
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，源码目录 `libs/langchain_v1/langchain/chat_models/` 与
+> 源码基准：`langchain_v1` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码目录 `libs/langchain_v1/langchain/chat_models/` 与
 > `libs/langchain_v1/langchain/embeddings/`。
 
 ## 1. 功能清单
@@ -87,7 +87,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|------|
-| 模型初始化工厂架构图 | `chat-models-embeddings-architecture.html` | architecture | standard |
+| 模型初始化工厂架构图 | `chat-models-embeddings-architecture.html` | architecture | showcase |
 | init_chat_model 调用链时序 | `chat-models-embeddings-sequence.html` | sequence | showcase |
 
-JSON IR 源文件位于 `json/`。本轮新增 sequence 图：`init_chat_model("openai:gpt-4o")` 是一条"调用方 → 工厂 → `_parse_model` → `_get_chat_model_creator` 惰性导入 → partner 构造器 → 返回实例"的明确多方时序交互，与静态路由架构图互补。
+JSON IR 源文件位于 `json/`。本轮架构图由 standard 提升至 showcase（"用户→解析→惰性导入→三 partner"主路径清晰无交叉）；sequence 图维持 showcase：`init_chat_model("openai:gpt-4o")` 是一条"调用方 → 工厂 → `_parse_model` → `_get_chat_model_creator` 惰性导入 → partner 构造器 → 返回实例"的明确多方时序交互，与静态路由架构图互补。

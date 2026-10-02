@@ -1,8 +1,8 @@
-# LangChain Monorepo 系统级总览（第二轮改进版）
+# LangChain Monorepo 系统级总览（第三轮改进版）
 
-> 本文是第二轮迭代分析的系统级总览。基线（第一轮）位于 `../architecture/`（只读，未改动）；
+> 本文是第三轮迭代分析的系统级总览。基线（第一轮）位于 `../architecture/`（只读，未改动）；
 > 本轮全部产物位于本目录 `docs/architecture_improve/`，相对基线的改进点见 `improve-comparison.md`。
-> 源码基准：`langchain` master，commit `4492ad7a804e94bdcc89bf148cfc8efd5e7d6ef7`。
+> 源码基准：`langchain` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`（2026-09-21）。
 
 ## 一、功能总览
 
@@ -81,7 +81,7 @@ langchain-core（基础契约）  ←  v1 / classic（编排层）  ←  partner
 ### 4.3 数据流图（RAG 管道）说明
 索引管道（上）：原始文档→加载器→分块→嵌入→向量存储；查询管道（下）：对话消息→提示模板（注入检索上下文）→聊天模型→输出解析；横切：回调管理器发出 `on_*` 事件→追踪器聚合为 Run 树。
 
-### 4.4 生命周期图（本轮新增）说明
+### 4.4 生命周期图说明
 单实体「一次 agent 运行」：已创建（invoke 入队）→模型推理中（中间件+ChatModel）→工具执行中（tool.invoke）→回到模型推理（ToolMessage 回传，循环）；无工具调用时进入终态「完成」，模型/工具异常进入「失败」（可由重试中间件回到主循环），用户中断进入「已取消」终态。禁止非法跳转：取消不可重试，失败不直接到完成。
 
 ## 五、核心机制总结
@@ -92,6 +92,7 @@ langchain-core（基础契约）  ←  v1 / classic（编排层）  ←  partner
 4. **消息 Chunk 双轨**：每种消息有完整类 + Chunk 类，`__add__` 支持流式合并。
 5. **懒加载与可选依赖**：`__getattr__` + `import_attr` 顶层导入不加载重实现；partner 包 `_import_utils` 检测 SDK 缺失优雅降级。
 6. **经典包三重角色**：控制流（Chain 模板方法、ReAct 循环、Memory）、`create_importer` 转发桩、经典特有机制（`hub.pull` + `load_chain` 注册表反序列化）。
+7. **集成适配层（partners，本轮深化至 8 叶）**：17 个第三方包按「消息双向转换 + 错误映射 + 懒初始化 + 配置驱动分派」统一适配 core 契约；本轮从 5 叶细分至 8 叶（openai / anthropic / qdrant / chroma / llm-api-providers 七家 / local-inference / nomic / search-tools），逐包独立成篇。
 
 ---
 

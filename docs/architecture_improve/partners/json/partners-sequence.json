@@ -5,9 +5,10 @@
     "title": "partners 域 Chat 请求通用调用链时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "partners-sequence.html",
     "viewBox": [
       1080,
-      690
+      720
     ]
   },
   "participants": [

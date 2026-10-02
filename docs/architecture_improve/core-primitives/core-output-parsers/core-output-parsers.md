@@ -3,7 +3,7 @@
 > 本文是 `core-primitives` 域下的叶子子系统文档。域级总览见 `../core-primitives.md`。
 > 本文展开「把模型原始文本/Generation 解析成结构化对象」的体系，不重复展开提示词（见 `../core-prompts/core-prompts.md`）与工具（见 `../core-tools/core-tools.md`）。
 >
-> 源码基准：`langchain-core` master，commit `4492ad7a804e94bdcc89bf148cfc8efd5e7d6ef7`，源码位于 `libs/core/langchain_core/output_parsers/`。
+> 源码基准：`langchain-core` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码位于 `libs/core/langchain_core/output_parsers/`。
 
 ## 1. 功能清单
 

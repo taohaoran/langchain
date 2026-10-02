@@ -1,0 +1,162 @@
+{
+ "schema_version": 1,
+ "diagram_type": "lifecycle",
+ "meta": {
+  "title": "AgentExecutor ReAct 执行循环状态机",
+  "quality_profile": "standard",
+  "locale": "zh-CN",
+  "output": "classic-agents-lifecycle.html"
+ },
+ "lanes": [
+  {
+   "id": "main",
+   "label": "主循环"
+  },
+  {
+   "id": "terminal",
+   "label": "退出"
+  }
+ ],
+ "states": [
+  {
+   "id": "start",
+   "type": "start",
+   "label": "接收输入",
+   "sublabel": "AgentExecutor._call",
+   "lane": "main",
+   "col": 0,
+   "step": "01"
+  },
+  {
+   "id": "plan",
+   "type": "active",
+   "label": "plan 决策",
+   "sublabel": "agent.plan",
+   "lane": "main",
+   "col": 1,
+   "step": "02",
+   "tag": "决策"
+  },
+  {
+   "id": "tool",
+   "type": "active",
+   "label": "执行工具",
+   "sublabel": "name_to_tool_map",
+   "lane": "main",
+   "col": 2,
+   "step": "03",
+   "tag": "动作"
+  },
+  {
+   "id": "observe",
+   "type": "active",
+   "label": "记录观察",
+   "sublabel": "intermediate_steps",
+   "lane": "main",
+   "col": 3,
+   "step": "04",
+   "tag": "累积"
+  },
+  {
+   "id": "finish",
+   "type": "success",
+   "label": "AgentFinish",
+   "sublabel": "返回最终答案",
+   "lane": "terminal",
+   "col": 2,
+   "step": "05"
+  },
+  {
+   "id": "stopped",
+   "type": "failure",
+   "label": "停机返回",
+   "sublabel": "超 max_iterations",
+   "lane": "terminal",
+   "col": 1,
+   "step": "06",
+   "tag": "force"
+  }
+ ],
+ "transitions": [
+  {
+   "id": "t1",
+   "from": "start",
+   "to": "plan",
+   "variant": "emphasis"
+  },
+  {
+   "id": "t3",
+   "from": "plan",
+   "to": "tool",
+   "variant": "default"
+  },
+  {
+   "id": "t4",
+   "from": "tool",
+   "to": "observe",
+   "variant": "default"
+  },
+  {
+   "id": "t5",
+   "from": "observe",
+   "to": "plan",
+   "variant": "emphasis",
+   "fromSide": "bottom",
+   "toSide": "bottom",
+   "via": [
+    [
+     651,
+     290
+    ],
+    [
+     307,
+     290
+    ]
+   ]
+  },
+  {
+   "id": "t2",
+   "from": "observe",
+   "to": "finish",
+   "variant": "emphasis",
+   "label": "结束"
+  },
+  {
+   "id": "t7",
+   "from": "plan",
+   "to": "stopped",
+   "variant": "security",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "via": [
+    [
+     307,
+     300
+    ],
+    [
+     307,
+     440
+    ]
+   ]
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "主循环",
+   "items": [
+    "while _should_continue: plan → tool → observe → plan",
+    "intermediate_steps 逐轮累积 (action, observation)",
+    "AgentFinish 或工具直接返回时退出"
+   ]
+  },
+  {
+   "dot": "rose",
+   "title": "停机",
+   "items": [
+    "超过 max_iterations / max_execution_time",
+    "走 return_stopped_response（force/generate）"
+   ]
+  }
+ ]
+}

@@ -5,30 +5,118 @@
     "title": "工具调用执行时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 720],
-    "column_fit": "spread"
+    "viewBox": [
+      1080,
+      720
+    ],
+    "column_fit": "spread",
+    "output": "core-tools-sequence.html"
   },
   "participants": [
-    { "id": "model", "type": "external", "label": "模型", "sublabel": "发起 tool_call" },
-    { "id": "tool", "type": "backend", "label": "BaseTool", "sublabel": "base.py:757" },
-    { "id": "schema", "type": "backend", "label": "args_schema", "sublabel": "pydantic 校验" },
-    { "id": "run", "type": "backend", "label": "_run 函数体", "sublabel": "base.py:909" }
+    {
+      "id": "model",
+      "type": "external",
+      "label": "模型",
+      "sublabel": "发起 tool_call"
+    },
+    {
+      "id": "tool",
+      "type": "backend",
+      "label": "BaseTool",
+      "sublabel": "base.py:757"
+    },
+    {
+      "id": "schema",
+      "type": "backend",
+      "label": "args_schema",
+      "sublabel": "pydantic 校验"
+    },
+    {
+      "id": "run",
+      "type": "backend",
+      "label": "_run 函数体",
+      "sublabel": "base.py:909"
+    }
   ],
   "segments": [
-    { "from": 150, "to": 300, "label": "解析输入" },
-    { "from": 300, "to": 460, "label": "执行函数体" },
-    { "from": 460, "to": 560, "label": "结果回传" }
+    {
+      "from": 150,
+      "to": 300,
+      "label": "解析输入"
+    },
+    {
+      "from": 300,
+      "to": 460,
+      "label": "执行函数体"
+    },
+    {
+      "from": 460,
+      "to": 560,
+      "label": "结果回传"
+    }
   ],
   "messages": [
-    { "id": "m1", "from": "model", "to": "tool", "y": 160, "label": "invoke(tool_call)", "variant": "emphasis" },
-    { "id": "m2", "from": "tool", "to": "schema", "y": 210, "label": "_parse_input 校验", "variant": "default" },
-    { "id": "m3", "from": "schema", "to": "tool", "y": 250, "label": "args/kwargs", "variant": "return" },
-    { "id": "m4", "from": "tool", "to": "run", "y": 320, "label": "_run(args, kwargs)", "variant": "emphasis" },
-    { "id": "m5", "from": "run", "to": "tool", "y": 400, "label": "函数结果", "variant": "return" },
-    { "id": "m6", "from": "tool", "to": "model", "y": 500, "label": "ToolMessage 回传", "variant": "return" }
+    {
+      "id": "m1",
+      "from": "model",
+      "to": "tool",
+      "y": 160,
+      "label": "invoke(tool_call)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "tool",
+      "to": "schema",
+      "y": 210,
+      "label": "_parse_input 校验",
+      "variant": "default"
+    },
+    {
+      "id": "m3",
+      "from": "schema",
+      "to": "tool",
+      "y": 250,
+      "label": "args/kwargs",
+      "variant": "return"
+    },
+    {
+      "id": "m4",
+      "from": "tool",
+      "to": "run",
+      "y": 320,
+      "label": "_run(args, kwargs)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m5",
+      "from": "run",
+      "to": "tool",
+      "y": 400,
+      "label": "函数结果",
+      "variant": "return"
+    },
+    {
+      "id": "m6",
+      "from": "tool",
+      "to": "model",
+      "y": 500,
+      "label": "ToolMessage 回传",
+      "variant": "return"
+    }
   ],
   "activations": [
-    { "participant": "tool", "from": 160, "to": 500, "type": "backend" },
-    { "participant": "run", "from": 320, "to": 400, "type": "backend" }
+    {
+      "participant": "tool",
+      "from": 160,
+      "to": 500,
+      "type": "backend"
+    },
+    {
+      "participant": "run",
+      "from": 320,
+      "to": 400,
+      "type": "backend"
+    }
   ]
 }

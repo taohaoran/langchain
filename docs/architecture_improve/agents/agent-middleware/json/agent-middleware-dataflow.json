@@ -3,8 +3,9 @@
   "diagram_type": "dataflow",
   "meta": {
     "title": "wrap_model_call 洋葱链数据流",
-    "quality_profile": "standard",
+    "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "agent-middleware-dataflow.html",
     "viewBox": [1080, 560]
   },
   "stages": [
@@ -22,7 +23,7 @@
   "flows": [
     { "from": "outer", "to": "retry", "label": "ModelRequest", "classification": "调 handler", "variant": "emphasis", "route": "straight" },
     { "from": "retry", "to": "exec", "label": "重试 N 次", "classification": "指数退避", "variant": "emphasis", "route": "straight" },
-    { "from": "exec", "to": "llm", "label": "请求", "classification": "模型输入", "variant": "default", "route": "straight" },
+    { "from": "exec", "to": "llm", "label": "请求", "classification": "模型输入", "variant": "default", "route": "straight", "labelDy": -26 },
     { "from": "llm", "to": "exec", "label": "响应", "classification": "返回", "variant": "dashed", "route": "straight", "labelDy": 26 }
   ],
   "cards": [

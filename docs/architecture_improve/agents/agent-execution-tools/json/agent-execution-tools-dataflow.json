@@ -5,6 +5,7 @@
     "title": "子代理流提升数据流",
     "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "agent-execution-tools-dataflow.html",
     "viewBox": [1200, 500]
   },
   "stages": [

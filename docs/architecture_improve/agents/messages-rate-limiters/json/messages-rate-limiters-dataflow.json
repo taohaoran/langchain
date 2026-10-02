@@ -5,6 +5,7 @@
     "title": "请求期消息裁剪与限流数据流",
     "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "messages-rate-limiters-dataflow.html",
     "viewBox": [1200, 500]
   },
   "stages": [

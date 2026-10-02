@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Qdrant 向量库集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-qdrant-architecture.html", "viewBox": [1240, 480] },
+  "components": [
+    { "id": "app", "type": "external", "label": "用户应用 / RAG 链", "pos": [40, 210], "size": [160, 60] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "VectorStore / Embeddings", "pos": [290, 195], "size": [175, 90] },
+    { "id": "vs", "type": "backend", "label": "QdrantVectorStore", "sublabel": "稠密+稀疏混合检索", "pos": [540, 110], "size": [195, 95], "tag": "qdrant.py:36" },
+    { "id": "sparse", "type": "backend", "label": "SparseEmbeddings", "sublabel": "稀疏向量抽象", "pos": [540, 290], "size": [195, 75] },
+    { "id": "client", "type": "external", "label": "qdrant-client SDK", "pos": [820, 200], "size": [150, 70] },
+    { "id": "server", "type": "database", "label": "Qdrant 服务端", "sublabel": "集合/向量索引", "pos": [1040, 160], "size": [160, 80] },
+    { "id": "fastembed", "type": "external", "label": "FastEmbed", "pos": [820, 310], "size": [140, 55] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain-qdrant 本仓库适配层", "wraps": ["vs", "sparse"] },
+    { "kind": "region", "label": "外部依赖与服务（不在本仓库源码内）", "wraps": ["client", "server", "fastembed"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "app", "to": "core", "label": "add/search", "variant": "emphasis" },
+    { "id": "c2", "from": "core", "to": "vs", "label": "实现", "variant": "emphasis" },
+    { "id": "c3", "from": "vs", "to": "client", "label": "upsert/query", "variant": "emphasis" },
+    { "id": "c4", "from": "client", "to": "server", "label": "gRPC/HTTP", "variant": "emphasis" },
+    { "id": "c5", "from": "sparse", "to": "vs", "label": "稀疏向量", "variant": "default" },
+    { "id": "c6", "from": "fastembed", "to": "sparse", "label": "嵌入", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["VectorStore 抽象在 langchain_core", "稠密+稀疏双路混合检索", "Qdrant 服务端不在本仓库"] }
+  ]
+}

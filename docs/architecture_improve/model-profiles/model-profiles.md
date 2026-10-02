@@ -1,7 +1,7 @@
 # model-profiles 域总览
 
 > 本域包含以下叶子子系统；各叶子详情见对应文档。
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，独立包 `libs/model-profiles/langchain_model_profiles/`（3 个 py / 约 945 行）。
+> 源码基准：`libs/model-profiles/langchain_model_profiles/`，branch `master`，commit `89252a8f`。
 
 ## 1. 域职责
 

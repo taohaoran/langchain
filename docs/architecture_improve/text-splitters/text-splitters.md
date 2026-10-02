@@ -1,7 +1,7 @@
 # text-splitters 域总览
 
 > 本域包含以下叶子子系统；各叶子详情见对应文档。
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，独立包 `libs/text-splitters/langchain_text_splitters/`（13 个 py / 约 3686 行）。
+> 源码基准：`langchain_v1` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，独立包 `libs/text-splitters/langchain_text_splitters/`（13 个 py / 共 3686 行）。
 
 ## 1. 域职责
 

@@ -1,0 +1,158 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "对话记忆体系（memory）",
+  "quality_profile": "showcase",
+  "locale": "zh-CN",
+  "viewBox": [
+   1150,
+   560
+  ],
+  "output": "classic-memory-architecture.html"
+ },
+ "components": [
+  {
+   "id": "chain",
+   "type": "external",
+   "label": "Chain / Agent",
+   "sublabel": "读写记忆",
+   "pos": [
+    40,
+    200
+   ],
+   "size": [
+    140,
+    56
+   ]
+  },
+  {
+   "id": "basemem",
+   "type": "backend",
+   "label": "BaseMemory 契约",
+   "sublabel": "base_memory.py",
+   "pos": [
+    320,
+    200
+   ],
+   "size": [
+    170,
+    56
+   ],
+   "tag": "能力缝"
+  },
+  {
+   "id": "variants",
+   "type": "backend",
+   "label": "记忆变体",
+   "sublabel": "buffer/summary/token/…",
+   "pos": [
+    620,
+    100
+   ],
+   "size": [
+    180,
+    60
+   ]
+  },
+  {
+   "id": "history",
+   "type": "backend",
+   "label": "消息历史后端",
+   "sublabel": "BaseChatMessageHistory",
+   "pos": [
+    620,
+    320
+   ],
+   "size": [
+    180,
+    60
+   ]
+  },
+  {
+   "id": "llm",
+   "type": "cloud",
+   "label": "摘要 LLM",
+   "sublabel": "summary 压缩",
+   "pos": [
+    940,
+    100
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "storage",
+   "type": "database",
+   "label": "外部存储",
+   "sublabel": "redis/sql/mongo…",
+   "pos": [
+    940,
+    320
+   ],
+   "size": [
+    170,
+    60
+   ],
+   "tag": "不在仓库内"
+  }
+ ],
+ "connections": [
+  {
+   "id": "c-bm",
+   "from": "chain",
+   "to": "basemem",
+   "label": "load/save_context",
+   "variant": "emphasis"
+  },
+  {
+   "id": "bm-var",
+   "from": "basemem",
+   "to": "variants",
+   "label": "实现"
+  },
+  {
+   "id": "bm-hist",
+   "from": "basemem",
+   "to": "history",
+   "label": "BaseChatMemory 组合",
+   "variant": "dashed"
+  },
+  {
+   "id": "var-llm",
+   "from": "variants",
+   "to": "llm",
+   "label": "摘要",
+   "variant": "dashed"
+  },
+  {
+   "id": "hist-stg",
+   "from": "history",
+   "to": "storage",
+   "label": "持久化",
+   "variant": "emphasis"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "两级契约",
+   "items": [
+    "BaseMemory：变量注入与落盘",
+    "BaseChatMessageHistory：消息增删与持久化",
+    "BaseChatMemory 组合两者"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "变体与后端",
+   "items": [
+    "缓冲/窗口/摘要/token/实体/向量 多策略",
+    "21 种持久化后端（目录即实例库）",
+    "ReadOnlySharedMemory 只读共享视图"
+   ]
+  }
+ ]
+}

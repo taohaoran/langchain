@@ -5,36 +5,205 @@
     "title": "Runnable 协议与组合原语架构",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 760]
+    "viewBox": [
+      1080,
+      760
+    ],
+    "output": "core-runnables-architecture.html"
   },
   "components": [
-    { "id": "user", "type": "external", "label": "用户 / 上层包", "sublabel": "langchain_v1、partners", "pos": [40, 300], "size": [150, 60] },
-    { "id": "runnable-abc", "type": "backend", "label": "Runnable ABC", "sublabel": "invoke/batch/stream", "pos": [300, 270], "size": [190, 80], "tag": "核心契约" },
-    { "id": "config", "type": "backend", "label": "RunnableConfig", "sublabel": "tags/max_concurrency", "pos": [620, 100], "size": [180, 60], "tag": "配置驱动" },
-    { "id": "callbacks", "type": "messagebus", "label": "回调管理器", "sublabel": "on_chain_start/end", "pos": [880, 100], "size": [160, 60] },
-    { "id": "impls", "type": "cloud", "label": "实现方", "sublabel": "partners 模型/检索器", "pos": [880, 300], "size": [160, 60], "tag": "依赖倒置" },
-    { "id": "seq", "type": "backend", "label": "RunnableSequence", "sublabel": "| 运算符串行", "pos": [100, 560], "size": [160, 60] },
-    { "id": "par", "type": "backend", "label": "RunnableParallel", "sublabel": "字典并行", "pos": [380, 560], "size": [160, 60] },
-    { "id": "lambda", "type": "backend", "label": "RunnableLambda", "sublabel": "包装函数", "pos": [660, 560], "size": [160, 60] }
+    {
+      "id": "user",
+      "type": "external",
+      "label": "用户 / 上层包",
+      "sublabel": "langchain_v1、partners",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "runnable-abc",
+      "type": "backend",
+      "label": "Runnable ABC",
+      "sublabel": "invoke/batch/stream",
+      "pos": [
+        300,
+        270
+      ],
+      "size": [
+        190,
+        80
+      ],
+      "tag": "核心契约"
+    },
+    {
+      "id": "config",
+      "type": "backend",
+      "label": "RunnableConfig",
+      "sublabel": "tags/max_concurrency",
+      "pos": [
+        620,
+        100
+      ],
+      "size": [
+        180,
+        60
+      ],
+      "tag": "配置驱动"
+    },
+    {
+      "id": "callbacks",
+      "type": "messagebus",
+      "label": "回调管理器",
+      "sublabel": "on_chain_start/end",
+      "pos": [
+        880,
+        100
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "impls",
+      "type": "cloud",
+      "label": "实现方",
+      "sublabel": "partners 模型/检索器",
+      "pos": [
+        880,
+        300
+      ],
+      "size": [
+        160,
+        60
+      ],
+      "tag": "依赖倒置"
+    },
+    {
+      "id": "seq",
+      "type": "backend",
+      "label": "RunnableSequence",
+      "sublabel": "| 运算符串行",
+      "pos": [
+        100,
+        560
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "par",
+      "type": "backend",
+      "label": "RunnableParallel",
+      "sublabel": "字典并行",
+      "pos": [
+        380,
+        560
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "lambda",
+      "type": "backend",
+      "label": "RunnableLambda",
+      "sublabel": "包装函数",
+      "pos": [
+        660,
+        560
+      ],
+      "size": [
+        160,
+        60
+      ]
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "langchain_core.runnables", "wraps": ["runnable-abc", "config", "seq", "par", "lambda"] }
+    {
+      "kind": "region",
+      "label": "langchain_core.runnables",
+      "wraps": [
+        "runnable-abc",
+        "config",
+        "seq",
+        "par",
+        "lambda"
+      ]
+    }
   ],
   "connections": [
-    { "id": "u-abc", "from": "user", "to": "runnable-abc", "label": "invoke/batch/stream", "variant": "emphasis" },
-    { "id": "abc-config", "from": "runnable-abc", "to": "config", "label": "ensure_config", "labelDy": -18 },
-    { "id": "abc-cb", "from": "runnable-abc", "to": "callbacks", "label": "on_chain_*", "labelDy": -18 },
-    { "id": "impl-abc", "from": "impls", "to": "runnable-abc", "label": "实现契约", "variant": "security" },
-    { "id": "abc-seq", "from": "runnable-abc", "to": "seq", "label": "__or__", "fromSide": "bottom", "toSide": "top", "labelDx": -40 },
-    { "id": "abc-par", "from": "runnable-abc", "to": "par", "fromSide": "bottom", "toSide": "top" },
-    { "id": "abc-lambda", "from": "runnable-abc", "to": "lambda", "fromSide": "bottom", "toSide": "top" }
+    {
+      "id": "u-abc",
+      "from": "user",
+      "to": "runnable-abc",
+      "label": "invoke/batch/stream",
+      "variant": "emphasis"
+    },
+    {
+      "id": "abc-config",
+      "from": "runnable-abc",
+      "to": "config",
+      "label": "ensure_config",
+      "labelDy": -18
+    },
+    {
+      "id": "abc-cb",
+      "from": "runnable-abc",
+      "to": "callbacks",
+      "label": "on_chain_*",
+      "labelDy": -18
+    },
+    {
+      "id": "impl-abc",
+      "from": "impls",
+      "to": "runnable-abc",
+      "label": "实现契约",
+      "variant": "security"
+    },
+    {
+      "id": "abc-seq",
+      "from": "runnable-abc",
+      "to": "seq",
+      "label": "__or__",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "labelDx": -40
+    },
+    {
+      "id": "abc-par",
+      "from": "runnable-abc",
+      "to": "par",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "abc-lambda",
+      "from": "runnable-abc",
+      "to": "lambda",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
   ],
   "cards": [
-    { "dot": "emerald", "title": "要点", "items": [
-      "Runnable 是全栈核心能力缝，定义在消费方",
-      "| 运算符与字典字面量即组合",
-      "RunnableConfig 驱动并发/递归/回调行为",
-      "retry/fallbacks/branch 为可插拔装饰钩子"
-    ] }
+    {
+      "dot": "emerald",
+      "title": "要点",
+      "items": [
+        "Runnable 是全栈核心能力缝，定义在消费方",
+        "| 运算符与字典字面量即组合",
+        "RunnableConfig 驱动并发/递归/回调行为",
+        "retry/fallbacks/branch 为可插拔装饰钩子"
+      ]
+    }
   ]
 }

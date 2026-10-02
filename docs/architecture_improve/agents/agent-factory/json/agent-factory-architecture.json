@@ -3,9 +3,10 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "create_agent 工厂装配架构",
-    "quality_profile": "standard",
+    "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 560]
+    "output": "agent-factory-architecture.html",
+    "viewBox": [1140, 560]
   },
   "components": [
     { "id": "user", "type": "external", "label": "用户代码", "sublabel": "create_agent", "pos": [40, 240], "size": [140, 64] },
@@ -23,8 +24,7 @@
     { "id": "f-sm", "from": "factory", "to": "sm", "label": "编译", "variant": "emphasis" },
     { "id": "f-mw", "from": "factory", "to": "mw-chain", "label": "复合", "variant": "default", "fromSide": "top", "toSide": "bottom" },
     { "id": "mw-model", "from": "mw-chain", "to": "model", "label": "包裹", "variant": "default" },
-    { "id": "model-tools", "from": "model", "to": "tools", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" },
-    { "id": "tools-model", "from": "tools", "to": "model", "variant": "dashed", "fromSide": "right", "toSide": "right", "via": [[770, 430], [770, 110]] }
+    { "id": "model-tools", "from": "model", "to": "tools", "variant": "emphasis", "fromSide": "bottom", "toSide": "top" }
   ],
   "cards": [
     { "dot": "emerald", "title": "装配期", "items": ["字符串模型经 init_chat_model 实例化", "六类钩子筛选并复合中间件链", "动态确定入口/循环/退出节点"] },

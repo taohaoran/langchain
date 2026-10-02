@@ -5,6 +5,7 @@
     "title": "init_chat_model 调用链时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "chat-models-embeddings-sequence.html",
     "viewBox": [1080, 720]
   },
   "participants": [

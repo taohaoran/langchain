@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "diagram_type": "architecture",
-  "meta": { "title": "Exa 搜索工具集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1240, 460] },
+  "meta": { "title": "Exa 搜索工具集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-search-tools-architecture.html", "viewBox": [1240, 460] },
   "components": [
     { "id": "agent", "type": "external", "label": "Agent / RAG 链", "pos": [40, 195], "size": [150, 60] },
     { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "BaseTool / BaseRetriever", "pos": [280, 180], "size": [170, 90] },

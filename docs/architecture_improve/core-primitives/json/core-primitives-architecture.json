@@ -5,43 +5,291 @@
     "title": "core-primitives 域组件拓扑",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1180, 720]
+    "viewBox": [
+      1180,
+      720
+    ],
+    "output": "core-primitives-architecture.html"
   },
   "components": [
-    { "id": "msg", "type": "backend", "label": "消息", "sublabel": "core-messages", "pos": [230, 90], "size": [140, 56] },
-    { "id": "api", "type": "cloud", "label": "Partners API", "sublabel": "OpenAI/Anthropic", "pos": [660, 90], "size": [150, 60] },
-    { "id": "tools", "type": "backend", "label": "工具", "sublabel": "core-tools", "pos": [880, 90], "size": [140, 56] },
-    { "id": "user", "type": "external", "label": "调用方", "sublabel": "LCEL 链", "pos": [40, 300], "size": [130, 60] },
-    { "id": "runnable", "type": "backend", "label": "Runnable", "sublabel": "core-runnables", "pos": [230, 290], "size": [150, 70], "tag": "组合引擎" },
-    { "id": "prompt", "type": "backend", "label": "提示词", "sublabel": "core-prompts", "pos": [450, 300], "size": [140, 56] },
-    { "id": "model", "type": "backend", "label": "语言模型", "sublabel": "core-language-models", "pos": [660, 300], "size": [150, 56] },
-    { "id": "parser", "type": "backend", "label": "输出解析", "sublabel": "core-output-parsers", "pos": [880, 300], "size": [140, 56] },
-    { "id": "cb", "type": "messagebus", "label": "回调追踪", "sublabel": "core-callbacks", "pos": [230, 490], "size": [140, 56] },
-    { "id": "infra", "type": "security", "label": "序列化缓存", "sublabel": "core-infra", "pos": [450, 490], "size": [140, 56] },
-    { "id": "vs", "type": "backend", "label": "向量库检索", "sublabel": "core-vectorstores", "pos": [660, 490], "size": [150, 56] },
-    { "id": "doc", "type": "backend", "label": "文档加载", "sublabel": "core-documents", "pos": [880, 490], "size": [140, 56] },
-    { "id": "vdb", "type": "database", "label": "向量库/缓存", "sublabel": "外部", "pos": [660, 620], "size": [150, 60] }
+    {
+      "id": "msg",
+      "type": "backend",
+      "label": "消息",
+      "sublabel": "core-messages",
+      "pos": [
+        230,
+        90
+      ],
+      "size": [
+        140,
+        56
+      ]
+    },
+    {
+      "id": "api",
+      "type": "cloud",
+      "label": "Partners API",
+      "sublabel": "OpenAI/Anthropic",
+      "pos": [
+        660,
+        90
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "tools",
+      "type": "backend",
+      "label": "工具",
+      "sublabel": "core-tools",
+      "pos": [
+        880,
+        90
+      ],
+      "size": [
+        140,
+        56
+      ]
+    },
+    {
+      "id": "user",
+      "type": "external",
+      "label": "调用方",
+      "sublabel": "LCEL 链",
+      "pos": [
+        40,
+        300
+      ],
+      "size": [
+        130,
+        60
+      ]
+    },
+    {
+      "id": "runnable",
+      "type": "backend",
+      "label": "Runnable",
+      "sublabel": "core-runnables",
+      "pos": [
+        230,
+        290
+      ],
+      "size": [
+        150,
+        70
+      ],
+      "tag": "组合引擎"
+    },
+    {
+      "id": "prompt",
+      "type": "backend",
+      "label": "提示词",
+      "sublabel": "core-prompts",
+      "pos": [
+        450,
+        300
+      ],
+      "size": [
+        140,
+        56
+      ]
+    },
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "语言模型",
+      "sublabel": "core-language-models",
+      "pos": [
+        660,
+        300
+      ],
+      "size": [
+        150,
+        56
+      ]
+    },
+    {
+      "id": "parser",
+      "type": "backend",
+      "label": "输出解析",
+      "sublabel": "core-output-parsers",
+      "pos": [
+        880,
+        300
+      ],
+      "size": [
+        140,
+        56
+      ]
+    },
+    {
+      "id": "cb",
+      "type": "messagebus",
+      "label": "回调追踪",
+      "sublabel": "core-callbacks",
+      "pos": [
+        230,
+        490
+      ],
+      "size": [
+        140,
+        56
+      ]
+    },
+    {
+      "id": "infra",
+      "type": "security",
+      "label": "序列化缓存",
+      "sublabel": "core-infra",
+      "pos": [
+        450,
+        490
+      ],
+      "size": [
+        140,
+        56
+      ]
+    },
+    {
+      "id": "vs",
+      "type": "backend",
+      "label": "向量库检索",
+      "sublabel": "core-vectorstores",
+      "pos": [
+        660,
+        490
+      ],
+      "size": [
+        150,
+        56
+      ]
+    },
+    {
+      "id": "doc",
+      "type": "backend",
+      "label": "文档加载",
+      "sublabel": "core-documents",
+      "pos": [
+        880,
+        490
+      ],
+      "size": [
+        140,
+        56
+      ]
+    },
+    {
+      "id": "vdb",
+      "type": "database",
+      "label": "向量库/缓存",
+      "sublabel": "外部",
+      "pos": [
+        660,
+        620
+      ],
+      "size": [
+        150,
+        60
+      ]
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "langchain_core 原语层", "wraps": ["runnable", "msg", "prompt", "parser", "tools", "model", "vs", "doc", "cb", "infra"] }
+    {
+      "kind": "region",
+      "label": "langchain_core 原语层",
+      "wraps": [
+        "runnable",
+        "msg",
+        "prompt",
+        "parser",
+        "tools",
+        "model",
+        "vs",
+        "doc",
+        "cb",
+        "infra"
+      ]
+    }
   ],
   "connections": [
-    { "id": "u-r", "from": "user", "to": "runnable", "variant": "emphasis" },
-    { "id": "r-prompt", "from": "runnable", "to": "prompt", "variant": "emphasis" },
-    { "id": "prompt-model", "from": "prompt", "to": "model", "variant": "emphasis" },
-    { "id": "model-parser", "from": "model", "to": "parser", "variant": "emphasis" },
-    { "id": "model-api", "from": "model", "to": "api", "fromSide": "top", "toSide": "bottom" },
-    { "id": "model-tools", "from": "model", "to": "tools", "fromSide": "top", "toSide": "bottom" },
-    { "id": "r-cb", "from": "runnable", "to": "cb", "fromSide": "bottom", "toSide": "top", "variant": "security" },
-    { "id": "r-vs", "from": "runnable", "to": "vs", "fromSide": "bottom", "toSide": "top" },
-    { "id": "vs-doc", "from": "vs", "to": "doc" },
-    { "id": "vs-vdb", "from": "vs", "to": "vdb", "fromSide": "bottom", "toSide": "top" }
+    {
+      "id": "u-r",
+      "from": "user",
+      "to": "runnable",
+      "variant": "emphasis"
+    },
+    {
+      "id": "r-prompt",
+      "from": "runnable",
+      "to": "prompt",
+      "variant": "emphasis"
+    },
+    {
+      "id": "prompt-model",
+      "from": "prompt",
+      "to": "model",
+      "variant": "emphasis"
+    },
+    {
+      "id": "model-parser",
+      "from": "model",
+      "to": "parser",
+      "variant": "emphasis"
+    },
+    {
+      "id": "model-api",
+      "from": "model",
+      "to": "api",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "model-tools",
+      "from": "model",
+      "to": "tools",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "r-cb",
+      "from": "runnable",
+      "to": "cb",
+      "fromSide": "bottom",
+      "toSide": "top",
+      "variant": "security"
+    },
+    {
+      "id": "r-vs",
+      "from": "runnable",
+      "to": "vs",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "vs-doc",
+      "from": "vs",
+      "to": "doc"
+    },
+    {
+      "id": "vs-vdb",
+      "from": "vs",
+      "to": "vdb",
+      "fromSide": "bottom",
+      "toSide": "top"
+    }
   ],
   "cards": [
-    { "dot": "emerald", "title": "要点", "items": [
-      "Runnable 是组合引擎，串起所有原语",
-      "原语即 Runnable，可 | 进链",
-      "Partners API/向量库在外部"
-    ] }
+    {
+      "dot": "emerald",
+      "title": "要点",
+      "items": [
+        "Runnable 是组合引擎，串起所有原语",
+        "原语即 Runnable，可 | 进链",
+        "Partners API/向量库在外部"
+      ]
+    }
   ]
 }

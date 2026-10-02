@@ -5,40 +5,137 @@
     "title": "经典 Chain 数据管线",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1100, 560]
+    "output": "classic-dataflow.html"
   },
   "stages": [
-    { "label": "输入" },
-    { "label": "编排" },
-    { "label": "生成" },
-    { "label": "输出" }
+    {
+      "label": "输入"
+    },
+    {
+      "label": "编排"
+    },
+    {
+      "label": "生成"
+    },
+    {
+      "label": "输出"
+    }
   ],
   "nodes": [
-    { "id": "query", "type": "frontend", "label": "用户输入", "sublabel": "问题文本", "stage": 0, "row": 0 },
-    { "id": "mem", "type": "database", "label": "记忆变量", "sublabel": "历史对话", "stage": 0, "row": 1 },
-    { "id": "chain", "type": "backend", "label": "Chain 编排", "sublabel": "LLMChain", "stage": 1, "row": 0 },
-    { "id": "prompt", "type": "backend", "label": "提示词模板", "sublabel": "format", "stage": 1, "row": 1 },
-    { "id": "llm", "type": "cloud", "label": "模型", "sublabel": "generate_prompt", "stage": 2, "row": 0, "tag": "外部" },
-    { "id": "parser", "type": "backend", "label": "输出解析", "sublabel": "parse_result", "stage": 3, "row": 0 },
-    { "id": "out", "type": "messagebus", "label": "结构化输出", "sublabel": "dict/消息", "stage": 3, "row": 1 }
+    {
+      "id": "query",
+      "type": "frontend",
+      "label": "用户输入",
+      "sublabel": "问题文本",
+      "stage": 0,
+      "row": 0
+    },
+    {
+      "id": "mem",
+      "type": "database",
+      "label": "记忆变量",
+      "sublabel": "历史对话",
+      "stage": 0,
+      "row": 1
+    },
+    {
+      "id": "chain",
+      "type": "backend",
+      "label": "Chain 编排",
+      "sublabel": "LLMChain",
+      "stage": 1,
+      "row": 0
+    },
+    {
+      "id": "prompt",
+      "type": "backend",
+      "label": "提示词模板",
+      "sublabel": "format",
+      "stage": 1,
+      "row": 1
+    },
+    {
+      "id": "llm",
+      "type": "cloud",
+      "label": "模型",
+      "sublabel": "generate_prompt",
+      "stage": 2,
+      "row": 0,
+      "tag": "外部"
+    },
+    {
+      "id": "parser",
+      "type": "backend",
+      "label": "输出解析",
+      "sublabel": "parse_result",
+      "stage": 3,
+      "row": 0
+    },
+    {
+      "id": "out",
+      "type": "messagebus",
+      "label": "结构化输出",
+      "sublabel": "dict/消息",
+      "stage": 3,
+      "row": 1
+    }
   ],
   "flows": [
-    { "from": "query", "to": "chain", "label": "输入", "variant": "emphasis" },
-    { "from": "mem", "to": "chain", "label": "注入历史", "route": "vertical-channel" },
-    { "from": "chain", "to": "prompt", "label": "组装", "route": "straight", "labelDy": 24 },
-    { "from": "prompt", "to": "llm", "label": "ChatPromptValue", "variant": "emphasis" },
-    { "from": "llm", "to": "parser", "label": "原始文本" },
-    { "from": "parser", "to": "out", "label": "解析后", "variant": "emphasis", "labelDy": 24 }
+    {
+      "from": "query",
+      "to": "chain",
+      "label": "输入",
+      "variant": "emphasis"
+    },
+    {
+      "from": "mem",
+      "to": "chain",
+      "label": "注入历史",
+      "route": "vertical-channel"
+    },
+    {
+      "from": "chain",
+      "to": "prompt",
+      "label": "组装",
+      "route": "straight",
+      "labelDy": 24
+    },
+    {
+      "from": "prompt",
+      "to": "llm",
+      "label": "ChatPromptValue",
+      "variant": "emphasis"
+    },
+    {
+      "from": "llm",
+      "to": "parser",
+      "label": "原始文本"
+    },
+    {
+      "from": "parser",
+      "to": "out",
+      "label": "解析后",
+      "variant": "emphasis",
+      "labelDy": 24
+    }
   ],
   "cards": [
-    { "dot": "emerald", "title": "主路径", "items": [
-      "输入+记忆→Chain→提示词",
-      "模型生成→输出解析",
-      "落盘本轮到记忆"
-    ]},
-    { "dot": "amber", "title": "转发", "items": [
-      "实际推理在 partner 包",
-      "解析契约在 langchain-core"
-    ]}
+    {
+      "dot": "emerald",
+      "title": "主路径",
+      "items": [
+        "输入+记忆→Chain→提示词",
+        "模型生成→输出解析",
+        "落盘本轮到记忆"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "转发",
+      "items": [
+        "实际推理在 partner 包",
+        "解析契约在 langchain-core"
+      ]
+    }
   ]
 }

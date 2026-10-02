@@ -4,7 +4,7 @@
   "meta": {
     "title": "model-profiles 生成器位置",
     "quality_profile": "showcase",
-    "locale": "zh-CN",
+    "locale": "zh-CN", "output": "model-profiles-domain-architecture.html",
     "viewBox": [1280, 600]
   },
   "components": [

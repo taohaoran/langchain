@@ -5,9 +5,10 @@
     "title": "ExaSearchResults 调用时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "partner-search-tools-sequence.html",
     "viewBox": [
       1080,
-      690
+      720
     ]
   },
   "participants": [

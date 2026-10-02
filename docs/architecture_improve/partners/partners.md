@@ -2,71 +2,53 @@
 
 > 本文是 `partners` 域的总览文档。本域归并 LangChain monorepo 中 `libs/partners/` 下的全部第三方集成包分析。
 > 系统级总览与 README 索引导航由汇总者统一产出（位于本目录上级）。
-> 本目录为第二轮（improve）分析产物，基线只读见 `../../architecture/partners/`（不得修改）。
+> 本目录为第三轮（improve）分析产物，基线只读见 `../../architecture/partners/`（不得修改）。
 >
-> 源码基准：`libs/partners/`，branch `master`，commit `4492ad7a804e94bdcc89bf148cfc8efd5e7d6ef7`。
+> 源码基准：`libs/partners/`，branch `master`，commit `89252a8f`。
 
 ## 1. 域职责
 
 `partners` 域是 LangChain 的**集成适配层**：把第三方 LLM 提供商、向量数据库、搜索 API 等外部系统适配到 `langchain_core` 定义的统一抽象接口上。本域不承载实际计算——所有推理、向量检索、搜索均发生在外部服务端或用户注入的组件中；本仓库价值在于**统一接口 + 消息/数据格式转换 + 错误映射 + 懒初始化**。
 
-本域覆盖 `libs/partners/` 下 17 个集成包，按功能归并为 5 个叶子子系统。
+本域覆盖 `libs/partners/` 下 17 个集成包，第三轮按功能细分为 8 个叶子子系统。
 
 ## 2. 叶子索引表
 
-| 叶子 ID | 叶子名称 | 覆盖包 | 核心能力 | 设计文档 | 图 |
-|---|---|---|---|---|---|
-| partner-openai | OpenAI 集成 | `openai/`（最大） | ChatOpenAI / AzureChatOpenAI / OpenAIEmbeddings / 工具 / 中间件 | [partner-openai.md](partner-openai/partner-openai.md) | [架构](partner-openai/partner-openai-architecture.html) · [时序](partner-openai/partner-openai-sequence.html) |
-| partner-anthropic | Anthropic Claude 集成 | `anthropic/` | ChatAnthropic / 工具中间件族 / Prompt 缓存 | [partner-anthropic.md](partner-anthropic/partner-anthropic.md) | [架构](partner-anthropic/partner-anthropic-architecture.html) · [时序](partner-anthropic/partner-anthropic-sequence.html) |
-| partner-vector-stores | 向量数据库集成 | `qdrant/` + `chroma/` | QdrantVectorStore / Chroma / 稀疏向量 / 图像检索 | [partner-vector-stores.md](partner-vector-stores/partner-vector-stores.md) | [架构](partner-vector-stores/partner-vector-stores-architecture.html) · [数据流](partner-vector-stores/partner-vector-stores-dataflow.html) |
-| partner-model-providers | 其他模型提供商 | `perplexity`/`fireworks`/`groq`/`mistralai`/`openrouter`/`xai`/`deepseek`/`ollama`/`huggingface`/`nomic`（10 家） | Chat/Embeddings/LLM/Rerank 适配，三种继承模式 | [partner-model-providers.md](partner-model-providers/partner-model-providers.md) | [架构](partner-model-providers/partner-model-providers-architecture.html) · [时序](partner-model-providers/partner-model-providers-sequence.html) |
-| partner-search-tools | Exa 搜索工具 | `exa/` | ExaSearchResults / ExaFindSimilarResults / ExaSearchRetriever | [partner-search-tools.md](partner-search-tools/partner-search-tools.md) | [架构](partner-search-tools/partner-search-tools-architecture.html) · [时序](partner-search-tools/partner-search-tools-sequence.html) |
+| 叶子 | 文档 | 覆盖包 | 核心能力 | 图 |
+|---|---|---|---|---|
+| partner-openai | [partner-openai.md](partner-openai/partner-openai.md) | `openai/`（26 py） | ChatOpenAI / AzureChatOpenAI / OpenAIEmbeddings / 工具 / 中间件 | [架构](partner-openai/partner-openai-architecture.html) · [时序](partner-openai/partner-openai-sequence.html) |
+| partner-anthropic | [partner-anthropic.md](partner-anthropic/partner-anthropic.md) | `anthropic/`（18 py） | ChatAnthropic / 工具中间件族 / Prompt 缓存 | [架构](partner-anthropic/partner-anthropic-architecture.html) · [时序](partner-anthropic/partner-anthropic-sequence.html) |
+| partner-qdrant | [partner-qdrant.md](partner-qdrant/partner-qdrant.md) | `qdrant/`（9 py） | QdrantVectorStore 稠密+稀疏混合检索 | [架构](partner-qdrant/partner-qdrant-architecture.html) · [数据流](partner-qdrant/partner-qdrant-dataflow.html) |
+| partner-chroma | [partner-chroma.md](partner-chroma/partner-chroma.md) | `chroma/`（5 py） | Chroma 文本+图像+混合检索 | [架构](partner-chroma/partner-chroma-architecture.html) · [时序](partner-chroma/partner-chroma-sequence.html) |
+| partner-llm-api-providers | [partner-llm-api-providers.md](partner-llm-api-providers/partner-llm-api-providers.md) | `perplexity`/`fireworks`/`groq`/`mistralai`/`openrouter`/`xai`/`deepseek`（7 家云端） | 两种继承模式：复用 BaseChatOpenAI vs 自实现 | [架构](partner-llm-api-providers/partner-llm-api-providers-architecture.html) · [时序](partner-llm-api-providers/partner-llm-api-providers-sequence.html) |
+| partner-local-inference | [partner-local-inference.md](partner-local-inference/partner-local-inference.md) | `ollama/` + `huggingface/`（本地进程内推理） | ChatOllama / HF Pipeline / HF Endpoint | [架构](partner-local-inference/partner-local-inference-architecture.html) · [数据流](partner-local-inference/partner-local-inference-dataflow.html) |
+| partner-nomic | [partner-nomic.md](partner-nomic/partner-nomic.md) | `nomic/`（5 py） | NomicEmbeddings 文本+图像嵌入 | [架构](partner-nomic/partner-nomic-architecture.html) · [数据流](partner-nomic/partner-nomic-dataflow.html) |
+| partner-search-tools | [partner-search-tools.md](partner-search-tools/partner-search-tools.md) | `exa/`（7 py） | ExaSearchResults / Retriever | [架构](partner-search-tools/partner-search-tools-architecture.html) · [时序](partner-search-tools/partner-search-tools-sequence.html) |
 
 ## 3. 域级机制细节
 
 ### 通用集成模式（所有 partner 共享）
 
-1. **基类继承（依赖倒置）**：所有 partner 类继承 `langchain_core` 的抽象基类——
-   - Chat 模型 → `BaseChatModel`（实现 `_generate`/`_stream`/`_agenerate`/`_astream`）
-   - 嵌入 → `Embeddings`（实现 `embed_documents`/`embed_query`）
-   - 文本补全 → `BaseLLM`/`LLM`
-   - 向量存储 → `VectorStore`（实现 `add_texts`/`similarity_search`/`from_texts`）
-   - 工具 → `BaseTool`（实现 `_run`）
-   - 检索器 → `BaseRetriever`（实现 `_get_relevant_documents`）
-   - 中间件 → `AgentMiddleware`（`before_model`/`after_model` 钩子）
+1. **基类继承（依赖倒置）**：所有 partner 类继承 `langchain_core` 的抽象基类——Chat 模型 → `BaseChatModel`；嵌入 → `Embeddings`；文本补全 → `BaseLLM`/`LLM`；向量存储 → `VectorStore`；工具 → `BaseTool`；检索器 → `BaseRetriever`；中间件 → `AgentMiddleware`。
+2. **消息转换层**：每个 Chat partner 实现双向转换——langchain `BaseMessage` ↔ 各 API 原生格式。这是核心适配层，也是各家差异最大处。
+3. **工具调用转换**：langchain `ToolCall` ↔ 各 API 的 function calling / tool use 格式。
+4. **错误映射**：各 SDK 异常 → langchain_core `Model*Error` 异常体系。
+5. **可选依赖与懒初始化**：`validate_environment` 检测 SDK、解析 API key、构建客户端。
+6. **配置驱动**：pydantic 字段配置；部分包按配置分派到不同 API（OpenAI Responses API、Anthropic betas/thinking、Qdrant RetrievalMode）。
 
-2. **消息转换层**：每个 Chat 模型 partner 都实现双向转换——langchain `BaseMessage`（HumanMessage/AIMessage/SystemMessage/ToolMessage）↔ 各 API 原生请求/响应格式。这是 partner 集成的**核心适配层**，也是各家差异最大的地方。
-
-3. **工具调用转换**：langchain `ToolCall` ↔ 各 API 的 function calling / tool use 格式（OpenAI `tool_calls`、Anthropic `tool_use` block、Groq/Mistral 各自格式）。
-
-4. **错误映射**：各 SDK 异常 → langchain_core 的 `Model*Error` 异常体系（认证/限流/上下文溢出/模型不存在/超时/连接错误），使上层代码可统一捕获。
-
-5. **可选依赖与懒初始化**：每个包在 `validate_environment`（pydantic model_validator）中检测对应 SDK 是否安装、解析 API key（环境变量 → 显式参数 → callable），构建 SDK 客户端。
-
-6. **配置驱动**：模型参数通过 pydantic 字段配置；部分包支持运行时按配置分派到不同 API（如 OpenAI 的 Chat Completions vs Responses API；Anthropic 的 `betas`/`thinking` 分支；Qdrant 的 `RetrievalMode`）。
-
-### 三种 Chat 模型继承模式
+### Chat 模型继承模式（第三轮细化）
 
 | 模式 | 代表包 | 说明 |
 |---|---|---|
-| 直接继承 `BaseChatModel` | ollama、groq、mistralai、openrouter、perplexity、fireworks | 自实现消息转换与错误映射 |
-| 继承 `BaseChatOpenAI` | deepseek、xai | 复用 OpenAI 适配层，仅覆盖 endpoint 与 API key（OpenAI 兼容 API 提供商的最简集成） |
-| 本地推理 | ollama、huggingface-pipeline | 不调云端 API，在本地进程内运行模型 |
+| 直接继承 `BaseChatModel` | groq、mistralai、openrouter、perplexity、fireworks、ollama、huggingface | 自实现消息转换与错误映射 |
+| 继承 `BaseChatOpenAI` | deepseek、xai | 复用 OpenAI 适配层，仅覆盖 endpoint 与 API key |
+| 本地进程内推理 | ollama（守护进程）、huggingface-pipeline（transformers） | 不调云端 API |
 
-> **事实修正（相对基线）**：基线把 openrouter 归入"继承 `BaseChatOpenAI`"一类；经源码核实 `ChatOpenRouter` 实际继承 `BaseChatModel`（自实现转换），已在 partner-model-providers 叶子中修正。
-
-### 17 个集成包规模与分类
-
-| 分类 | 包 |
-|---|---|
-| Chat 模型（核心） | openai、anthropic |
-| 向量存储 | qdrant、chroma |
-| 其他模型提供商 | perplexity、fireworks、groq、mistralai、openrouter、xai、deepseek、ollama、huggingface、nomic |
-| 搜索工具 | exa |
+> **事实修正**：`ChatOpenRouter` 继承 `BaseChatModel`（自实现），不是 `BaseChatOpenAI`。
 
 ### 外部边界
 
-所有第三方 API 服务端（OpenAI/Anthropic/Groq/DeepSeek 等云端）、向量数据库服务端（Qdrant/Chroma）、搜索 API（Exa）、各 Python SDK（openai/anthropic/qdrant-client/chromadb/exa-py 等）、本地推理运行时（ollama 服务/transformers）一律标注「不在本仓库源码内」。本域仅提供适配层。
+所有第三方 API 服务端、向量数据库服务端、搜索 API、各 Python SDK、本地推理运行时一律标注「不在本仓库源码内」。本域仅提供适配层。
 
 ## 4. 域级图
 
@@ -84,18 +66,12 @@
 | partners 域 Chat 请求通用调用链时序 | `partners-sequence.html` | sequence | **showcase** |
 | partners 域请求消息变换数据流 | `partners-dataflow.html` | dataflow | **showcase** |
 
-> 三张域级图对应三种不同核心语义：architecture 表达静态组件拓扑（东西有哪些、怎么连），
-> sequence 表达单次请求的时间序消息交互（谁先调用谁），dataflow 表达数据载体的变换管道
->（消息对象 → API 请求体 → HTTPS 载荷 → 原生响应），三者信息不重复。
+三张域级图对应三种不同核心语义：architecture 表达静态组件拓扑，sequence 表达单次请求的时间序消息交互，dataflow 表达数据载体的变换管道。
 
-**相对基线的改进总览（本域）**：
-- 叶子级图由基线全 standard 提升为 6 张 showcase（openai 时序、anthropic 架构+时序、vector-stores 架构+数据流、model-providers 时序、search-tools 时序）+ 4 张 standard；
-- 补齐 model-providers、search-tools 两个叶子缺失的第 2 张图（均为 showcase），每叶子达到 ≥2 张图配额；
-- 修正 openrouter 基类归类事实；
-- 域级新增时序图（showcase），配合架构图构成 ≥2 张域级图。
+**第三轮变更**：叶子由 5 叶细分为 8 叶（原 partner-vector-stores 拆为 partner-qdrant + partner-chroma；原 partner-model-providers 拆为 partner-llm-api-providers + partner-local-inference + partner-nomic）。域级图补全 `meta.output` 字段后重渲染，档位与第二轮一致。叶子级图本轮全部达到 showcase 或 standard 披露标准。
 
 ## 6. 覆盖范围与缺口
 
-- 深读：openai、anthropic、qdrant、chroma、exa、deepseek、xai、groq、mistralai、ollama、openrouter 关键入口已逐行核验行号。
-- 未穷举：model-providers 10 家中 fireworks/perplexity/huggingface/nomic 的逐行调用链未全部展开（以共性列表说明）；openai/anthropic 的 middleware 族内部细节仅到入口级。
-- 所有事实来自 `libs/partners/` 源码，第三方服务端与 SDK 均标注"不在本仓库源码内"。
+- 深读：openai、anthropic、qdrant、chroma、exa、deepseek、xai、groq、openrouter、ollama 关键入口已逐行核验行号。
+- 共性列表（未逐行深读）：mistralai/perplexity/fireworks 的 `_generate` 内部消息转换与 groq 同构，以共性说明。
+- 所有事实来自 `libs/partners/` 源码（HEAD `89252a8f`），第三方服务端与 SDK 均标注"不在本仓库源码内"。

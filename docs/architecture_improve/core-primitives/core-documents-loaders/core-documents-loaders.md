@@ -3,7 +3,7 @@
 > 本文是 `core-primitives` 域下的叶子子系统文档。域级总览见 `../core-primitives.md`。
 > 本文展开「文档/Blob 数据结构、文档加载器、文档转换器与聊天历史」，不重复展开向量库（见 `../core-vectorstores-retrievers/core-vectorstores-retrievers.md`）与消息（见 `../core-messages/core-messages.md`）。
 >
-> 源码基准：`langchain-core` master，commit `4492ad7a804e94bdcc89bf148cfc8efd5e7d6ef7`，源码位于 `libs/core/langchain_core/documents/` + `document_loaders/` + `chat_loaders.py` + `chat_sessions.py` + `chat_history.py`。
+> 源码基准：`langchain-core` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码位于 `libs/core/langchain_core/documents/` + `document_loaders/` + `chat_loaders.py` + `chat_sessions.py` + `chat_history.py`。
 
 ## 1. 功能清单
 
@@ -103,7 +103,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|----------------|
-| 文档加载与转换管道架构图 | `core-documents-loaders-architecture.html` | architecture | standard（沿用基线；跨行回连边布局约束严格，降 standard） |
-| 文档加载与切分数据流图 | `core-documents-loaders-dataflow.html` | dataflow | standard（本轮新增；表达 Blob→Loader→Document→Transformer→VectorStore 数据管道，符合 dataflow 核心语义；两行布局触发可视区校验，加高 viewBox 后通过） |
+| 文档加载与转换管道架构图 | `core-documents-loaders-architecture.html` | architecture | **showcase**（第三轮重渲染：新版 CLI 布局引擎通过正交走线与容器边界校验，由 standard 提升至 showcase） |
+| 文档加载与切分数据流图 | `core-documents-loaders-dataflow.html` | dataflow | **showcase**（本轮新增；表达 Blob→Loader→Document→Transformer→VectorStore 数据管道，符合 dataflow 核心语义；加高 viewBox 后通过 showcase） |
 
 JSON IR 源文件位于 `json/` 目录。本轮相对基线的改进：基线仅有 1 张架构图，本轮新增 1 张 dataflow 图表达 RAG 数据准备管道。两图均实际渲染成功（退出码 0、HTML 非空）。

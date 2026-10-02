@@ -4,13 +4,12 @@
 > 汇总者负责；本域基线为 `../architecture/classic/`（只读，未改动），本轮产物全部位于
 > `docs/architecture_improve/classic/`。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`，
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`，
 > 源码位于 `libs/langchain/langchain_classic/`（约 1300 个 py 文件）。
 
 ## 1. 域职责
 
-`langchain-classic` 是 LangChain 历史包的**遗留兼容层**。README 明确定位：
-"Legacy chains, langchain-community re-exports, indexing API, deprecated functionality"，
+`langchain-classic` 是 LangChain 历史包的**遗留兼容层**。README 明确定位为「遗留 Chain、langchain-community 再导出、索引 API、已废弃功能」（原文：`Legacy chains, langchain-community re-exports, indexing API, deprecated functionality`），
 并建议"在大多数情况下应使用主 `langchain` 包"。它不承载新功能，作用是让历史代码继续可用。
 
 从架构看，本域有三种角色：
@@ -77,14 +76,21 @@
 
 - **图数量补齐**：基线仅 10 张图（6 叶各仅 1 张）；本轮为 6 个单图叶子各补第 2 张图，
   8 叶均达 ≥2 张；域级图按上调后配额补至 3 张（架构 + 数据管线 + LLM 调用链时序）。
-- **质量档位提升**：`classic-agents` 架构图、`classic-retrievers-stores` 架构图由基线
-  `standard` 提升至 `showcase`。
+- **质量档位显著提升**：本轮修复 archify 新版 `meta.output` 必填字段后重渲染全部 19 图。
+  通过移除显式 `viewBox`（让渲染器自动适配画布宽度以解决桌面可读性字号与视口比例检查）
+  及缩短过长子标签，共 7 张图由 `standard` 提升至 `showcase`：
+  chains 时序、loaders 数据流、memory 时序、retrievers 数据流、utils-eval 时序、
+  域级数据管线、域级 LLM 调用链时序。
+- **已知薄弱项修复**：第二轮的 chains 时序与 loaders 数据流两张落 `standard` 的图，
+  本轮均提升至 `showcase`。
 - **新增图语义**：导入委托时序、对话记忆读写时序、加载/分割架构、检索数据流、重试解析
   时序、回调事件分发数据流、域级 LLM 调用链时序——均按 diagram-policy 核心语义选型。
-- **口径变化披露**：个别图（chains 时序、loaders 数据图）在当前 archify 版本下回退
-  `standard`，属渲染校验口径趋严，非内容退化；详见各叶第 10 节。
+- **残留 standard 披露**：6 张图因跨层连接复杂（chains 架构、域级架构）或循环回边约束
+  （agents 生命周期、callbacks 事件分发数据流）保持 `standard`，属预期内复杂度。
+  详见各叶第 10 节。
 
-本域共 19 张 archify 交互式 HTML 图（域级 3 + 叶子级 16），质量档位详见各叶第 10 节。
+本域共 19 张 archify 交互式 HTML 图（域级 3 + 叶子级 16），其中 13 张 `showcase`、
+6 张 `standard`，质量档位详见各叶第 10 节。
 域级三图分工：架构图表达静态组件拓扑，数据管线表达"输入→编排→生成→输出"数据流向，
 时序图表达"LLMChain → BaseLLM → 厂商实现 → 远端 API → OutputParser"的单次调用链，
 三者互补不重复。JSON IR 源文件位于各目录 `json/` 与本目录 `json/`。

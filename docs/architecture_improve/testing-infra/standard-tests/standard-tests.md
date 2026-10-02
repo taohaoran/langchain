@@ -3,7 +3,7 @@
 > 本文是 `testing-infra` 域下的叶子子系统文档。本独立包为各 partner 集成提供标准化测试接口，确保不同
 > 厂商实现满足统一契约。
 >
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，独立包目录 `libs/standard-tests/langchain_tests/`（21 个 py 文件，约 9820 行）。
+> 源码基准：`libs/standard-tests/langchain_tests/`，branch `master`，commit `89252a8f`。
 
 ## 1. 功能清单
 
@@ -85,7 +85,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|------|
-| 标准测试套件架构图 | `standard-tests-architecture.html` | architecture | standard |
+| 标准测试套件架构图 | `standard-tests-architecture.html` | architecture | **showcase** |
 | partner 接入标准测试流程 | `standard-tests-workflow.html` | workflow | showcase |
 
-JSON IR 源文件位于 `json/`。本轮新增 workflow 图：partner 接入是一条带"契约守卫"决策分支的多角色流程（partner 作者定义类/实现属性/覆写开关 → pytest 收集 → 守卫判定通过则运行、删用例或无理由覆盖则断言失败），与静态契约架构图互补。
+**第三轮刷新**：补全 `meta.output` 字段后重渲染，架构图由第二轮的 standard 提升为 showcase。JSON IR 源文件位于 `json/`。

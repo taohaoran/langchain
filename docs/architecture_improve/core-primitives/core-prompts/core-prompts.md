@@ -3,7 +3,7 @@
 > 本文是 `core-primitives` 域下的叶子子系统文档。域级总览见 `../core-primitives.md`。
 > 本文展开「把输入变量渲染成 PromptValue 的模板体系」，不重复展开消息类型（见 `../core-messages/core-messages.md`）与输出解析（见 `../core-output-parsers/core-output-parsers.md`）。
 >
-> 源码基准：`langchain-core` master，commit `4492ad7a804e94bdcc89bf148cfc8efd5e7d6ef7`，源码位于 `libs/core/langchain_core/prompts/` + `example_selectors/` + `prompt_values.py`。
+> 源码基准：`langchain-core` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码位于 `libs/core/langchain_core/prompts/` + `example_selectors/` + `prompt_values.py`。
 
 ## 1. 功能清单
 
@@ -108,6 +108,6 @@
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|----------------|
 | 提示词模板类层级与渲染管道架构图 | `core-prompts-architecture.html` | architecture | **showcase**（本轮重构布局：placeholder 移至 chat 正下方、pval→model 走右列直线，解决 `proper-crossing` 交叉与标签重叠，由 standard 提升至 showcase） |
-| 提示词渲染数据流图 | `core-prompts-dataflow.html` | dataflow | standard（本轮新增；3 路输入变量扇入渲染节点的边标签间距差 showcase 阈值，属扇入紧凑，降 standard；主管道清晰） |
+| 提示词渲染数据流图 | `core-prompts-dataflow.html` | dataflow | **showcase**（本轮新增；表达变量渲染数据流；第三轮重渲染新版 CLI 布局引擎通过标签间距校验，由 standard 提升至 showcase） |
 
 JSON IR 源文件位于 `json/` 目录。本轮相对基线的改进：架构图重构布局后由 standard 提升至 showcase；新增 1 张 dataflow 图表达变量渲染数据流。两图均实际渲染成功（退出码 0、HTML 非空）。

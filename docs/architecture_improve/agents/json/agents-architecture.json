@@ -5,7 +5,8 @@
     "title": "agents 域架构图",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1300, 720]
+    "output": "agents-architecture.html",
+    "viewBox": [1240, 720]
   },
   "components": [
     { "id": "user", "type": "external", "label": "用户代码", "pos": [60, 300], "size": [140, 64], "tag": "调用方" },

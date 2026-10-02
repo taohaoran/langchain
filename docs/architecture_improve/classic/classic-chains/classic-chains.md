@@ -4,7 +4,7 @@
 > 经典包的 **Chain 抽象与各类内置链实现**，不展开 Agent 执行循环（见 `../classic-agents/`）、
 > 记忆对象（见 `../classic-memory/`）、模型基类（见 `../classic-llms-chat/`）。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`。
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`。
 >
 > 本轮改进：保留基线两张图并按当前 archify 版本重渲染；架构图主路径与卡片已收紧，时序图补全
 > 激活条。相对基线的整体改进见 `../../improve-comparison.md`。
@@ -151,9 +151,9 @@
 | 图 | 文件 | 类型 | archify 质量档 |
 | --- | --- | --- | --- |
 | Chain 体系与调用依赖架构图 | `classic-chains-architecture.html` | architecture | standard |
-| `Chain.invoke` 一次执行时序图 | `classic-chains-sequence.html` | sequence | standard |
+| `Chain.invoke` 一次执行时序图 | `classic-chains-sequence.html` | sequence | showcase |
 
 档位披露：架构图因跨层连接（基类→文档合并族→路由族→模型/记忆/回调）节点较多，showcase
-布局校验未全过，降为 `standard`。时序图主路径清晰，但当前 archify 版本对消息间距校验趋严，
-showcase 未全过、回退 `standard`（基线曾为 showcase，属本轮渲染口径变化，非内容退化）。
+布局校验未全过，降为 `standard`。时序图本轮通过移除显式 viewBox 让渲染器自动适配画布宽度，
+解决桌面可读性字号与视口比例检查，由 `standard` 提升至 `showcase`。
 JSON IR 源文件位于 `json/`。

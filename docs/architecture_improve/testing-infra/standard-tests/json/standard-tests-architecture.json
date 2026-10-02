@@ -4,7 +4,7 @@
   "meta": {
     "title": "标准测试套件架构",
     "quality_profile": "standard",
-    "locale": "zh-CN",
+    "locale": "zh-CN", "output": "standard-tests-architecture.html",
     "viewBox": [1080, 520]
   },
   "components": [

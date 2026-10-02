@@ -4,7 +4,7 @@
 > 经典包的 **对话记忆抽象与实现**，不展开 Chain 如何调用记忆（见 `../classic-chains/`）、消息
 > schema（见 `../classic-callbacks-infra/` 的 `schema/`）。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`。
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`。
 >
 > 本轮改进：在基线架构图之外，新增"一次对话轮次的记忆读写"时序图，把 `prep_inputs` 注入、
 > `save_context` 落盘、`BaseChatMessageHistory` 持久化三段交互画清楚。
@@ -129,9 +129,9 @@
 | 图 | 文件 | 类型 | archify 质量档 |
 | --- | --- | --- | --- |
 | 记忆体系与持久化后端架构图 | `classic-memory-architecture.html` | architecture | showcase |
-| 一次对话轮次的记忆读写时序图 | `classic-memory-conversation-sequence.html` | sequence | standard |
+| 一次对话轮次的记忆读写时序图 | `classic-memory-conversation-sequence.html` | sequence | showcase |
 
 档位披露：架构图组件分层清晰（基类 → 变体 → 历史后端 → 外部存储），保持 `showcase`。
-新增时序图刻画一轮对话中 `Chain ↔ BaseMemory ↔ BaseChatMessageHistory` 的注入/生成/落盘
-三方交互；因参与者激活条与返回消息较多，showcase 间距校验未全过、回退 `standard`。
+时序图本轮通过移除显式 viewBox 让渲染器自动适配画布，解决视口比例与字号检查，
+由 `standard` 提升至 `showcase`，刻画 `Chain ↔ BaseMemory ↔ BaseChatMessageHistory` 的注入/落盘交互。
 JSON IR 位于 `json/`。

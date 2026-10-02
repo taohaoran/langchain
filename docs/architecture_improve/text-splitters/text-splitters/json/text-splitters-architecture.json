@@ -3,8 +3,9 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "分块器体系架构",
-    "quality_profile": "standard",
+    "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "text-splitters-architecture.html",
     "viewBox": [1080, 560]
   },
   "components": [

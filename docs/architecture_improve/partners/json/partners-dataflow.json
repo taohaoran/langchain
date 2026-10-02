@@ -5,6 +5,7 @@
     "title": "partners 域请求消息变换数据流",
     "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "partners-dataflow.html",
     "viewBox": [
       1080,
       420

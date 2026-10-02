@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "diagram_type": "architecture",
-  "meta": { "title": "Anthropic 集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1240, 460] },
+  "meta": { "title": "Anthropic 集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-anthropic-architecture.html", "viewBox": [1240, 460] },
   "components": [
     { "id": "app", "type": "external", "label": "用户应用 / Agent", "pos": [40, 210], "size": [160, 60] },
     { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "BaseChatModel / AgentMiddleware", "pos": [300, 195], "size": [170, 90] },

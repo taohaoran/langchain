@@ -1,7 +1,7 @@
 # testing-infra 域总览
 
 > 本域包含以下叶子子系统；各叶子详情见对应文档。
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，独立包 `libs/standard-tests/langchain_tests/`（21 个 py / 约 9820 行）。
+> 源码基准：`libs/standard-tests/langchain_tests/`，branch `master`，commit `89252a8f`。
 
 ## 1. 域职责
 

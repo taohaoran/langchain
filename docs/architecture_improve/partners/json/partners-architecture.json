@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "diagram_type": "architecture",
-  "meta": { "title": "partners 域集成适配架构图", "quality_profile": "showcase", "locale": "zh-CN", "viewBox": [1240, 560] },
+  "meta": { "title": "partners 域集成适配架构图", "quality_profile": "showcase", "locale": "zh-CN", "output": "partners-architecture.html", "viewBox": [1240, 560] },
   "components": [
     { "id": "user", "type": "external", "label": "用户应用 / Agent", "pos": [40, 250], "size": [160, 60] },
     { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "ChatModel/Embeddings/VectorStore/Tool", "pos": [290, 235], "size": [180, 90] },

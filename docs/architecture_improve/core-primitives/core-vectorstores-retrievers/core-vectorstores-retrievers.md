@@ -3,7 +3,7 @@
 > 本文是 `core-primitives` 域下的叶子子系统文档。域级总览见 `../core-primitives.md`。
 > 本文展开「向量存储、嵌入模型、检索器与增量索引」的抽象基类，不重复展开文档（见 `../core-documents-loaders/core-documents-loaders.md`）。
 >
-> 源码基准：`langchain-core` master，commit `4492ad7a804e94bdcc89bf148cfc8efd5e7d6ef7`，源码位于 `libs/core/langchain_core/vectorstores/` + `retrievers.py` + `embeddings/` + `indexing/`。
+> 源码基准：`langchain-core` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码位于 `libs/core/langchain_core/vectorstores/` + `retrievers.py` + `embeddings/` + `indexing/`。
 
 ## 1. 功能清单
 

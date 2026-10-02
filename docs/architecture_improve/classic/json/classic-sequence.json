@@ -5,28 +5,119 @@
     "title": "经典 Chain 内 LLM 调用链时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 820],
-    "column_fit": "spread"
+    "column_fit": "spread",
+    "output": "classic-sequence.html"
   },
   "participants": [
-    { "id": "chain", "type": "backend", "label": "LLMChain", "sublabel": "classic-chains" },
-    { "id": "basellm", "type": "backend", "label": "BaseLLM", "sublabel": "langchain-core" },
-    { "id": "vendor", "type": "external", "label": "厂商 LLM 实现", "sublabel": "community/partner" },
-    { "id": "api", "type": "cloud", "label": "远端模型 API", "sublabel": "推理本身" },
-    { "id": "parser", "type": "backend", "label": "OutputParser", "sublabel": "classic-utils-eval" }
+    {
+      "id": "chain",
+      "type": "backend",
+      "label": "LLMChain",
+      "sublabel": "classic-chains"
+    },
+    {
+      "id": "basellm",
+      "type": "backend",
+      "label": "BaseLLM",
+      "sublabel": "langchain-core"
+    },
+    {
+      "id": "vendor",
+      "type": "external",
+      "label": "厂商 LLM 实现",
+      "sublabel": "community/partner"
+    },
+    {
+      "id": "api",
+      "type": "cloud",
+      "label": "远端模型 API",
+      "sublabel": "推理本身"
+    },
+    {
+      "id": "parser",
+      "type": "backend",
+      "label": "OutputParser",
+      "sublabel": "classic-utils-eval"
+    }
   ],
   "messages": [
-    { "id": "m1", "from": "chain", "to": "basellm", "y": 160, "label": "generate_prompt", "variant": "emphasis" },
-    { "id": "m2", "from": "basellm", "to": "vendor", "y": 240, "label": "_generate(prompts)", "variant": "emphasis" },
-    { "id": "m3", "from": "vendor", "to": "api", "y": 320, "label": "HTTP 请求", "variant": "dashed" },
-    { "id": "m4", "from": "api", "to": "vendor", "y": 400, "label": "completion / 流式", "variant": "return" },
-    { "id": "m5", "from": "vendor", "to": "basellm", "y": 480, "label": "LLMResult", "variant": "return" },
-    { "id": "m6", "from": "basellm", "to": "chain", "y": 560, "label": "LLMResult", "variant": "return" },
-    { "id": "m7", "from": "chain", "to": "parser", "y": 640, "label": "parse_result", "variant": "emphasis" },
-    { "id": "m8", "from": "parser", "to": "chain", "y": 720, "label": "结构化值", "variant": "return" }
+    {
+      "id": "m1",
+      "from": "chain",
+      "to": "basellm",
+      "y": 160,
+      "label": "generate_prompt",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "basellm",
+      "to": "vendor",
+      "y": 240,
+      "label": "_generate(prompts)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m3",
+      "from": "vendor",
+      "to": "api",
+      "y": 320,
+      "label": "HTTP 请求",
+      "variant": "dashed"
+    },
+    {
+      "id": "m4",
+      "from": "api",
+      "to": "vendor",
+      "y": 400,
+      "label": "completion / 流式",
+      "variant": "return"
+    },
+    {
+      "id": "m5",
+      "from": "vendor",
+      "to": "basellm",
+      "y": 480,
+      "label": "LLMResult",
+      "variant": "return"
+    },
+    {
+      "id": "m6",
+      "from": "basellm",
+      "to": "chain",
+      "y": 560,
+      "label": "LLMResult",
+      "variant": "return"
+    },
+    {
+      "id": "m7",
+      "from": "chain",
+      "to": "parser",
+      "y": 640,
+      "label": "parse_result",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m8",
+      "from": "parser",
+      "to": "chain",
+      "y": 720,
+      "label": "结构化值",
+      "variant": "return"
+    }
   ],
   "activations": [
-    { "participant": "chain", "from": 160, "to": 720, "type": "backend" },
-    { "participant": "vendor", "from": 240, "to": 480, "type": "external" }
+    {
+      "participant": "chain",
+      "from": 160,
+      "to": 720,
+      "type": "backend"
+    },
+    {
+      "participant": "vendor",
+      "from": 240,
+      "to": 480,
+      "type": "external"
+    }
   ]
 }

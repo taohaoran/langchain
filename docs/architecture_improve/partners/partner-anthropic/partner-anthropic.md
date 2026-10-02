@@ -3,7 +3,7 @@
 > 本文是 `partners` 域下的叶子子系统文档。域级总览见 `../partners.md`。
 > 本文只展开 Anthropic Claude 集成（`langchain-anthropic`）的职责边界，不重复展开其他相邻叶子。
 >
-> 源码基准：`libs/partners/anthropic/`，`langchain-anthropic` 包；branch `master`，commit `4492ad7a`。
+> 源码基准：`libs/partners/anthropic/`，`langchain-anthropic` 包；branch `master`，commit `89252a8f`。
 
 ## 1. 功能清单
 
@@ -151,4 +151,4 @@
 | Anthropic 集成架构图 | `partner-anthropic-architecture.html` | architecture | **showcase** |
 | 消息格式化时序图 | `partner-anthropic-sequence.html` | sequence | **showcase** |
 
-**相对基线的提升**：两张图均由基线的 standard 提升为 showcase。架构图在拉开组件横向间距、缩短连线标签后通过 showcase；时序图通过压缩消息 y 间距（末条 ≤ 可读时间轴上限）后通过 showcase 布局校验。JSON IR 源文件位于 `json/` 目录。
+**第三轮刷新**：两图保持 showcase（补全 `meta.output` 字段后重渲染通过；时序图按提示将 viewBox 高度 690→720 以容纳图例）。关键行号已按 HEAD `89252a8f` 复核（`ChatAnthropic` @ chat_models.py:1058、`_format_messages` @ :539、`_merge_messages` @ :326、`_generate` @ :2250、`AnthropicPromptCachingMiddleware` @ middleware/prompt_caching.py:47），与第二轮一致。JSON IR 源文件位于 `json/` 目录。

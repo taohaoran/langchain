@@ -3,7 +3,7 @@
 > 本文是 `model-profiles` 域下的叶子子系统文档。本独立包是一个 CLI，从 models.dev 拉取模型能力数据，
 > 合并本地 TOML 增强，生成供 partner 包使用的 `_profiles.py`。
 >
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，独立包目录 `libs/model-profiles/langchain_model_profiles/`（3 个 py 文件，约 945 行）。
+> 源码基准：`libs/model-profiles/langchain_model_profiles/`，branch `master`，commit `89252a8f`。
 
 ## 1. 功能清单
 
@@ -97,7 +97,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|------|
-| profile 生成 CLI 架构图 | `model-profiles-architecture.html` | architecture | standard |
+| profile 生成 CLI 架构图 | `model-profiles-architecture.html` | architecture | **showcase** |
 | refresh 生成数据流 | `model-profiles-dataflow.html` | dataflow | standard |
 
-JSON IR 源文件位于 `json/`。降档说明：涉及外部 API 与生成产物，按 standard 档渲染。
+**第三轮刷新**：补全 `meta.output` 字段后重渲染，架构图由第二轮的 standard 提升为 showcase；数据流图保持 standard（涉及外部 API 与生成产物管道，跨层连线较多）。JSON IR 源文件位于 `json/`。

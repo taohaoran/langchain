@@ -3,7 +3,7 @@
 > 本文是 `classic` 域下的叶子子系统文档（第二轮改进版）。域级总览见 `../classic.md`，本文只展开
 > 经典包的 **回调系统、LLM 缓存、LangSmith Hub 拉取、序列化加载与全局状态**，不展开业务子系统。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`。
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`。
 >
 > 本轮改进：在基线架构图之外，新增"回调事件分发流"数据图，把业务事件经回调管理器扇出到
 > 本地 handler 与远程观测平台的事件管道显式画出。

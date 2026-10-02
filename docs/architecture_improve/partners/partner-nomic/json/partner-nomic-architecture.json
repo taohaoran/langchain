@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "Nomic 嵌入集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-nomic-architecture.html", "viewBox": [1200, 400] },
+  "components": [
+    { "id": "app", "type": "external", "label": "RAG 链 / 向量库", "pos": [40, 170], "size": [160, 60] },
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "Embeddings", "pos": [290, 160], "size": [170, 80] },
+    { "id": "nomic", "type": "backend", "label": "NomicEmbeddings", "sublabel": "文本+图像嵌入", "pos": [540, 160], "size": [180, 80], "tag": "embeddings.py:13" },
+    { "id": "sdk", "type": "external", "label": "nomic SDK", "pos": [800, 165], "size": [130, 60] },
+    { "id": "api", "type": "cloud", "label": "Nomic API 服务端", "pos": [1000, 165], "size": [160, 60] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "langchain-nomic 本仓库适配层", "wraps": ["nomic"] },
+    { "kind": "region", "label": "外部依赖与服务（不在本仓库源码内）", "wraps": ["sdk", "api"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "app", "to": "core", "label": "embed", "variant": "emphasis" },
+    { "id": "c2", "from": "core", "to": "nomic", "label": "实现", "variant": "emphasis" },
+    { "id": "c3", "from": "nomic", "to": "sdk", "label": "embed", "variant": "emphasis" },
+    { "id": "c4", "from": "sdk", "to": "api", "label": "HTTPS", "variant": "emphasis" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["Embeddings 抽象在 langchain_core", "支持文本与图像嵌入", "Nomic API 不在本仓库"] }
+  ]
+}

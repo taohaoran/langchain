@@ -3,7 +3,7 @@
 > 本文是 `core-primitives` 域下的叶子子系统文档。域级总览见 `../core-primitives.md`。
 > 本文展开「LC 序列化、LLM 缓存、键值存储、限流、全局配置、异常体系、懒加载与安全策略」等横切基础设施，不重复展开各业务叶子。
 >
-> 源码基准：`langchain-core` master，commit `4492ad7a804e94bdcc89bf148cfc8efd5e7d6ef7`，源码位于 `libs/core/langchain_core/load/` + `caches.py` + `rate_limiters.py` + `stores.py` + `exceptions.py` + `globals.py` + `env.py` + `_api/` + `_import_utils.py` + `utils/` + `_security/` 等。
+> 源码基准：`langchain-core` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码位于 `libs/core/langchain_core/load/` + `caches.py` + `rate_limiters.py` + `stores.py` + `exceptions.py` + `globals.py` + `env.py` + `_api/` + `_import_utils.py` + `utils/` + `_security/` 等。
 
 ## 1. 功能清单
 
@@ -116,6 +116,6 @@
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|----------------|
 | 序列化往返与基础设施架构图 | `core-serialization-cache-infra-architecture.html` | architecture | **showcase**（沿用基线） |
-| 对象序列化往返数据流图 | `core-serialization-cache-infra-dataflow.html` | dataflow | standard（本轮新增；表达对象→to_json→SerializedConstructor→load→白名单校验→新实例数据管道，符合 dataflow 核心语义；缩短长标签、两行布局后通过） |
+| 对象序列化往返数据流图 | `core-serialization-cache-infra-dataflow.html` | dataflow | **showcase**（本轮新增；表达对象→to_json→SerializedConstructor→load→白名单校验→新实例数据管道，符合 dataflow 核心语义；缩短长标签后第三轮重渲染通过 showcase） |
 
 JSON IR 源文件位于 `json/` 目录。本轮相对基线的改进：基线仅有 1 张架构图，本轮新增 1 张 dataflow 图表达序列化往返数据管道。两图均实际渲染成功（退出码 0、HTML 非空）。

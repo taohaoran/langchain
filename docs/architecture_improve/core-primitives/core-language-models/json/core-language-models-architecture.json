@@ -5,34 +5,183 @@
     "title": "语言模型抽象层级与生成管道",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 620]
+    "viewBox": [
+      1080,
+      620
+    ],
+    "output": "core-language-models-architecture.html"
   },
   "components": [
-    { "id": "input", "type": "external", "label": "messages / PromptValue", "sublabel": "list[BaseMessage]", "pos": [40, 275], "size": [180, 60] },
-    { "id": "blm", "type": "backend", "label": "BaseLanguageModel", "sublabel": "base.py:181", "pos": [320, 270], "size": [170, 70], "tag": "抽象基类" },
-    { "id": "llm", "type": "backend", "label": "LLM", "sublabel": "legacy 补全", "pos": [590, 120], "size": [150, 56] },
-    { "id": "chat", "type": "backend", "label": "BaseChatModel", "sublabel": "chat_models.py:284", "pos": [590, 270], "size": [170, 56] },
-    { "id": "cross", "type": "backend", "label": "BaseCrossEncoder", "sublabel": "cross_encoders.py", "pos": [590, 420], "size": [160, 56] },
-    { "id": "output", "type": "cloud", "label": "AIMessage / scores", "sublabel": "输出", "pos": [880, 270], "size": [160, 60] },
-    { "id": "partners", "type": "cloud", "label": "partners 实现", "sublabel": "OpenAI/Anthropic", "pos": [320, 470], "size": [170, 60], "tag": "依赖倒置" }
+    {
+      "id": "input",
+      "type": "external",
+      "label": "messages / PromptValue",
+      "sublabel": "list[BaseMessage]",
+      "pos": [
+        40,
+        275
+      ],
+      "size": [
+        180,
+        60
+      ]
+    },
+    {
+      "id": "blm",
+      "type": "backend",
+      "label": "BaseLanguageModel",
+      "sublabel": "base.py:181",
+      "pos": [
+        320,
+        270
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "tag": "抽象基类"
+    },
+    {
+      "id": "llm",
+      "type": "backend",
+      "label": "LLM",
+      "sublabel": "legacy 补全",
+      "pos": [
+        590,
+        120
+      ],
+      "size": [
+        150,
+        56
+      ]
+    },
+    {
+      "id": "chat",
+      "type": "backend",
+      "label": "BaseChatModel",
+      "sublabel": "chat_models.py:284",
+      "pos": [
+        590,
+        270
+      ],
+      "size": [
+        170,
+        56
+      ]
+    },
+    {
+      "id": "cross",
+      "type": "backend",
+      "label": "BaseCrossEncoder",
+      "sublabel": "cross_encoders.py",
+      "pos": [
+        590,
+        420
+      ],
+      "size": [
+        160,
+        56
+      ]
+    },
+    {
+      "id": "output",
+      "type": "cloud",
+      "label": "AIMessage / scores",
+      "sublabel": "输出",
+      "pos": [
+        880,
+        270
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "partners",
+      "type": "cloud",
+      "label": "partners 实现",
+      "sublabel": "OpenAI/Anthropic",
+      "pos": [
+        320,
+        470
+      ],
+      "size": [
+        170,
+        60
+      ],
+      "tag": "依赖倒置"
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "langchain_core.language_models", "wraps": ["blm", "llm", "chat", "cross"] }
+    {
+      "kind": "region",
+      "label": "langchain_core.language_models",
+      "wraps": [
+        "blm",
+        "llm",
+        "chat",
+        "cross"
+      ]
+    }
   ],
   "connections": [
-    { "id": "i-b", "from": "input", "to": "blm", "label": "invoke", "variant": "emphasis" },
-    { "id": "b-l", "from": "blm", "to": "llm", "label": "补全", "fromSide": "top", "toSide": "bottom" },
-    { "id": "b-c", "from": "blm", "to": "chat", "label": "聊天模型" },
-    { "id": "b-x", "from": "blm", "to": "cross", "label": "打分", "fromSide": "bottom", "toSide": "top" },
-    { "id": "c-o", "from": "chat", "to": "output", "label": "_generate", "variant": "emphasis" },
-    { "id": "p-b", "from": "partners", "to": "blm", "label": "实现契约", "variant": "security", "fromSide": "top", "toSide": "bottom" }
+    {
+      "id": "i-b",
+      "from": "input",
+      "to": "blm",
+      "label": "invoke",
+      "variant": "emphasis"
+    },
+    {
+      "id": "b-l",
+      "from": "blm",
+      "to": "llm",
+      "label": "补全",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "b-c",
+      "from": "blm",
+      "to": "chat",
+      "label": "聊天模型"
+    },
+    {
+      "id": "b-x",
+      "from": "blm",
+      "to": "cross",
+      "label": "打分",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "c-o",
+      "from": "chat",
+      "to": "output",
+      "label": "_generate",
+      "variant": "emphasis"
+    },
+    {
+      "id": "p-b",
+      "from": "partners",
+      "to": "blm",
+      "label": "实现契约",
+      "variant": "security",
+      "fromSide": "top",
+      "toSide": "bottom"
+    }
   ],
   "cards": [
-    { "dot": "emerald", "title": "要点", "items": [
-      "模型即 Runnable，接入 LCEL",
-      "messages 进、AIMessage 出",
-      "_generate/_stream 由 partners 实现",
-      "token 计数与结构化输出为通用能力"
-    ] }
+    {
+      "dot": "emerald",
+      "title": "要点",
+      "items": [
+        "模型即 Runnable，接入 LCEL",
+        "messages 进、AIMessage 出",
+        "_generate/_stream 由 partners 实现",
+        "token 计数与结构化输出为通用能力"
+      ]
+    }
   ]
 }

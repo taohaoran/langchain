@@ -5,37 +5,170 @@
     "title": "Runnable.invoke 跨原语调用时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1180, 780],
-    "column_fit": "spread"
+    "viewBox": [
+      1180,
+      780
+    ],
+    "column_fit": "spread",
+    "output": "core-primitives-sequence.html"
   },
   "participants": [
-    { "id": "caller", "type": "external", "label": "调用方", "sublabel": "user" },
-    { "id": "chain", "type": "backend", "label": "Runnable 链", "sublabel": "core-runnables" },
-    { "id": "cb", "type": "messagebus", "label": "回调管理器", "sublabel": "core-callbacks" },
-    { "id": "ret", "type": "backend", "label": "Retriever", "sublabel": "core-vectorstores" },
-    { "id": "prompt", "type": "backend", "label": "Prompt", "sublabel": "core-prompts" },
-    { "id": "model", "type": "backend", "label": "ChatModel", "sublabel": "core-language-models" },
-    { "id": "parser", "type": "backend", "label": "Parser", "sublabel": "core-output-parsers" }
+    {
+      "id": "caller",
+      "type": "external",
+      "label": "调用方",
+      "sublabel": "user"
+    },
+    {
+      "id": "chain",
+      "type": "backend",
+      "label": "Runnable 链",
+      "sublabel": "core-runnables"
+    },
+    {
+      "id": "cb",
+      "type": "messagebus",
+      "label": "回调管理器",
+      "sublabel": "core-callbacks"
+    },
+    {
+      "id": "ret",
+      "type": "backend",
+      "label": "Retriever",
+      "sublabel": "core-vectorstores"
+    },
+    {
+      "id": "prompt",
+      "type": "backend",
+      "label": "Prompt",
+      "sublabel": "core-prompts"
+    },
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "ChatModel",
+      "sublabel": "core-language-models"
+    },
+    {
+      "id": "parser",
+      "type": "backend",
+      "label": "Parser",
+      "sublabel": "core-output-parsers"
+    }
   ],
   "segments": [
-    { "from": 160, "to": 260, "label": "构建运行" },
-    { "from": 260, "to": 420, "label": "子步串联" },
-    { "from": 420, "to": 560, "label": "返回结果" }
+    {
+      "from": 160,
+      "to": 260,
+      "label": "构建运行"
+    },
+    {
+      "from": 260,
+      "to": 420,
+      "label": "子步串联"
+    },
+    {
+      "from": 420,
+      "to": 560,
+      "label": "返回结果"
+    }
   ],
   "messages": [
-    { "id": "m1", "from": "caller", "to": "chain", "y": 170, "label": "invoke(query)", "variant": "emphasis" },
-    { "id": "m2", "from": "chain", "to": "cb", "y": 210, "label": "on_chain_start", "variant": "default" },
-    { "id": "m3", "from": "chain", "to": "ret", "y": 290, "label": "get_relevant_docs", "variant": "default" },
-    { "id": "m4", "from": "ret", "to": "chain", "y": 330, "label": "Document[]", "variant": "return" },
-    { "id": "m5", "from": "chain", "to": "prompt", "y": 360, "label": "format", "variant": "default" },
-    { "id": "m6", "from": "prompt", "to": "chain", "y": 390, "label": "PromptValue", "variant": "return" },
-    { "id": "m7", "from": "chain", "to": "model", "y": 430, "label": "generate", "variant": "emphasis" },
-    { "id": "m8", "from": "model", "to": "chain", "y": 470, "label": "AIMessage", "variant": "return" },
-    { "id": "m9", "from": "chain", "to": "parser", "y": 500, "label": "parse", "variant": "default" },
-    { "id": "m10", "from": "parser", "to": "chain", "y": 530, "label": "结构化对象", "variant": "return" },
-    { "id": "m11", "from": "chain", "to": "caller", "y": 580, "label": "最终输出", "variant": "return" }
+    {
+      "id": "m1",
+      "from": "caller",
+      "to": "chain",
+      "y": 170,
+      "label": "invoke(query)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "chain",
+      "to": "cb",
+      "y": 210,
+      "label": "on_chain_start",
+      "variant": "default"
+    },
+    {
+      "id": "m3",
+      "from": "chain",
+      "to": "ret",
+      "y": 290,
+      "label": "get_relevant_docs",
+      "variant": "default"
+    },
+    {
+      "id": "m4",
+      "from": "ret",
+      "to": "chain",
+      "y": 330,
+      "label": "Document[]",
+      "variant": "return"
+    },
+    {
+      "id": "m5",
+      "from": "chain",
+      "to": "prompt",
+      "y": 360,
+      "label": "format",
+      "variant": "default"
+    },
+    {
+      "id": "m6",
+      "from": "prompt",
+      "to": "chain",
+      "y": 390,
+      "label": "PromptValue",
+      "variant": "return"
+    },
+    {
+      "id": "m7",
+      "from": "chain",
+      "to": "model",
+      "y": 430,
+      "label": "generate",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m8",
+      "from": "model",
+      "to": "chain",
+      "y": 470,
+      "label": "AIMessage",
+      "variant": "return"
+    },
+    {
+      "id": "m9",
+      "from": "chain",
+      "to": "parser",
+      "y": 500,
+      "label": "parse",
+      "variant": "default"
+    },
+    {
+      "id": "m10",
+      "from": "parser",
+      "to": "chain",
+      "y": 530,
+      "label": "结构化对象",
+      "variant": "return"
+    },
+    {
+      "id": "m11",
+      "from": "chain",
+      "to": "caller",
+      "y": 580,
+      "label": "最终输出",
+      "variant": "return"
+    }
   ],
   "activations": [
-    { "participant": "chain", "from": 170, "to": 580, "type": "backend" }
+    {
+      "participant": "chain",
+      "from": 170,
+      "to": 580,
+      "type": "backend"
+    }
   ]
 }

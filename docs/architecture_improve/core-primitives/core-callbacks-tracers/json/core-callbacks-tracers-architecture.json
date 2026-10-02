@@ -5,34 +5,179 @@
     "title": "回调与追踪架构",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 640]
+    "viewBox": [
+      1080,
+      640
+    ],
+    "output": "core-callbacks-tracers-architecture.html"
   },
   "components": [
-    { "id": "runnable", "type": "external", "label": "Runnable 执行入口", "sublabel": "_call_with_config", "pos": [40, 290], "size": [170, 60] },
-    { "id": "manager", "type": "backend", "label": "CallbackManager", "sublabel": "事件广播", "pos": [300, 285], "size": [170, 70], "tag": "横切注入点" },
-    { "id": "runmgr", "type": "backend", "label": "RunManager", "sublabel": "run 树 get_child", "pos": [580, 120], "size": [170, 60] },
-    { "id": "handler", "type": "backend", "label": "BaseCallbackHandler", "sublabel": "on_* 钩子", "pos": [580, 290], "size": [170, 60] },
-    { "id": "tracer", "type": "backend", "label": "BaseTracer", "sublabel": "_persist_run", "pos": [580, 460], "size": [170, 60] },
-    { "id": "run", "type": "database", "label": "Run 树", "sublabel": "core.py/schemas.py", "pos": [860, 460], "size": [160, 60] },
-    { "id": "langsmith", "type": "cloud", "label": "LangSmith 云", "sublabel": "不在本仓库源码内", "pos": [860, 290], "size": [160, 60] }
+    {
+      "id": "runnable",
+      "type": "external",
+      "label": "Runnable 执行入口",
+      "sublabel": "_call_with_config",
+      "pos": [
+        40,
+        290
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "manager",
+      "type": "backend",
+      "label": "CallbackManager",
+      "sublabel": "事件广播",
+      "pos": [
+        300,
+        285
+      ],
+      "size": [
+        170,
+        70
+      ],
+      "tag": "横切注入点"
+    },
+    {
+      "id": "runmgr",
+      "type": "backend",
+      "label": "RunManager",
+      "sublabel": "run 树 get_child",
+      "pos": [
+        580,
+        120
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "handler",
+      "type": "backend",
+      "label": "BaseCallbackHandler",
+      "sublabel": "on_* 钩子",
+      "pos": [
+        580,
+        290
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "tracer",
+      "type": "backend",
+      "label": "BaseTracer",
+      "sublabel": "_persist_run",
+      "pos": [
+        580,
+        460
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "run",
+      "type": "database",
+      "label": "Run 树",
+      "sublabel": "core.py/schemas.py",
+      "pos": [
+        860,
+        460
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "langsmith",
+      "type": "cloud",
+      "label": "LangSmith 云",
+      "sublabel": "不在本仓库源码内",
+      "pos": [
+        860,
+        290
+      ],
+      "size": [
+        160,
+        60
+      ]
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "langchain_core.callbacks / tracers", "wraps": ["manager", "runmgr", "handler", "tracer", "run"] }
+    {
+      "kind": "region",
+      "label": "langchain_core.callbacks / tracers",
+      "wraps": [
+        "manager",
+        "runmgr",
+        "handler",
+        "tracer",
+        "run"
+      ]
+    }
   ],
   "connections": [
-    { "id": "r-m", "from": "runnable", "to": "manager", "label": "构建管理器", "variant": "emphasis" },
-    { "id": "m-rm", "from": "manager", "to": "runmgr", "fromSide": "top", "toSide": "bottom" },
-    { "id": "m-h", "from": "manager", "to": "handler", "label": "广播", "variant": "emphasis" },
-    { "id": "m-t", "from": "manager", "to": "tracer", "fromSide": "bottom", "toSide": "top" },
-    { "id": "t-run", "from": "tracer", "to": "run", "label": "持久化" },
-    { "id": "h-ls", "from": "handler", "to": "langsmith", "label": "上传", "variant": "security" }
+    {
+      "id": "r-m",
+      "from": "runnable",
+      "to": "manager",
+      "label": "构建管理器",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-rm",
+      "from": "manager",
+      "to": "runmgr",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "m-h",
+      "from": "manager",
+      "to": "handler",
+      "label": "广播",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m-t",
+      "from": "manager",
+      "to": "tracer",
+      "fromSide": "bottom",
+      "toSide": "top"
+    },
+    {
+      "id": "t-run",
+      "from": "tracer",
+      "to": "run",
+      "label": "持久化"
+    },
+    {
+      "id": "h-ls",
+      "from": "handler",
+      "to": "langsmith",
+      "label": "上传",
+      "variant": "security"
+    }
   ],
   "cards": [
-    { "dot": "emerald", "title": "要点", "items": [
-      "CallbackManager 是事件广播器，依赖倒置",
-      "RunManager.get_child 形成 run 树",
-      "BaseTracer 把事件聚合成 Run 持久化",
-      "LangSmith 云后端不在本仓库源码内"
-    ] }
+    {
+      "dot": "emerald",
+      "title": "要点",
+      "items": [
+        "CallbackManager 是事件广播器，依赖倒置",
+        "RunManager.get_child 形成 run 树",
+        "BaseTracer 把事件聚合成 Run 持久化",
+        "LangSmith 云后端不在本仓库源码内"
+      ]
+    }
   ]
 }

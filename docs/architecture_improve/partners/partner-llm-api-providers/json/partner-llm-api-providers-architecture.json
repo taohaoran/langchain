@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "云端 API 提供商集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-llm-api-providers-architecture.html", "viewBox": [1280, 520] },
+  "components": [
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "BaseChatModel / Embeddings", "pos": [40, 200], "size": [170, 90] },
+    { "id": "openai_base", "type": "backend", "label": "BaseChatOpenAI", "sublabel": "OpenAI 适配层", "pos": [290, 100], "size": [175, 70], "tag": "复用" },
+    { "id": "deepseek", "type": "backend", "label": "ChatDeepSeek", "pos": [540, 60], "size": [140, 55] },
+    { "id": "xai", "type": "backend", "label": "ChatXAI", "pos": [540, 135], "size": [140, 55] },
+    { "id": "self_impl", "type": "backend", "label": "自实现 BaseChatModel", "sublabel": "5 家独立适配", "pos": [290, 300], "size": [175, 80] },
+    { "id": "groq", "type": "backend", "label": "ChatGroq", "pos": [540, 250], "size": [120, 50] },
+    { "id": "mistral", "type": "backend", "label": "ChatMistralAI", "pos": [680, 250], "size": [130, 50] },
+    { "id": "or", "type": "backend", "label": "ChatOpenRouter", "pos": [540, 320], "size": [130, 50] },
+    { "id": "pplx", "type": "backend", "label": "ChatPerplexity", "pos": [680, 320], "size": [130, 50] },
+    { "id": "fw", "type": "backend", "label": "ChatFireworks", "pos": [610, 390], "size": [130, 50] },
+    { "id": "cloud", "type": "cloud", "label": "各家云端 API 服务端", "sublabel": "deepseek/xai/groq/...", "pos": [900, 220], "size": [200, 120] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库 7 个集成包", "wraps": ["openai_base", "deepseek", "xai", "self_impl", "groq", "mistral", "or", "pplx", "fw"] },
+    { "kind": "region", "label": "外部服务（不在本仓库源码内）", "wraps": ["cloud"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "core", "to": "openai_base", "label": "继承", "variant": "default" },
+    { "id": "c2", "from": "openai_base", "to": "deepseek", "label": "复用", "variant": "emphasis" },
+    { "id": "c3", "from": "openai_base", "to": "xai", "label": "复用", "variant": "emphasis" },
+    { "id": "c4", "from": "core", "to": "self_impl", "label": "继承", "variant": "default" },
+    { "id": "c5", "from": "self_impl", "to": "groq", "label": "实例", "variant": "default" },
+    { "id": "c6", "from": "self_impl", "to": "mistral", "label": "实例", "variant": "default" },
+    { "id": "c7", "from": "self_impl", "to": "or", "label": "实例", "variant": "default" },
+    { "id": "c8", "from": "self_impl", "to": "pplx", "label": "实例", "variant": "default" },
+    { "id": "c9", "from": "self_impl", "to": "fw", "label": "实例", "variant": "default" },
+    { "id": "c10", "from": "deepseek", "to": "cloud", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "c11", "from": "groq", "to": "cloud", "label": "HTTPS", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["deepseek/xai 复用 OpenAI 适配层", "其余 5 家自实现 BaseChatModel", "OpenRouter 统一网关接数百模型"] }
+  ]
+}

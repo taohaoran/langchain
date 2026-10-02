@@ -4,7 +4,8 @@
   "meta": {
     "title": "partner 接入标准测试流程",
     "quality_profile": "showcase",
-    "locale": "zh-CN"
+        "locale": "zh-CN",
+    "output": "standard-tests-workflow.html"
   },
   "lanes": [
     { "id": "partner", "label": "partner 作者" },

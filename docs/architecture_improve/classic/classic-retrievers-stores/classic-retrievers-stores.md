@@ -4,7 +4,7 @@
 > 经典包的 **检索器组合、向量存储兼容层、文档/键值存储与索引 API**，不展开文档加载（见
 > `../classic-loaders/`）与检索问答链（见 `../classic-chains/`）。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`。
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`。
 >
 > 本轮改进：架构图在当前 archify 版本下由基线 `standard` 提升至 `showcase`；新增"检索数据流"
 > 图，把查询经组合检索器下推向量库、召回后压缩的管道画出来。
@@ -117,9 +117,8 @@
 | 图 | 文件 | 类型 | archify 质量档 |
 | --- | --- | --- | --- |
 | 检索/向量/存储体系架构图 | `classic-retrievers-stores-architecture.html` | architecture | showcase |
-| 检索数据流图 | `classic-retrievers-stores-retrieval-dataflow.html` | dataflow | standard |
+| 检索数据流图 | `classic-retrievers-stores-retrieval-dataflow.html` | dataflow | showcase |
 
 档位披露：架构图在当前 archify 版本下通过 showcase（相对基线 `standard` 为提升项）。
 新增数据流图刻画"查询 → 组合检索器 → 向量库 shim → community/外部向量库 → 召回文档 →
-压缩"管道；跨列相似度搜索边走 `vertical-channel`，showcase 通道间距校验未全过、回退
-`standard`。JSON IR 位于 `json/`。
+压缩"管道；本轮通过移除显式 viewBox 让渲染器自动适配，由 `standard` 提升至 `showcase`。JSON IR 位于 `json/`。

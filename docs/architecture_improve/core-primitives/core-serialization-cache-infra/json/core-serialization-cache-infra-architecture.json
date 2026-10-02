@@ -5,30 +5,136 @@
     "title": "序列化往返与基础设施",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 520]
+    "viewBox": [
+      1080,
+      520
+    ],
+    "output": "core-serialization-cache-infra-architecture.html"
   },
   "components": [
-    { "id": "obj", "type": "external", "label": "langchain 对象", "sublabel": "Runnable/Message/Model", "pos": [40, 270], "size": [170, 60] },
-    { "id": "ser", "type": "backend", "label": "Serializable", "sublabel": "serializable.py:106", "pos": [300, 265], "size": [160, 70], "tag": "序列化基类" },
-    { "id": "dump", "type": "backend", "label": "to_json / dump", "sublabel": "序列化", "pos": [580, 110], "size": [160, 60] },
-    { "id": "load", "type": "security", "label": "load 白名单", "sublabel": "防 RCE", "pos": [580, 270], "size": [160, 60] },
-    { "id": "infra", "type": "database", "label": "缓存/存储/限流", "sublabel": "BaseCache/BaseStore", "pos": [880, 270], "size": [160, 60] }
+    {
+      "id": "obj",
+      "type": "external",
+      "label": "langchain 对象",
+      "sublabel": "Runnable/Message/Model",
+      "pos": [
+        40,
+        270
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "ser",
+      "type": "backend",
+      "label": "Serializable",
+      "sublabel": "serializable.py:106",
+      "pos": [
+        300,
+        265
+      ],
+      "size": [
+        160,
+        70
+      ],
+      "tag": "序列化基类"
+    },
+    {
+      "id": "dump",
+      "type": "backend",
+      "label": "to_json / dump",
+      "sublabel": "序列化",
+      "pos": [
+        580,
+        110
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "load",
+      "type": "security",
+      "label": "load 白名单",
+      "sublabel": "防 RCE",
+      "pos": [
+        580,
+        270
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "infra",
+      "type": "database",
+      "label": "缓存/存储/限流",
+      "sublabel": "BaseCache/BaseStore",
+      "pos": [
+        880,
+        270
+      ],
+      "size": [
+        160,
+        60
+      ]
+    }
   ],
   "boundaries": [
-    { "kind": "region", "label": "langchain_core 基础设施", "wraps": ["ser", "dump", "load"] }
+    {
+      "kind": "region",
+      "label": "langchain_core 基础设施",
+      "wraps": [
+        "ser",
+        "dump",
+        "load"
+      ]
+    }
   ],
   "connections": [
-    { "id": "o-s", "from": "obj", "to": "ser", "label": "继承", "variant": "emphasis" },
-    { "id": "s-d", "from": "ser", "to": "dump", "label": "to_json", "fromSide": "top", "toSide": "bottom" },
-    { "id": "s-l", "from": "ser", "to": "load", "label": "反序列化" },
-    { "id": "l-i", "from": "load", "to": "infra", "label": "缓存/存储/限流", "variant": "dashed" }
+    {
+      "id": "o-s",
+      "from": "obj",
+      "to": "ser",
+      "label": "继承",
+      "variant": "emphasis"
+    },
+    {
+      "id": "s-d",
+      "from": "ser",
+      "to": "dump",
+      "label": "to_json",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "s-l",
+      "from": "ser",
+      "to": "load",
+      "label": "反序列化"
+    },
+    {
+      "id": "l-i",
+      "from": "load",
+      "to": "infra",
+      "label": "缓存/存储/限流",
+      "variant": "dashed"
+    }
   ],
   "cards": [
-    { "dot": "emerald", "title": "要点", "items": [
-      "Serializable 是全栈序列化基类",
-      "load 类路径白名单防 RCE",
-      "BaseCache/BaseStore/限流契约",
-      "import_attr 惰性导入重实现"
-    ] }
+    {
+      "dot": "emerald",
+      "title": "要点",
+      "items": [
+        "Serializable 是全栈序列化基类",
+        "load 类路径白名单防 RCE",
+        "BaseCache/BaseStore/限流契约",
+        "import_attr 惰性导入重实现"
+      ]
+    }
   ]
 }

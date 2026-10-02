@@ -3,18 +3,18 @@
 > 本文是 `agents` 域下的叶子子系统文档。域级总览见 `../agents.md`，本文只展开 v1 包面对消息类型与
 > 速率限制器的符号聚合；这些类型的本体在 langchain-core。
 >
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，源码目录 `libs/langchain_v1/langchain/messages/` 与
+> 源码基准：`langchain_v1` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码目录 `libs/langchain_v1/langchain/messages/` 与
 > `libs/langchain_v1/langchain/rate_limiters/`。
 
 ## 1. 功能清单
 
 | 能力 | 说明 | 源码路径 |
 |------|------|----------|
-| 角色消息类型 | 再导出 `HumanMessage / AIMessage / SystemMessage / ToolMessage / AnyMessage` | `messages/__init__.py:11,16,35,31,19` |
-| 消息分块 | `AIMessageChunk / ToolCallChunk / ServerToolCallChunk` | `messages/__init__.py:9,34,28` |
-| 内容块类型 | `TextContentBlock / ImageContentBlock / AudioContentBlock / VideoContentBlock / FileContentBlock / DataContentBlock / ReasoningContentBlock / PlainTextContentBlock / Citation` | `messages/__init__.py` |
-| 工具调用结构 | `ToolCall / InvalidToolCall / ServerToolCall / ServerToolResult / RemoveMessage` | `messages/__init__.py:33,20,29,30,27` |
-| 用量元数据 | `UsageMetadata / InputTokenDetails / OutputTokenDetails` | `messages/__init__.py:36,19,23` |
+| 角色消息类型 | 再导出 `HumanMessage / AIMessage / SystemMessage / ToolMessage / AnyMessage` | `messages/__init__.py:17,8,31,35,11`（导入块 7-39） |
+| 消息分块 | `AIMessageChunk / ToolCallChunk / ServerToolCallChunk` | `messages/__init__.py:9,34,29` |
+| 内容块类型 | `TextContentBlock / ImageContentBlock / AudioContentBlock / VideoContentBlock / FileContentBlock / DataContentBlock / ReasoningContentBlock / PlainTextContentBlock / Citation` | `messages/__init__.py:32,18,12,37,16,15,26,25,13` |
+| 工具调用结构 | `ToolCall / InvalidToolCall / ServerToolCall / ServerToolResult / RemoveMessage` | `messages/__init__.py:33,20,28,30,27` |
+| 用量元数据 | `UsageMetadata / InputTokenDetails / OutputTokenDetails` | `messages/__init__.py:36,19,24` |
 | 消息裁剪 | `trim_messages`，按 token/策略裁剪历史 | `messages/__init__.py:38` |
 | 速率限制器基类 | `BaseRateLimiter`，与 `BaseChatModel` 配合限流 | `rate_limiters/__init__.py:8` |
 | 内存速率限制器 | `InMemoryRateLimiter` 进程内实现 | `rate_limiters/__init__.py:8` |
@@ -69,7 +69,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|------|
-| 消息与限流符号聚合架构图 | `messages-rate-limiters-architecture.html` | architecture | standard |
+| 消息与限流符号聚合架构图 | `messages-rate-limiters-architecture.html` | architecture | showcase |
 | 请求期消息裁剪与限流数据流 | `messages-rate-limiters-dataflow.html` | dataflow | showcase |
 
-JSON IR 源文件位于 `json/`。本轮新增 dataflow 图：本叶子两类符号在请求期构成一条"原始历史消息 → `trim_messages` 按 token/策略裁剪 → 窗口化上下文 → `InMemoryRateLimiter.acquire` 取令牌 → 放行模型调用"的数据管道，把静态符号聚合落到真实运行数据流。
+JSON IR 源文件位于 `json/`。本轮架构图由 standard 提升至 showcase（"langchain-core→两垫片→create_agent"主路径清晰）；dataflow 图维持 showcase：本叶子两类符号在请求期构成一条"原始历史消息 → `trim_messages` 按 token/策略裁剪 → 窗口化上下文 → `InMemoryRateLimiter.acquire` 取令牌 → 放行模型调用"的数据管道，把静态符号聚合落到真实运行数据流。

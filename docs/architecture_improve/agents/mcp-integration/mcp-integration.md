@@ -3,7 +3,7 @@
 > 本文是 `agents` 域下的叶子子系统文档。域级总览见 `../agents.md`，本文只展开 v1 如何把 MCP 服务器工具
 > 适配为 LangChain 工具；工具如何被 `create_agent` 装配见 `../agent-factory/agent-factory.md`。
 >
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，源码目录 `libs/langchain_v1/langchain/mcp/`。
+> 源码基准：`langchain_v1` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码目录 `libs/langchain_v1/langchain/mcp/`。
 > 注意：`langchain.mcp` 为 beta 命名空间，import 时发一次 `LangChainBetaWarning`（`mcp/__init__.py:26`）。
 
 ## 1. 功能清单
@@ -102,7 +102,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|------|
-| MCP 适配架构图 | `mcp-integration-architecture.html` | architecture | standard |
-| MCP 工具调用时序（含 elicitation） | `mcp-integration-sequence.html` | sequence | standard |
+| MCP 适配架构图 | `mcp-integration-architecture.html` | architecture | showcase |
+| MCP 工具调用时序（含 elicitation） | `mcp-integration-sequence.html` | sequence | showcase |
 
-JSON IR 源文件位于 `json/`。降档说明：时序涉及外部 MCP 服务器与中断分支，按 standard 档渲染。
+JSON IR 源文件位于 `json/`。本轮两图均由 standard 提升至 showcase：架构图为主路径"用户→MCPAdapter→as_langchain_tool→create_agent"+外部 FastMCP/MCP 服务器分支，连线清晰；时序图仅将 `meta.viewBox` 高度由 700 加宽至 780，消除"内容结束于 y=640、下方无图例空间"的 `legend_clearance` 报错。

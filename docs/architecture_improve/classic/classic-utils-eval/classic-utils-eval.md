@@ -3,7 +3,7 @@
 > 本文是 `classic` 域下的叶子子系统文档（第二轮改进版）。域级总览见 `../classic.md`，本文只展开
 > 经典包的 **输出解析器、提示词兼容、评估框架、第三方工具集与散落根级兼容文件**。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`。
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`。
 >
 > 本轮改进：在基线架构图之外，新增"RetryOutputParser 重试解析"时序图，把"解析失败→错误回喂
 > LLM→再解析"的容错调用链显式画出。
@@ -106,8 +106,7 @@
 | 图 | 文件 | 类型 | archify 质量档 |
 | --- | --- | --- | --- |
 | 解析/评估/工具集体系架构图 | `classic-utils-eval-architecture.html` | architecture | showcase |
-| RetryOutputParser 重试解析时序图 | `classic-utils-eval-retry-sequence.html` | sequence | standard |
+| RetryOutputParser 重试解析时序图 | `classic-utils-eval-retry-sequence.html` | sequence | showcase |
 
 档位披露：架构图组件职责清晰，保持 `showcase`。新增时序图刻画"Chain→LLM→重试解析器→
-内层解析器"的解析—失败—回喂—再解析交互；因含一次失败回环与返回消息较多，showcase 间距
-校验未全过、回退 `standard`。JSON IR 位于 `json/`。
+内层解析器"的解析—失败—回喂—再解析交互；本轮通过移除显式 viewBox 让渲染器自动适配画布，由 `standard` 提升至 `showcase`。JSON IR 位于 `json/`。

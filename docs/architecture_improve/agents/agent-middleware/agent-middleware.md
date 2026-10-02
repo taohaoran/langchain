@@ -3,7 +3,7 @@
 > 本文是 `agents` 域下的叶子子系统文档。域级总览见 `../agents.md`，本文只展开中间件的基类契约、
 > 钩子模型与内置中间件清单；中间件如何被工厂装配进图、复合成洋葱链见 `../agent-factory/agent-factory.md`。
 >
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，源码目录 `libs/langchain_v1/langchain/agents/middleware/`。
+> 源码基准：`langchain_v1` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码目录 `libs/langchain_v1/langchain/agents/middleware/`。
 
 ## 1. 功能清单
 
@@ -54,7 +54,7 @@
 2. 运行期最外层中间件先收到 `ModelRequest`，执行前置逻辑后调用 `handler(request)` 进入下一层（`model_retry.py:243`）。
 3. `ModelRetryMiddleware.wrap_model_call` 进入 `for attempt in range(max_retries+1)` 循环，调 `handler(request)`（`model_retry.py:241`）。
 4. 成功 → 直接返回 `ModelResponse`；捕获异常 → 跳过 `GraphBubbleUp`（图控制流异常，必须原样上抛），否则用 `should_retry_exception` 判断是否可重试（`model_retry.py:244,250`）。
-5. 可重试且还有额度 → `calculate_delay` 算退避，`time.sleep` 后继续；额度用尽 → `_handle_failure`（`on_failure="continue"` 返回错误 AIMessage，`"error"` 重抛，自定义 callable 格式化）（`model_retry.py:256,269`）。
+5. 可重试且还有额度 → `calculate_delay` 算退避，`time.sleep` 后继续；额度用尽 → `_handle_failure`（`on_failure="continue"` 返回错误 AIMessage，`"error"` 重抛，自定义 callable 格式化）（`model_retry.py:257,269`）。
 
 **调用链二：节点钩子（before_model/after_model）**
 
@@ -69,7 +69,7 @@
 | `ModelRetryMiddleware.max_retries` | 2 | `model_retry.py:119` |
 | `retry_on` | `default_retry_on`（可重试模型错误+未分类异常） | `model_retry.py:120` |
 | `on_failure` | `"continue"`（返回错误 AIMessage），可选 `"error"` 或 callable | `model_retry.py:121` |
-| `backoff_factor / initial_delay / max_delay / jitter` | 2.0 / 1.0s / 60s / True(±25%) | `model_retry.py:122` |
+| `backoff_factor / initial_delay / max_delay / jitter` | 2.0 / 1.0s / 60s / True(±25%) | `model_retry.py:122-125` |
 | 中间件 `tools` 类属性 | 中间件可注册额外工具（如 ShellToolMiddleware） | `types.py:400` |
 | 中间件 `trace_policy` | None，钩子 span 正常 trace | `types.py:403` |
 
@@ -117,7 +117,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|------|
-| 中间件分类架构图 | `agent-middleware-architecture.html` | architecture | standard |
-| wrap_model_call 洋葱链数据流 | `agent-middleware-dataflow.html` | dataflow | standard |
+| 中间件分类架构图 | `agent-middleware-architecture.html` | architecture | showcase |
+| wrap_model_call 洋葱链数据流 | `agent-middleware-dataflow.html` | dataflow | showcase |
 
-JSON IR 源文件位于 `json/`。降档说明：组件较多，为避免连线交叉按 standard 档渲染（showcase 布局严格校验未全过）。
+JSON IR 源文件位于 `json/`。本轮两图均由 standard 提升至 showcase：架构图精简为"基类→四类实现→模型"主路径；数据流图为 exec↔llm 往返流的"请求/响应"标签加 `labelDy` 垂直分离，消除 `composition/label-route-clearance` 标签重叠。

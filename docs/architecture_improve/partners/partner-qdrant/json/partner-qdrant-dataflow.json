@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "Qdrant 写入与检索数据流", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-qdrant-dataflow.html", "viewBox": [1200, 400] },
+  "stages": [
+    { "label": "输入" },
+    { "label": "向量化" },
+    { "label": "组装点" },
+    { "label": "存储/检索" },
+    { "label": "输出" }
+  ],
+  "nodes": [
+    { "id": "docs", "type": "frontend", "label": "Document 文本", "stage": 0, "row": 0 },
+    { "id": "embed", "type": "backend", "label": "稠密嵌入", "stage": 1, "row": 0 },
+    { "id": "sparse", "type": "backend", "label": "稀疏嵌入", "stage": 1, "row": 1 },
+    { "id": "payload", "type": "backend", "label": "payload+vectors", "stage": 2, "row": 0 },
+    { "id": "qdrant", "type": "database", "label": "Qdrant 服务端", "stage": 3, "row": 0 },
+    { "id": "out", "type": "frontend", "label": "Document 结果", "stage": 4, "row": 0 }
+  ],
+  "flows": [
+    { "from": "docs", "to": "embed", "label": "文本", "variant": "emphasis", "route": "straight" },
+    { "from": "embed", "to": "payload", "label": "稠密向量", "variant": "emphasis", "route": "straight" },
+    { "from": "sparse", "to": "payload", "label": "稀疏向量", "variant": "default", "route": "straight" },
+    { "from": "payload", "to": "qdrant", "label": "upsert/query", "variant": "emphasis", "route": "straight" },
+    { "from": "qdrant", "to": "out", "label": "命中点", "variant": "default", "route": "straight" }
+  ]
+}

@@ -3,6 +3,7 @@
   "diagram_type": "sequence",
   "meta": {
     "title": "LangChain 代理执行时序图",
+    "output": "system-sequence.html",
     "quality_profile": "standard",
     "locale": "zh-CN",
     "viewBox": [1200, 880],

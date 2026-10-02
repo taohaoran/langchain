@@ -3,7 +3,7 @@
 > 本文是 `partners` 域下的叶子子系统文档。域级总览见 `../partners.md`。
 > 本文只展开 Exa 搜索 API 集成（`langchain-exa`）的职责边界，不重复展开其他相邻叶子。
 >
-> 源码基准：`libs/partners/exa/`，`langchain-exa` 包；branch `master`，commit `4492ad7a`。
+> 源码基准：`libs/partners/exa/`，`langchain-exa` 包；branch `master`，commit `89252a8f`。
 
 ## 1. 功能清单
 
@@ -119,7 +119,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |---|---|---|---|
-| Exa 搜索工具架构图 | `partner-search-tools-architecture.html` | architecture | standard |
+| Exa 搜索工具架构图 | `partner-search-tools-architecture.html` | architecture | **showcase** |
 | ExaSearchResults 调用时序图 | `partner-search-tools-sequence.html` | sequence | **showcase** |
 
-**相对基线的提升**：基线仅有 1 张 architecture（standard），本次**新增第 2 张 sequence（showcase）**，补齐叶子级 ≥2 张图配额；该时序图把基线以文字描述的"工具._run → SDK → API → repr(e) 错误分支"链路显式化。架构图跨"langchain_core 抽象 ↔ 工具/检索器适配层 ↔ exa_py SDK ↔ Exa API"四层，showcase 布局校验未一次通过，降为 standard 渲染。JSON IR 源文件位于 `json/` 目录。
+**第三轮刷新**：补全 `meta.output` 字段后重渲染，架构图由第二轮的 standard 提升为 showcase（上游 CLI 升级后布局校验重新通过），时序图保持 showcase。关键行号已按 HEAD `89252a8f` 复核（`ExaSearchResults` @ tools.py:21、`_run` @ :101、`search_and_contents` @ :144、`ExaSearchRetriever` @ retrievers.py:36、`initialize_client` @ _utilities.py:7），与第二轮一致。JSON IR 源文件位于 `json/` 目录。

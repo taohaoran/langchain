@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": { "title": "本地推理集成架构图", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-local-inference-architecture.html", "viewBox": [1280, 480] },
+  "components": [
+    { "id": "core", "type": "backend", "label": "langchain_core 抽象层", "sublabel": "BaseChatModel/LLM/Embeddings", "pos": [40, 200], "size": [175, 90] },
+    { "id": "ollama", "type": "backend", "label": "Ollama 集成", "sublabel": "ChatOllama/OllamaLLM/Embeddings", "pos": [290, 100], "size": [190, 90] },
+    { "id": "hf", "type": "backend", "label": "HuggingFace 集成", "sublabel": "Pipeline/Endpoint/Chat", "pos": [290, 290], "size": [190, 90] },
+    { "id": "ollama_daemon", "type": "external", "label": "Ollama 本地守护进程", "sublabel": "localhost:11434", "pos": [570, 115], "size": [180, 65] },
+    { "id": "transformers", "type": "external", "label": "transformers 运行时", "sublabel": "进程内模型推理", "pos": [570, 300], "size": [180, 65] },
+    { "id": "hf_api", "type": "cloud", "label": "HF Inference API", "sublabel": "远端端点", "pos": [830, 300], "size": [170, 65] },
+    { "id": "model", "type": "database", "label": "本地模型权重", "sublabel": "GGUF/safetensors", "pos": [830, 115], "size": [170, 65] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "本仓库适配层", "wraps": ["ollama", "hf"] },
+    { "kind": "region", "label": "外部运行时（不在本仓库源码内）", "wraps": ["ollama_daemon", "transformers", "hf_api", "model"] }
+  ],
+  "connections": [
+    { "id": "c1", "from": "core", "to": "ollama", "label": "实现", "variant": "emphasis" },
+    { "id": "c2", "from": "core", "to": "hf", "label": "实现", "variant": "emphasis" },
+    { "id": "c3", "from": "ollama", "to": "ollama_daemon", "label": "HTTP", "variant": "emphasis" },
+    { "id": "c4", "from": "ollama_daemon", "to": "model", "label": "加载", "variant": "default" },
+    { "id": "c5", "from": "hf", "to": "transformers", "label": "进程内", "variant": "default" },
+    { "id": "c6", "from": "hf", "to": "hf_api", "label": "HTTPS", "variant": "default" }
+  ],
+  "cards": [
+    { "dot": "emerald", "title": "要点", "items": ["Ollama 走本地守护进程 HTTP", "HF Pipeline 进程内推理", "HF Endpoint 走远端 API"] }
+  ]
+}

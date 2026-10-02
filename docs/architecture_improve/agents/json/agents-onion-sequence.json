@@ -5,6 +5,7 @@
     "title": "中间件洋葱链一轮交互时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "agents-onion-sequence.html",
     "viewBox": [1080, 720]
   },
   "participants": [

@@ -1,0 +1,271 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "经典链体系架构（chains）",
+  "quality_profile": "standard",
+  "locale": "zh-CN",
+  "output": "classic-chains-architecture.html"
+ },
+ "components": [
+  {
+   "id": "user",
+   "type": "external",
+   "label": "用户代码",
+   "sublabel": "invoke",
+   "pos": [
+    40,
+    90
+   ],
+   "size": [
+    130,
+    56
+   ]
+  },
+  {
+   "id": "loading",
+   "type": "backend",
+   "label": "序列化加载",
+   "sublabel": "load_chain 注册表",
+   "pos": [
+    40,
+    220
+   ],
+   "size": [
+    150,
+    56
+   ],
+   "tag": "已废弃"
+  },
+  {
+   "id": "chain-base",
+   "type": "backend",
+   "label": "Chain 基类",
+   "sublabel": "base.py 模板方法",
+   "pos": [
+    300,
+    150
+   ],
+   "size": [
+    160,
+    66
+   ],
+   "tag": "能力缝"
+  },
+  {
+   "id": "memory",
+   "type": "database",
+   "label": "BaseMemory",
+   "sublabel": "classic-memory",
+   "pos": [
+    300,
+    330
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "llmchain",
+   "type": "backend",
+   "label": "LLMChain",
+   "sublabel": "prompt+llm+parser",
+   "pos": [
+    600,
+    50
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "combine",
+   "type": "backend",
+   "label": "文档合并族",
+   "sublabel": "stuff/map-reduce/refine",
+   "pos": [
+    600,
+    170
+   ],
+   "size": [
+    170,
+    56
+   ],
+   "tag": "二级能力缝"
+  },
+  {
+   "id": "retrieval",
+   "type": "backend",
+   "label": "RetrievalQA",
+   "sublabel": "检索问答",
+   "pos": [
+    600,
+    290
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "router",
+   "type": "backend",
+   "label": "RouterChain",
+   "sublabel": "LLM/embedding 路由",
+   "pos": [
+    600,
+    410
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "model",
+   "type": "cloud",
+   "label": "模型 Runnable",
+   "sublabel": "core / partners",
+   "pos": [
+    920,
+    50
+   ],
+   "size": [
+    170,
+    56
+   ]
+  },
+  {
+   "id": "retriever",
+   "type": "database",
+   "label": "检索器/向量库",
+   "sublabel": "retrievers-stores",
+   "pos": [
+    920,
+    290
+   ],
+   "size": [
+    170,
+    56
+   ]
+  }
+ ],
+ "boundaries": [
+  {
+   "kind": "region",
+   "label": "chains/ 经典包内",
+   "wraps": [
+    "chain-base",
+    "llmchain",
+    "combine",
+    "retrieval",
+    "router",
+    "loading",
+    "memory"
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "u-cb",
+   "from": "user",
+   "to": "chain-base",
+   "label": "invoke",
+   "variant": "emphasis",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "ld-chain",
+   "from": "loading",
+   "to": "chain-base",
+   "label": "_type 注册表",
+   "variant": "dashed",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "cb-mem",
+   "from": "chain-base",
+   "to": "memory",
+   "label": "记忆读写",
+   "variant": "dashed",
+   "fromSide": "bottom",
+   "toSide": "top",
+   "labelDy": 30
+  },
+  {
+   "id": "cb-llm",
+   "from": "chain-base",
+   "to": "llmchain",
+   "label": "继承",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "cb-comb",
+   "from": "chain-base",
+   "to": "combine",
+   "label": "继承",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "cb-ret",
+   "from": "chain-base",
+   "to": "retrieval",
+   "label": "继承",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "cb-router",
+   "from": "chain-base",
+   "to": "router",
+   "label": "继承",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "llm-model",
+   "from": "llmchain",
+   "to": "model",
+   "label": "generate_prompt",
+   "variant": "emphasis",
+   "fromSide": "right",
+   "toSide": "left"
+  },
+  {
+   "id": "ret-retriever",
+   "from": "retrieval",
+   "to": "retriever",
+   "label": "取文档",
+   "variant": "dashed",
+   "fromSide": "right",
+   "toSide": "left"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "核心机制",
+   "items": [
+    "Chain 继承 RunnableSerializable，模板方法 invoke 固定骨架",
+    "子类只实现 _call；_acall 默认 run_in_executor 包装",
+    "记忆在 prep_inputs/prep_outputs 两侧注入与落盘",
+    "load_chain 按 _type 字符串注册表递归反序列化"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "遗留状态",
+   "items": [
+    "__call__/run/acall 已 @deprecated，引导迁移 LCEL",
+    "load_chain 自 0.2.13 废弃，建议直接 import",
+    "sql_database_chain 已拒绝，指向 experimental"
+   ]
+  }
+ ]
+}

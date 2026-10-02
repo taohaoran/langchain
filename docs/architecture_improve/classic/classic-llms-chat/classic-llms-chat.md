@@ -4,7 +4,7 @@
 > 经典包的 **语言模型基类兼容层与内置实现转发**，不展开 Chain（见 `../classic-chains/`）与提示词
 > （见 `../classic-utils-eval/`）。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`。
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`。
 >
 > 本轮改进：在基线架构图之外，新增"旧路径导入委托解析"时序图，把静态转发层的运行时解析过程
 > 显式画出来。

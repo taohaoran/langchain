@@ -1,0 +1,194 @@
+{
+ "schema_version": 1,
+ "diagram_type": "architecture",
+ "meta": {
+  "title": "回调/缓存/Hub 基础设施（callbacks-infra）",
+  "quality_profile": "showcase",
+  "locale": "zh-CN",
+  "viewBox": [
+   1100,
+   620
+  ],
+  "output": "classic-callbacks-infra-architecture.html"
+ },
+ "components": [
+  {
+   "id": "biz",
+   "type": "external",
+   "label": "Chain/Agent/LLM",
+   "sublabel": "业务子系统",
+   "pos": [
+    40,
+    90
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "cbmgr",
+   "type": "backend",
+   "label": "回调管理器",
+   "sublabel": "on_* 钩子分发",
+   "pos": [
+    320,
+    90
+   ],
+   "size": [
+    170,
+    56
+   ]
+  },
+  {
+   "id": "platforms",
+   "type": "cloud",
+   "label": "观测平台",
+   "sublabel": "wandb/mlflow…",
+   "pos": [
+    620,
+    90
+   ],
+   "size": [
+    160,
+    56
+   ],
+   "tag": "外部"
+  },
+  {
+   "id": "user",
+   "type": "external",
+   "label": "用户",
+   "sublabel": "拉取 prompt",
+   "pos": [
+    40,
+    280
+   ],
+   "size": [
+    130,
+    56
+   ]
+  },
+  {
+   "id": "hub",
+   "type": "backend",
+   "label": "hub.pull/push",
+   "sublabel": "hub.py",
+   "pos": [
+    320,
+    280
+   ],
+   "size": [
+    160,
+    56
+   ]
+  },
+  {
+   "id": "lshub",
+   "type": "cloud",
+   "label": "LangSmith Hub",
+   "sublabel": "托管服务",
+   "pos": [
+    620,
+    280
+   ],
+   "size": [
+    170,
+    56
+   ],
+   "tag": "外部"
+  },
+  {
+   "id": "loader",
+   "type": "backend",
+   "label": "序列化 load()",
+   "sublabel": "按 _type 路由",
+   "pos": [
+    320,
+    440
+   ],
+   "size": [
+    170,
+    56
+   ]
+  },
+  {
+   "id": "objects",
+   "type": "backend",
+   "label": "Chain/Prompt",
+   "sublabel": "重建对象",
+   "pos": [
+    620,
+    440
+   ],
+   "size": [
+    160,
+    56
+   ]
+  }
+ ],
+ "connections": [
+  {
+   "id": "b-cb",
+   "from": "biz",
+   "to": "cbmgr",
+   "label": "钩子",
+   "variant": "emphasis"
+  },
+  {
+   "id": "cb-plat",
+   "from": "cbmgr",
+   "to": "platforms",
+   "label": "上报"
+  },
+  {
+   "id": "u-hub",
+   "from": "user",
+   "to": "hub",
+   "label": "owner/prompt:commit",
+   "variant": "emphasis"
+  },
+  {
+   "id": "hub-ls",
+   "from": "hub",
+   "to": "lshub",
+   "label": "HTTP",
+   "variant": "dashed"
+  },
+  {
+   "id": "hub-load",
+   "from": "hub",
+   "to": "loader",
+   "label": "反序列化",
+   "fromSide": "bottom",
+   "toSide": "top"
+  },
+  {
+   "id": "load-obj",
+   "from": "loader",
+   "to": "objects",
+   "label": "重建",
+   "variant": "emphasis"
+  }
+ ],
+ "cards": [
+  {
+   "dot": "emerald",
+   "title": "基础设施",
+   "items": [
+    "回调管理器统一分发 on_* 钩子",
+    "hub.pull 拉取并反序列化 Hub 对象",
+    "load() 按 _type 路由，与 load_chain 同范式"
+   ]
+  },
+  {
+   "dot": "amber",
+   "title": "安全与边界",
+   "items": [
+    "Hub manifest 为不可信输入，需 pin/审计",
+    "观测平台与缓存后端为外部服务",
+    "基类已下沉 langchain-core"
+   ]
+  }
+ ]
+}

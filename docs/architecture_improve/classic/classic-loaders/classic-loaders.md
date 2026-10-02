@@ -4,7 +4,7 @@
 > 经典包的 **文档加载器集合、文档转换器与文本分割兼容层**，不展开向量索引（见
 > `../classic-retrievers-stores/`）。
 >
-> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `4492ad7a8`。
+> 源码基准：`langchain_classic` 1.0.8，分支 `master`，commit `89252a8f`。
 >
 > 本轮改进：基线仅有数据图、缺架构图；本轮补齐"加载/分割兼容层"架构图作为第 1 张图，
 > 数据图保留为第 2 张，使叶子图满足"第 1 张 architecture"的规范。
@@ -115,9 +115,9 @@ LongContextReorder、冗余过滤等。
 | 图 | 文件 | 类型 | archify 质量档 |
 | --- | --- | --- | --- |
 | 加载/分割兼容层架构图 | `classic-loaders-architecture.html` | architecture | showcase |
-| 文档加载→分割管道数据流图 | `classic-loaders-dataflow.html` | dataflow | standard |
+| 文档加载→分割管道数据流图 | `classic-loaders-dataflow.html` | dataflow | showcase |
 
 档位披露：本轮新增架构图作为第 1 张，组件为"转发/重导出层 → community / text-splitters →
-数据源 / Document"，通过 `showcase`。数据图（基线产物）在当前 archify 版本下回退 `standard`
-（基线曾为 showcase，属渲染口径变化）。两张图互补：架构图表达静态转发拓扑，数据图表达
+数据源 / Document"，通过 `showcase`。数据流图经缩短子标签（"create_importer→community"→"importer 桩"）与收窄
+viewBox 解决桌面可读性字号检查，由 `standard` 提升至 `showcase`。两张图互补：架构图表达静态转发拓扑，数据图表达
 "源→加载→切分→索引"管道。JSON IR 位于 `json/`。

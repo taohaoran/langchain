@@ -5,30 +5,118 @@
     "title": "聊天模型 invoke 生成时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
-    "viewBox": [1080, 720],
-    "column_fit": "spread"
+    "viewBox": [
+      1080,
+      720
+    ],
+    "column_fit": "spread",
+    "output": "core-language-models-sequence.html"
   },
   "participants": [
-    { "id": "user", "type": "external", "label": "调用方", "sublabel": "prompt | model" },
-    { "id": "model", "type": "backend", "label": "BaseChatModel", "sublabel": "chat_models.py:475" },
-    { "id": "cb", "type": "messagebus", "label": "回调管理器", "sublabel": "on_chat_model_start" },
-    { "id": "api", "type": "cloud", "label": "Partners API", "sublabel": "OpenAI/Anthropic" }
+    {
+      "id": "user",
+      "type": "external",
+      "label": "调用方",
+      "sublabel": "prompt | model"
+    },
+    {
+      "id": "model",
+      "type": "backend",
+      "label": "BaseChatModel",
+      "sublabel": "chat_models.py:475"
+    },
+    {
+      "id": "cb",
+      "type": "messagebus",
+      "label": "回调管理器",
+      "sublabel": "on_chat_model_start"
+    },
+    {
+      "id": "api",
+      "type": "cloud",
+      "label": "Partners API",
+      "sublabel": "OpenAI/Anthropic"
+    }
   ],
   "segments": [
-    { "from": 150, "to": 280, "label": "解析输入" },
-    { "from": 280, "to": 460, "label": "调用生成" },
-    { "from": 460, "to": 580, "label": "返回消息" }
+    {
+      "from": 150,
+      "to": 280,
+      "label": "解析输入"
+    },
+    {
+      "from": 280,
+      "to": 460,
+      "label": "调用生成"
+    },
+    {
+      "from": 460,
+      "to": 580,
+      "label": "返回消息"
+    }
   ],
   "messages": [
-    { "id": "m1", "from": "user", "to": "model", "y": 160, "label": "invoke(messages)", "variant": "emphasis" },
-    { "id": "m2", "from": "model", "to": "cb", "y": 210, "label": "on_chat_model_start", "variant": "default" },
-    { "id": "m3", "from": "model", "to": "api", "y": 320, "label": "_generate(messages, stop)", "variant": "emphasis" },
-    { "id": "m4", "from": "api", "to": "model", "y": 410, "label": "ChatResult/Generations", "variant": "return" },
-    { "id": "m5", "from": "model", "to": "cb", "y": 500, "label": "on_llm_end", "variant": "default" },
-    { "id": "m6", "from": "model", "to": "user", "y": 550, "label": "AIMessage", "variant": "return" }
+    {
+      "id": "m1",
+      "from": "user",
+      "to": "model",
+      "y": 160,
+      "label": "invoke(messages)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m2",
+      "from": "model",
+      "to": "cb",
+      "y": 210,
+      "label": "on_chat_model_start",
+      "variant": "default"
+    },
+    {
+      "id": "m3",
+      "from": "model",
+      "to": "api",
+      "y": 320,
+      "label": "_generate(messages, stop)",
+      "variant": "emphasis"
+    },
+    {
+      "id": "m4",
+      "from": "api",
+      "to": "model",
+      "y": 410,
+      "label": "ChatResult/Generations",
+      "variant": "return"
+    },
+    {
+      "id": "m5",
+      "from": "model",
+      "to": "cb",
+      "y": 500,
+      "label": "on_llm_end",
+      "variant": "default"
+    },
+    {
+      "id": "m6",
+      "from": "model",
+      "to": "user",
+      "y": 550,
+      "label": "AIMessage",
+      "variant": "return"
+    }
   ],
   "activations": [
-    { "participant": "model", "from": 160, "to": 550, "type": "backend" },
-    { "participant": "api", "from": 320, "to": 410, "type": "cloud" }
+    {
+      "participant": "model",
+      "from": 160,
+      "to": 550,
+      "type": "backend"
+    },
+    {
+      "participant": "api",
+      "from": 320,
+      "to": 410,
+      "type": "cloud"
+    }
   ]
 }

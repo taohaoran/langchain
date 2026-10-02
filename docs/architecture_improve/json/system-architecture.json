@@ -3,6 +3,7 @@
   "diagram_type": "architecture",
   "meta": {
     "title": "LangChain Monorepo 系统架构图",
+    "output": "system-architecture.html",
     "quality_profile": "standard",
     "locale": "zh-CN",
     "viewBox": [1200, 860]
@@ -29,7 +30,7 @@
     { "id": "user-classic", "from": "user-app", "to": "classic", "label": "Chain/Agent", "variant": "dashed" },
     { "id": "v1-core", "from": "v1-agents", "to": "core", "label": "继承抽象", "variant": "emphasis" },
     { "id": "classic-core", "from": "classic", "to": "core", "label": "继承抽象", "variant": "dashed" },
-    { "id": "core-partners", "from": "core", "to": "partners", "label": "实现契约", "variant": "emphasis" },
+    { "id": "core-partners", "from": "core", "to": "partners", "label": "实现契约", "variant": "emphasis", "labelAt": [820, 254] },
     { "id": "partners-llm", "from": "partners", "to": "ext-llm", "label": "HTTP API" },
     { "id": "partners-vector", "from": "partners", "to": "ext-vector", "label": "客户端调用" },
     { "id": "v1-mcp", "from": "v1-agents", "to": "ext-mcp", "label": "MCP 协议", "variant": "dashed" },

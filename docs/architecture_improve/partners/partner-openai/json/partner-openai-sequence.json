@@ -5,6 +5,7 @@
     "title": "ChatOpenAI 请求调用时序",
     "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "partner-openai-sequence.html",
     "viewBox": [
       1080,
       780

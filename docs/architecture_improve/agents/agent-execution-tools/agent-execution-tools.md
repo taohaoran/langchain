@@ -4,7 +4,7 @@
 > 子代理流转换器；工具节点如何被工厂装配、中间件如何包裹工具调用见 `../agent-factory/agent-factory.md` 与
 > `../agent-middleware/agent-middleware.md`。
 >
-> 源码基准：`langchain_v1` master，commit `4492ad7a8`，源码目录 `libs/langchain_v1/langchain/tools/` 与
+> 源码基准：`langchain_v1` master，commit `89252a8f7043a74f2300729fd038df8221a87e1e`，源码目录 `libs/langchain_v1/langchain/tools/` 与
 > `libs/langchain_v1/langchain/agents/_subagent_transformer.py`。
 
 ## 1. 功能清单
@@ -39,8 +39,8 @@
 **调用链二：子代理流提升**
 
 1. `create_agent(name="X")` 给编译图打上 `lc_agent_name` 元数据（见 agent-factory 叶子）。
-2. 该图作为子图被另一个代理调用时，`SubagentTransformer._on_started` 在任务启动时检查该命名空间是否带 `lc_agent_name`（`_subagent_transformer.py:168`）。
-3. 命中则在首次启动时建子 mux，在 `run.subagents` 上发射类型化句柄，后续子作用域事件转发到该句柄（`_subagent_transformer.py:176`）。
+2. 该图作为子图被另一个代理调用时，`SubagentTransformer._on_started` 在任务启动时取 `self._lc_by_ns.get(ns)` 检查该命名空间是否带 `lc_agent_name`（`_subagent_transformer.py:158,169`）；`None` 直接返回（`:176-177`）。
+3. 命中则在首次启动时 `self._mux._make_child(ns)` 建子 mux，构造 `SubagentRunStream`/`AsyncSubagentRunStream` 句柄并存入 `self._handles[ns]`，后续子作用域事件转发到该句柄（`_subagent_transformer.py:181,187-194`）。
 4. 未命名（`None`）的嵌套运行被排除；同名自递归子代理仍会被提升。
 
 ## 4. 配置项
@@ -48,7 +48,8 @@
 | 配置 | 默认 / 行为 | 位置 |
 |------|------|------|
 | `SubagentTransformer(scope=())` | 作用域元组，默认根作用域 | `_subagent_transformer.py:142` |
-| 子代理识别条件 | 嵌套运行带 `lc_agent_name`（由 `create_agent(name=...)` 设置） | `_subagent_transformer.py:169` |
+| `supports_sync` | `True`，同步路径也工作 | `_subagent_transformer.py:140` |
+| 子代理识别条件 | 嵌套运行带 `lc_agent_name`（由 `create_agent(name=...)` 设置），且与父作用域不同名 | `_subagent_transformer.py:169,176` |
 
 ## 5. 错误与重试语义
 
@@ -86,7 +87,7 @@
 
 | 图 | 文件 | 类型 | archify 质量档 |
 |----|------|------|------|
-| 工具执行与子代理提升架构图 | `agent-execution-tools-architecture.html` | architecture | standard |
+| 工具执行与子代理提升架构图 | `agent-execution-tools-architecture.html` | architecture | showcase |
 | 子代理流提升数据流 | `agent-execution-tools-dataflow.html` | dataflow | showcase |
 
-JSON IR 源文件位于 `json/`。本轮新增 dataflow 图：子代理流提升是一条"运行事件 → `_on_started` 拦截 → 识别 `lc_agent_name` → 首次建子 mux → 发类型化句柄"的数据管道，与静态架构图互补表达运行期事件流转。时序图不适用故省略（单次交互链路已由 agent-factory 叶子的执行循环覆盖）。
+JSON IR 源文件位于 `json/`。本轮架构图已由 standard 提升至 showcase（"工厂→垫片/变换器→外部运行时"主路径，连线清晰无交叉）。dataflow 图本轮维持 showcase：子代理流提升是一条"运行事件 → `_on_started` 拦截 → 识别 `lc_agent_name` → 首次建子 mux → 发类型化句柄"的数据管道，与静态架构图互补表达运行期事件流转。时序图不适用故省略（单次交互链路已由 agent-factory 叶子的执行循环覆盖）。

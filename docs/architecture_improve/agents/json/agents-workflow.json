@@ -4,7 +4,8 @@
   "meta": {
     "title": "构建 agent 到执行一轮流程",
     "quality_profile": "showcase",
-    "locale": "zh-CN"
+    "locale": "zh-CN",
+    "output": "agents-workflow.html"
   },
   "lanes": [
     { "id": "user", "label": "用户" },

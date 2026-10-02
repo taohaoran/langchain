@@ -3,8 +3,9 @@
   "diagram_type": "lifecycle",
   "meta": {
     "title": "代理执行循环状态机",
-    "quality_profile": "standard",
+    "quality_profile": "showcase",
     "locale": "zh-CN",
+    "output": "agent-factory-lifecycle.html",
     "viewBox": [1030, 620]
   },
   "lanes": [

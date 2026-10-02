@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "diagram_type": "dataflow",
+  "meta": { "title": "本地推理请求数据流", "quality_profile": "showcase", "locale": "zh-CN", "output": "partner-local-inference-dataflow.html", "viewBox": [1200, 380] },
+  "stages": [
+    { "label": "请求" },
+    { "label": "适配层" },
+    { "label": "运行时" },
+    { "label": "模型" },
+    { "label": "响应" }
+  ],
+  "nodes": [
+    { "id": "req", "type": "frontend", "label": "messages", "stage": 0, "row": 0 },
+    { "id": "adapt", "type": "backend", "label": "ChatOllama 适配", "stage": 1, "row": 0 },
+    { "id": "daemon", "type": "external", "label": "Ollama 守护进程", "stage": 2, "row": 0 },
+    { "id": "weight", "type": "database", "label": "本地模型权重", "stage": 3, "row": 0 },
+    { "id": "resp", "type": "frontend", "label": "AIMessage", "stage": 4, "row": 0 }
+  ],
+  "flows": [
+    { "from": "req", "to": "adapt", "label": "invoke", "variant": "emphasis", "route": "straight" },
+    { "from": "adapt", "to": "daemon", "label": "HTTP POST", "variant": "emphasis", "route": "straight" },
+    { "from": "daemon", "to": "weight", "label": "推理", "variant": "default", "route": "straight" },
+    { "from": "daemon", "to": "resp", "label": "流式/批量", "variant": "emphasis", "route": "bottom-channel" }
+  ]
+}
